@@ -1,0 +1,50 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.auth {
+  background: url("./assets/images/sigin-bg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+.testimonial-card {
+  background: url("./assets/images/testimonial-bg.png");
+  background-repeat: no-repeat;
+  background-size: contain;
+}
+
+label {
+  color: #344054;
+  font-weight: 500 !important;
+  font-size: 14px !important;
+}
+
+body {
+  color: #8e8e8e;
+}
+
+.upload-bg {
+  border-radius: 15px;
+  background: linear-gradient(
+    276deg,
+    rgba(0, 212, 225, 0.13) 0%,
+    rgba(0, 255, 255, 0.13) 96.71%
+  );
+}
+
+table {
+  border-radius: 15px !important;
+  color: #475467;
+  font-size: 14px;
+}
+
+td{
+  border: none !important;
+}
+
+thead {
+  border-bottom: 1px solid var(--gray-200, #eaecf0);
+  background: var(--gray-50, #f9fafb);
+  border-top-left-radius: 15px;
+  border-top-right-radius: 15px;
+}
