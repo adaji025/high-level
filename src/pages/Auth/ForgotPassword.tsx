@@ -43,16 +43,16 @@ const ForgotPassword = () => {
   return (
     <>
       <LoadingOverlay visible={loading} />
-      <div className="auth min-h-screen w-full flex justify-center items-center">
-        <div className="max-w-[490px] w-full bg-white drop-shadow-2xl border border-darkBlue rounded-xl p-[60px]">
-          <h1 className="text-center text-[24px] lg:text-[40px] font-medium text-mainText">
-            Welcome back
+      <div className="min-h-screen w-full flex justify-center items-center">
+        <div className="max-w-[420px] w-full  p-5">
+          <h1 className="text-center text-[24px] lg:text-[30px] font-semibold text-mainText">
+            Forgot your password?
           </h1>
           <h3 className="text-center text-secondaryText">
-            Enter Your registered Email
+            Enter your email and we’ll send reset link there
           </h3>
           <form onSubmit={form.onSubmit((values) => submit(values))}>
-            <Box mt={16} className="flex flex-col items-center justify-center">
+            <Box mt={44} className="flex flex-col items-center justify-center">
               <TextInput
                 size="md"
                 placeholder="Enter your email"
@@ -62,9 +62,9 @@ const ForgotPassword = () => {
 
               <button
                 type="submit"
-                className="mt-6 w-full bg-darkBlue text-white p-3 rounded-lg font-bold"
+                className="mt-8 w-full bg-highLevelRed text-white p-3 rounded-lg font-bold"
               >
-                Send
+                Send Link
               </button>
             </Box>
           </form>

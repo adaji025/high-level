@@ -50,7 +50,7 @@ const SignIn = () => {
   return (
     <>
       <LoadingOverlay visible={loading} />
-      <div className="min-h-[calc(100vh-80px)] w-full flex flex-col justify-center items-center">
+      <div className="min-h-screen w-full flex flex-col justify-center items-center">
         <h1 className="text-center text-[24px] lg:text-[30px] font-semibold text-mainText">
           Log in to your account
         </h1>
