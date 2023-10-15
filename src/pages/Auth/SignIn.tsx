@@ -6,12 +6,13 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { GoogleIcon } from "../../components/Svgs";
-import { Link, useNavigate } from "react-router-dom";
+import {  useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { userlogin } from "../../services/user";
 import { useState } from "react";
 import useNotification from "../../hooks/useNotification";
 import { toast } from "react-toastify";
+import HighLevel from "../../assets/svgs/high-level.svg";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
@@ -51,6 +52,9 @@ const SignIn = () => {
     <>
       <LoadingOverlay visible={loading} />
       <div className="min-h-screen w-full flex flex-col justify-center items-center">
+        <div className="my-10">
+          <img src={HighLevel} alt="high level" />
+        </div>
         <h1 className="text-center text-[24px] lg:text-[30px] font-semibold text-mainText">
           Log in to your account
         </h1>
@@ -108,13 +112,6 @@ const SignIn = () => {
                 <GoogleIcon />
                 <div>Sign up with Google</div>
               </button>
-
-              <div className="text-center mt-4 text-sm">
-                Don’t have an account?{" "}
-                <Link to="/sign-up" className="font-bold text-darkBlue">
-                  Sign up
-                </Link>
-              </div>
             </Box>
           </form>
         </div>
