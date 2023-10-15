@@ -9,7 +9,8 @@ export default {
       colors: {
         darkBlue: "#091A3C",
         mainText: "#030916" ,
-        secondaryText: "#4D4D4D" 
+        secondaryText: "#4D4D4D" ,
+        highLevelRed: "#E84E38" ,
       }
     },
   },
