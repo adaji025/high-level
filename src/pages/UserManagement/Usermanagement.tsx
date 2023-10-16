@@ -8,7 +8,7 @@ import AddUser from "./components/AddUser";
 import { Fragment } from "react";
 
 const UserManagement = () => {
-  const [opened, { open, close }] = useDisclosure(true);
+  const [opened, { open, close }] = useDisclosure(false);
   return (
     <Fragment>
       <AddUser opened={opened} close={close} />
