@@ -1,25 +1,22 @@
 import { useState } from "react";
 import { Table } from "@mantine/core";
-import { BsCloudDownload } from "react-icons/bs";
-import { TbShare3 } from "react-icons/tb";
-import { FcCheckmark } from "react-icons/fc";
+import { AiOutlineDelete } from "react-icons/ai";
+import { FiEdit2 } from "react-icons/fi";
 
 const data: any = [
   {
     id: "1",
     name: "Contract example name",
-    date: "Dec 1, 2022",
-    status: "signed",
+    api_key: "mvon************GHKO",
   },
   {
     id: "2",
     name: "Contract example name",
-    date: "Dec 1, 2022",
-    status: "not signed",
+    api_key: "mvon************GHKO",
   },
 ];
 
-const ContractTable = () => {
+const EvironmentTable = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
 
   console.log("selectedRowIds", selectedRowIds);
@@ -59,12 +56,11 @@ const ContractTable = () => {
                       checked={isAllRowsSelected}
                       onChange={handleSelectAllRows}
                     />
-                    Element position
+                    Environment name
                   </div>
                 </Table.Th>
-                <Table.Th>Element name</Table.Th>
-                <Table.Th>Symbol</Table.Th>
-                <Table.Th>Atomic mass</Table.Th>
+                <Table.Th>Api Key</Table.Th>
+                <Table.Th>Action</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
@@ -80,23 +76,12 @@ const ContractTable = () => {
                       {item.name}
                     </div>
                   </Table.Td>
-                  <Table.Td>{item.date}</Table.Td>
-                  <Table.Td>
-                    <div
-                      className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center gap-1 ${
-                        item.status === "signed"
-                          ? "bg-[#ECFDF3] text-[#12B76A]"
-                          : "bg-[#E7A94C]/10 text-[#E7A94C]"
-                      }`}
-                    >
-                      {item.status === "signed" && <FcCheckmark />}
-                      {item.status}
-                    </div>
-                  </Table.Td>
+                  <Table.Td>{item.api_key}</Table.Td>
+                  
                   <Table.Td>
                     <div className="flex gap-5">
-                      <BsCloudDownload size={20} color="#475467" />
-                      <TbShare3 size={20} color="#475467" />
+                      <AiOutlineDelete size={20} color="#475467" />
+                      <FiEdit2 size={20} color="#475467" />
                     </div>
                   </Table.Td>
                 </Table.Tr>
@@ -110,8 +95,8 @@ const ContractTable = () => {
         {[...Array(7)].map((_, index) => (
           <div
             key={index}
-            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue ${
-              index === 0 && "bg-darkBlue"
+            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue hover:text-white ${
+              index === 0 && "bg-darkBlue text-white"
             }`}
           >
             {" "}
@@ -124,4 +109,4 @@ const ContractTable = () => {
   );
 };
 
-export default ContractTable;
+export default EvironmentTable;
