@@ -1,20 +1,11 @@
-import Draw from "../../assets/svgs/draw.svg";
-import { Text, Divider } from "@mantine/core";
-import { useState } from "react";
-import ReviewNDA from "../NDA/components/ReviewNDA";
-import CreateNDA from "../NDA/components/CreateNDA";
+import { Text,  } from "@mantine/core";
 
-const NDA = () => {
-  const [openReview, setOpenReview] = useState(false);
+const UserManagement = () => {
   return (
     <div>
       <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
-        Create <span className="font-black">your NDA</span>
-        <img
-          src={Draw}
-          alt="draw"
-          className="absolute left-16 -bottom-1 hidden xl:flex w-1/4"
-        />
+        Create <span className="font-black">your UserManagement</span>
+        
       </div>
       <Text mt={24}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -27,12 +18,9 @@ const NDA = () => {
         ad minim veniam, quis nostrud exercitation
       </Text>
 
-      <Divider my={60} />
-
-      {!openReview && <CreateNDA setOpenReview={setOpenReview} />}
-      {openReview && <ReviewNDA />}
+      
     </div>
   );
 };
 
-export default NDA;
+export default UserManagement;

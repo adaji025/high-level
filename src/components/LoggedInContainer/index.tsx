@@ -5,11 +5,11 @@ import { FaBars } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import MobileSidebar from "./MobileSidebar";
-import NonDisclosureAgreement from "../../pages/NDA/NDA";
 import Profile from "../../pages/Profile/Profile";
-import Contract from "../../pages/Contract/Contract";
 import { getProfile } from "../../services/user";
 import useNotification from "../../hooks/useNotification";
+import EnvironmentManagement from "../../pages/EnvironmentManagement/Environment";
+import UserManagement from "../../pages/UserManagement/Usermanagement";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
@@ -51,9 +51,9 @@ const LoggedInContainer = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/nda" element={<NonDisclosureAgreement />} />
+              <Route path="/manage-environment" element={<EnvironmentManagement />} />
               <Route path="/profile" element={<Profile />} />
-              <Route path="/contract-management" element={<Contract />} />
+              <Route path="/manage-user" element={<UserManagement />} />
             </Routes>
           </main>
         </div>
