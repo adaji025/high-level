@@ -46,9 +46,10 @@ const LoggedInContainer = () => {
         <div className="fixed h-screen hidden lg:flex lg:w-[300px]  bg-darkBlue p-[22px]">
           <Sidebar />
         </div>
-        <div className="w-full">
+        <div className="w-full mt-10">
           <main className="w-full bg-white pt-[50px] lg:ml-[300px] lg:w-[calc(100vw-300px)] px-4 lg:px-10 mb-10">
             <Routes>
+              <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route path="/nda" element={<NonDisclosureAgreement />} />
               <Route path="/profile" element={<Profile />} />

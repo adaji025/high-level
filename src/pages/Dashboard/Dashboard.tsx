@@ -1,36 +1,38 @@
-import Draw from "../../assets/svgs/draw.svg";
-import { Text, Divider } from "@mantine/core";
-import { useState } from "react";
-import ReviewNDA from "../NDA/components/ReviewNDA";
-import CreateNDA from "../NDA/components/CreateNDA";
+import { TextInput } from "@mantine/core";
+import AutomationCards from "./components/AutomationCards";
+import { CiSearch } from "react-icons/ci";
+import AutomationTable from "./components/AutomationTable";
 
 const Dashboard = () => {
-  const [openReview, setOpenReview] = useState(false);
   return (
     <div>
-      <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
-        Create <span className="font-black">your NDA</span>
-        <img
-          src={Draw}
-          alt="draw"
-          className="absolute left-16 -bottom-1 hidden xl:flex w-1/4"
-        />
+      <h2 className="font-bold text-3xl mb-5">Latest automations</h2>
+      <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
+        <AutomationCards />
+        <AutomationCards />
+        <AutomationCards />
+        <AutomationCards />
       </div>
-      <Text mt={24}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitationLorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-        ad minim veniam, quis nostrud exercitation
-      </Text>
 
-      <Divider my={60} />
+      <div className="mt-14">
+        <div className="flex justify-between">
+          <div>
+            <h3 className="font-semibold text-lg">Recent Automations</h3>
+            <div className="text-secondaryText text-sm">
+              Keep track of vendors and their security ratings.
+            </div>
+          </div>
 
-      {!openReview && <CreateNDA setOpenReview={setOpenReview} />}
-      {openReview && <ReviewNDA />}
+          <TextInput
+            size="md"
+            leftSection={<CiSearch size={24} />}
+            placeholder="Search"
+          />
+        </div>
+      </div>
+      <div className="mt-5">
+        <AutomationTable />
+      </div>
     </div>
   );
 };

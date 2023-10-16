@@ -43,7 +43,7 @@ const Sidebar = ({ openMobileNav, }: Props) => {
   ];
 
   return (
-    <aside className="flex w-full flex-col justify-between">
+    <aside className="sidebar flex w-full flex-col justify-between">
       <div className="w-full">
         <div className="p-2 text-center font-bold bg-white rounded-full w-[153px]">
           Logo

@@ -6,7 +6,7 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { GoogleIcon } from "../../components/Svgs";
-import {  useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { userlogin } from "../../services/user";
 import { useState } from "react";
@@ -26,6 +26,7 @@ const SignIn = () => {
     initialValues: {
       email: "",
       password: "",
+      remember_me: false,
     },
   });
 
@@ -87,7 +88,11 @@ const SignIn = () => {
               </Box>
 
               <div className="flex justify-between items-center mt-5">
-                <Checkbox size="sm" label="Remember for 30 days" />
+                <Checkbox
+                  size="sm"
+                  label="Remember for 30 days"
+                  {...form.getInputProps("remember_me")}
+                />
                 <div
                   className="text-[#17426D] font-semibold cursor-pointer"
                   onClick={() => navigate("/forgot-password")}

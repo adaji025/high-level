@@ -17,7 +17,7 @@ export default function App() {
   return (
     <MantineProvider
       theme={{
-        primaryColor: "gray",
+        primaryColor: "blue",
         fontFamily: "Poppins, sans-serif",
         defaultRadius: 8,
       }}
@@ -27,7 +27,7 @@ export default function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/*" element={token ? <LoggedInContainer /> : <SignIn />} />
+        <Route path="/*" element={token ? <SignIn /> : <LoggedInContainer />} />
       </Routes>
     </MantineProvider>
   );
