@@ -1,8 +1,9 @@
-import {  TextInput } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import { Fragment } from "react";
 import { CiSearch } from "react-icons/ci";
 import { useState } from "react";
-import ProfileDetails from "./components/ProfileDetails"
+import ProfileDetails from "./components/ProfileDetails";
+import Password from "./components/Password";
 
 const Profile = () => {
   const [active, setActive] = useState("details");
@@ -40,9 +41,10 @@ const Profile = () => {
             My details
           </div>
         </div>
-        
+
         <div className="mt-14">
           {active === "details" && <ProfileDetails />}
+          {active === "pw" && <Password />}
         </div>
       </div>
     </Fragment>
