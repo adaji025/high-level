@@ -3,13 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
 import { FiSettings } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
-import { ContractIcon, DashboardIcon, NDAIcon, SupportIcon } from "../Svgs";
+import { DashboardIcon, GlobeIcon, SupportIcon } from "../Svgs";
+import { PiUserBold } from "react-icons/pi";
 
 type Props = {
   openMobileNav?: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
-const Sidebar = ({ openMobileNav, }: Props) => {
+const Sidebar = ({ openMobileNav }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -26,24 +27,24 @@ const Sidebar = ({ openMobileNav, }: Props) => {
       route: "/dashboard",
     },
     {
-      title: "NDA Creation",
-      icon: <NDAIcon />,
-      route: "/nda",
+      title: "User management",
+      icon: <PiUserBold />,
+      route: "/manage-user",
     },
     {
-      title: "Profile",
+      title: "Profile Page",
       icon: <FaRegUser />,
       route: "/profile",
     },
     {
-      title: "Contract managing",
-      icon: <ContractIcon />,
-      route: "/contract-management",
+      title: "Manage Environments",
+      icon: <GlobeIcon />,
+      route: "/manage-environment",
     },
   ];
 
   return (
-    <aside className="sidebar flex w-full flex-col justify-between">
+    <aside className="sidebar flex w-full h-full flex-col justify-between">
       <div className="w-full">
         <div className="p-2 text-center font-bold bg-white rounded-full w-[153px]">
           Logo
@@ -53,42 +54,20 @@ const Sidebar = ({ openMobileNav, }: Props) => {
           {users.map((route: any, index: number) => (
             <div
               key={index}
-              className={`flex cursor-pointer gap-3 text-white items-center px-3 py-2  rounded-lg ${
-                location.pathname === route.route && "bg-[#00D8D8]"
+              className={`flex cursor-pointer gap-3  items-center px-3 py-2  rounded-lg ${
+                location.pathname === route.route ? "bg-white text-darkBlue" : "text-white"
               }`}
               onClick={() => {
                 navigate(route.route);
                 openMobileNav && openMobileNav(false);
               }}
             >
-              <NDAIcon />
+              <div className={`${
+                location.pathname === route.route && "text-highLevelRed"
+              }`}>{route.icon}</div>
               <div className="font-semibold">{route.title}</div>
             </div>
           ))}
-          {/* <div
-            className={`flex cursor-pointer gap-3 text-white items-center px-3 py-2  rounded-lg ${
-              location.pathname === "/profile" && "bg-[#00D8D8]"
-            }`}
-            onClick={() => {
-              navigate("/profile");
-              openMobileNav && openMobileNav(false);
-            }}
-          >
-            <FaRegUser />
-            <div className="font-semibold">My Profile</div>
-          </div>
-          <div
-            className={`flex cursor-pointer gap-3 text-white items-center px-3 py-2  rounded-lg ${
-              location.pathname === "/contract-management" && "bg-[#00D8D8]"
-            }`}
-            onClick={() => {
-              navigate("/contract-management");
-              openMobileNav && openMobileNav(false);
-            }}
-          >
-            <DashboardIcon />
-            <div className="font-semibold">Contract managing</div>
-          </div> */}
         </div>
       </div>
 

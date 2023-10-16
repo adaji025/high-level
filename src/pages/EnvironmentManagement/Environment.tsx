@@ -1,18 +1,13 @@
 import { AiOutlineCloudDownload } from "react-icons/ai";
-import Draw from "../../assets/svgs/draw.svg";
 import { Text, Divider, Button } from "@mantine/core";
 import ContractTable from "./components/ContractTable";
 
-const Contract = () => {
+const EnvironmentManagement = () => {
   return (
     <div>
       <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
         My <span className="font-black">your NDA</span>
-        <img
-          src={Draw}
-          alt="draw"
-          className="absolute left-16 -bottom-1 hidden xl:flex w-1/4"
-        />
+        
       </div>
       <Text mt={24}>
         Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
@@ -48,4 +43,4 @@ const Contract = () => {
   );
 };
 
-export default Contract;
+export default EnvironmentManagement;

@@ -39,7 +39,7 @@ td {
 
 thead {
   border-bottom: 1px solid var(--gray-200, #eaecf0);
-  background: var(--gray-50, #f9fafb);
+  /* background: var(--gray-50, #f9fafb); */
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
 }
