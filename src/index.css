@@ -2,13 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-.auth {
-  background: url("./assets/images/sigin-bg.png");
-  background-repeat: no-repeat;
-  background-size: cover;
-}
-.testimonial-card {
-  background: url("./assets/images/testimonial-bg.png");
+.sidebar {
+  background: url("./assets/images/vector-hero.png");
   background-repeat: no-repeat;
   background-size: contain;
 }
@@ -20,7 +15,7 @@ label {
 }
 
 body {
-  color: #8e8e8e;
+  color: #232323;
 }
 
 .upload-bg {
@@ -38,7 +33,7 @@ table {
   font-size: 14px;
 }
 
-td{
+td {
   border: none !important;
 }
 
