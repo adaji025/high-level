@@ -1,44 +1,43 @@
-import { AiOutlineCloudDownload } from "react-icons/ai";
-import { Text, Divider, Button } from "@mantine/core";
-import ContractTable from "./components/ContractTable";
+import { CiSearch } from "react-icons/ci";
+import { PiUserBold } from "react-icons/pi";
+import { Divider, Button, TextInput } from "@mantine/core";
+import EvironmentTable from "./components/EvironmentTable";
 
 const EnvironmentManagement = () => {
   return (
     <div>
-      <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
-        My <span className="font-black">your NDA</span>
-        
+      <div className="relative text-[24px] md:text-[32px] text-mainText font-extrabold lg:text-[36px]">
+        Manage Environments
       </div>
-      <Text mt={24}>
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-        tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim
-        veniam, quis nostrud exercitation. Lorem ipsum dolor sit amet,
-        consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore
-        et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud
-        exercitationLorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-        do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim
-        ad minim veniam, quis nostrud exercitation
-      </Text>
+      <Divider mt={16} />
 
-      <Divider my={60} />
-
-      <div className="flex gap-3 font-semibold text-black hover:text-black/70 justify-end pb-10">
-        <Button
-          size="md"
-          className="border border-gray-500 flex gap-3 text-black"
-        >
-          <AiOutlineCloudDownload size={20} />
-          <div className="ml-2">Download all</div>
-        </Button>
-        <Button
-          size="md"
-          className="bg-[#00D8D8] rounded-lg font-semibold text-white flex"
-        >
-          Create new NDA
-        </Button>
+      <div className="flex gap-10 flex-col sm:flex-row justify-between my-14">
+        <div>
+          <h2 className="font-semibold text-lg">List of all Environments</h2>
+          <div className="text-sm text-secondaryText mt-2">
+            Lorem ipsum example text will be written here
+          </div>
+        </div>
+        <div className="flex flex-col sm:flex-row justify-end gap-5">
+          <TextInput
+            size="lg"
+            leftSection={<CiSearch size={24} />}
+            placeholder="Search"
+          />
+          <div className="flex justify-end mt-5 sm:mt-[unset]">
+            <Button
+              size="lg"
+              leftSection={<PiUserBold />}
+              className="bg-highLevelRed "
+              onClick={open}
+            >
+              Add User
+            </Button>
+          </div>
+        </div>
       </div>
 
-      <ContractTable />
+      <EvironmentTable />
     </div>
   );
 };
