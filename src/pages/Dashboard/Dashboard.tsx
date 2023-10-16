@@ -14,8 +14,7 @@ const Dashboard = () => {
         <AutomationCards />
       </div>
 
-      <div className="mt-14">
-        <div className="flex justify-between">
+        <div className="flex justify-between mt-14">
           <div>
             <h3 className="font-semibold text-lg">Recent Automations</h3>
             <div className="text-secondaryText text-sm">
@@ -28,8 +27,8 @@ const Dashboard = () => {
             leftSection={<CiSearch size={24} />}
             placeholder="Search"
           />
-        </div>
       </div>
+      
       <div className="mt-5">
         <AutomationTable />
       </div>
