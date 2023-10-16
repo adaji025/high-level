@@ -120,8 +120,8 @@ const UserTable = () => {
         {[...Array(7)].map((_, index) => (
           <div
             key={index}
-            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue ${
-              index === 0 && "bg-darkBlue"
+            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue hover:text-white ${
+              index === 0 && "bg-darkBlue text-white"
             }`}
           >
             {" "}
