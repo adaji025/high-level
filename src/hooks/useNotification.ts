@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -6,11 +5,7 @@ const useNotification = () => {
   const navigate = useNavigate();
 
   const logoutUser = () => {
-    showNotification({
-      title: "User logged out",
-      message: `${"Login in to continue "} 😑`,
-      color: "yellow",
-    });
+    toast.error(`User logged out Login in to continue 😑`);
     localStorage.removeItem("token");
     navigate("/login");
   };
@@ -34,7 +29,7 @@ const useNotification = () => {
 
     if (typeof error?.response?.data?.errors === "object" && error !== null) {
       for (const [_, value] of Object?.entries(error?.response?.data?.errors)) {
-        if (typeof value === 'string') {
+        if (typeof value === "string") {
           toast.error(`${value} 🤥`);
         }
       }
