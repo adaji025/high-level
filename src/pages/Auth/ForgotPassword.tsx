@@ -4,8 +4,8 @@ import { useForm } from "@mantine/form";
 import { useState } from "react";
 import useNotification from "../../hooks/useNotification";
 import { forgotPassword } from "../../services/auth";
-import { showNotification } from "@mantine/notifications";
 import HighLevel from "../../assets/svgs/high-level.svg";
+import { toast } from "react-toastify";
 
 const ForgotPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -24,11 +24,7 @@ const ForgotPassword = () => {
     setLoading(true);
     forgotPassword(values)
       .then(() => {
-        showNotification({
-          title: "Success",
-          message: "OTP has been sent to you email",
-          color: "green",
-        });
+        toast.success("OTP has been sent to you email");
         navigate("/reset-password");
         localStorage.setItem("email", values.email);
       })

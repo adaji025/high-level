@@ -4,8 +4,8 @@ import { useForm } from "@mantine/form";
 import { useState } from "react";
 import useNotification from "../../hooks/useNotification";
 import { resetPassword } from "../../services/auth";
-import { showNotification } from "@mantine/notifications";
 import HighLevel from "../../assets/svgs/high-level.svg";
+import {toast} from "react-toastify"
 
 const ResetPassword = () => {
   const [loading, setLoading] = useState(false);
@@ -27,11 +27,7 @@ const ResetPassword = () => {
     setLoading(true);
     resetPassword(values)
       .then(() => {
-        showNotification({
-          title: "Success",
-          message: "Password reset successful",
-          color: "green",
-        });
+        toast.success("Password reset successful")
         navigate("/");
       })
       .catch((error) => {
