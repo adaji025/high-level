@@ -34,7 +34,7 @@ const EnvironmentManagement = () => {
               <Button
                 size="lg"
                 leftSection={<PiUserBold />}
-                className="bg-highLevelRed "
+                className="bg-highLevelRed text-sm"
                 onClick={open}
               >
                 Add new Environments
