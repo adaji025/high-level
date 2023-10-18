@@ -10,6 +10,7 @@ import { getProfile } from "../../services/user";
 import useNotification from "../../hooks/useNotification";
 import EnvironmentManagement from "../../pages/EnvironmentManagement/Environment";
 import UserManagement from "../../pages/UserManagement/Usermanagement";
+import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDetails";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
@@ -54,6 +55,7 @@ const LoggedInContainer = () => {
               <Route path="/manage-environment" element={<EnvironmentManagement />} />
               <Route path="/profile" element={<Profile />} />
               <Route path="/manage-user" element={<UserManagement />} />
+              <Route path="/manage-environment/:id" element={<EnvironmentDetails />} />
             </Routes>
           </main>
         </div>

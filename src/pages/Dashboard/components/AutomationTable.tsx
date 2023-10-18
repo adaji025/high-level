@@ -2,7 +2,7 @@ import { useState } from "react";
 import { Table } from "@mantine/core";
 import { FcCheckmark } from "react-icons/fc";
 import { FiEdit2 } from "react-icons/fi";
-import { AiOutlineDelete } from "react-icons/ai";
+import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 
 const data: any = [
@@ -54,18 +54,21 @@ const AutomationTable = () => {
             <Table.Thead>
               <Table.Tr>
                 <Table.Th className="!rounded-tl-[15px]">
-                  <div className="flex gap-3">
+                  <div className="flex items-center gap-3">
                     <input
                       type="checkbox"
                       checked={isAllRowsSelected}
                       onChange={handleSelectAllRows}
                     />
-                    Element position
+                    <div className="flex items-center gap-1">
+                      Automation position
+                      <AiOutlineArrowDown />
+                    </div>
                   </div>
                 </Table.Th>
-                <Table.Th>Element name</Table.Th>
-                <Table.Th>Symbol</Table.Th>
-                <Table.Th>Atomic mass</Table.Th>
+                <Table.Th>Last Run</Table.Th>
+                <Table.Th>Status</Table.Th>
+                <Table.Th>Actions</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
