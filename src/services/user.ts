@@ -36,14 +36,4 @@ export const getUser = () => {
       });
   });
 };
-export const getProfile = () => {
-  return new Promise((resolve, reject) => {
-    AxoisApi.get(`${APIS.USER.PROFILE}`)
-      .then((res: any) => {
-        resolve(res);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
+
