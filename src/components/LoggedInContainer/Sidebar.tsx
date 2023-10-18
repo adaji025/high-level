@@ -5,6 +5,8 @@ import { FiSettings } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
 import { DashboardIcon, GlobeIcon, SupportIcon } from "../Svgs";
 import { PiUserBold } from "react-icons/pi";
+import useNotification from "../../hooks/useNotification";
+import GoHighLevel from "../../assets/svgs/high-level-dark.svg";
 
 type Props = {
   openMobileNav?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -14,11 +16,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
   const location = useLocation();
   const navigate = useNavigate();
 
-  const handleLOgout = () => {
-    localStorage.clear();
-    navigate("/");
-    window.location.reload();
-  };
+  const { logoutUser } = useNotification();
 
   const users = [
     {
@@ -46,25 +44,29 @@ const Sidebar = ({ openMobileNav }: Props) => {
   return (
     <aside className="sidebar flex w-full h-full flex-col justify-between">
       <div className="w-full">
-        <div className="p-2 text-center font-bold bg-white rounded-full w-[153px]">
-          Logo
-        </div>
+        <img src={GoHighLevel} alt="" />
 
         <div className="mt-14 grid gap-5">
           {users.map((route: any, index: number) => (
             <div
               key={index}
               className={`flex cursor-pointer gap-3  items-center px-3 py-2  rounded-lg ${
-                location.pathname === route.route ? "bg-white text-darkBlue" : "text-white"
+                location.pathname === route.route
+                  ? "bg-white text-darkBlue"
+                  : "text-white"
               }`}
               onClick={() => {
                 navigate(route.route);
                 openMobileNav && openMobileNav(false);
               }}
             >
-              <div className={`${
-                location.pathname === route.route && "text-highLevelRed"
-              }`}>{route.icon}</div>
+              <div
+                className={`${
+                  location.pathname === route.route && "text-highLevelRed"
+                }`}
+              >
+                {route.icon}
+              </div>
               <div className="font-semibold">{route.title}</div>
             </div>
           ))}
@@ -111,7 +113,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
             size={30}
             color="white"
             className="rotate-180 cursor-pointer"
-            onClick={handleLOgout}
+            onClick={logoutUser}
           />
         </div>
       </div>

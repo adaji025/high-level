@@ -1,7 +1,7 @@
 import axios from "axios";
 
 function getToken() {
-  let token = localStorage.getItem("token") ?? null;
+  let token = localStorage.getItem("high_level_token") ?? null;
   return token;
 }
 

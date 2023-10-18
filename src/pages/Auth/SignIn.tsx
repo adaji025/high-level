@@ -34,8 +34,8 @@ const SignIn = () => {
     setLoading(true);
     userlogin(values)
       .then((res: any) => {
-        if (res.data.data.token) {
-          localStorage.setItem("high_level_token", res.data.data.token);
+        if (res.data.access_token) {
+          localStorage.setItem("high_level_token", res.data.access_token);
         }
         navigate("/dashboard");
         window.location.reload();
