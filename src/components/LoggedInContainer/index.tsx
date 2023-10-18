@@ -1,13 +1,10 @@
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { LoadingOverlay } from "@mantine/core";
 import { FaBars } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import MobileSidebar from "./MobileSidebar";
 import Profile from "../../pages/Profile/Profile";
-import { getProfile } from "../../services/user";
-import useNotification from "../../hooks/useNotification";
 import EnvironmentManagement from "../../pages/EnvironmentManagement/Environment";
 import UserManagement from "../../pages/UserManagement/Usermanagement";
 import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDetails";
@@ -15,35 +12,10 @@ import CreateAutomation from "../../pages/EnvironmentManagement/CreateAutomation
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [profile, setProfile] = useState([]);
 
-  const { handleError } = useNotification();
-
-  useEffect(() => {
-    handleGetProfile();
-  }, []);
-
-  const handleGetProfile = () => {
-    setLoading(true);
-    getProfile()
-      .then((res: any) => {
-        setProfile(res.data.data.data);
-      })
-      .then((error) => {
-        handleError(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
-  const ProfileDetails = profile[0];
-  console.log(ProfileDetails);
   return (
     <>
       <MobileSidebar {...{ mobileNav, openMobileNav }} />
-      <LoadingOverlay visible={loading} />
       <div className="flex overflow-x-hidden">
         <div className="fixed h-screen hidden lg:flex lg:w-[300px]  bg-darkBlue p-[22px]">
           <Sidebar />
@@ -53,11 +25,20 @@ const LoggedInContainer = () => {
             <Routes>
               <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
-              <Route path="/manage-environment" element={<EnvironmentManagement />} />
+              <Route
+                path="/manage-environment"
+                element={<EnvironmentManagement />}
+              />
               <Route path="/profile" element={<Profile />} />
               <Route path="/manage-user" element={<UserManagement />} />
-              <Route path="/manage-environment/:id" element={<EnvironmentDetails />} />
-              <Route path="/manage-environment/create-automation" element={<CreateAutomation />} />
+              <Route
+                path="/manage-environment/:id"
+                element={<EnvironmentDetails />}
+              />
+              <Route
+                path="/manage-environment/create-automation"
+                element={<CreateAutomation />}
+              />
             </Routes>
           </main>
         </div>

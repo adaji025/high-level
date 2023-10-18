@@ -1,13 +1,11 @@
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
-import { ToastContainer, } from 'react-toastify';
+import { ToastContainer } from "react-toastify";
 import { Routes, Route } from "react-router-dom";
 import SignIn from "./pages/Auth/SignIn";
 import LoggedInContainer from "./components/LoggedInContainer";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
-
-
 
 export default function App() {
   // const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
@@ -27,7 +25,7 @@ export default function App() {
         <Route path="/sign-in" element={<SignIn />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
-        <Route path="/*" element={token ? <SignIn /> : <LoggedInContainer />} />
+        <Route path="/*" element={token ? <LoggedInContainer /> : <SignIn />} />
       </Routes>
     </MantineProvider>
   );
