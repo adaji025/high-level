@@ -11,6 +11,7 @@ import useNotification from "../../hooks/useNotification";
 import EnvironmentManagement from "../../pages/EnvironmentManagement/Environment";
 import UserManagement from "../../pages/UserManagement/Usermanagement";
 import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDetails";
+import CreateAutomation from "../../pages/EnvironmentManagement/CreateAutomation";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
@@ -56,6 +57,7 @@ const LoggedInContainer = () => {
               <Route path="/profile" element={<Profile />} />
               <Route path="/manage-user" element={<UserManagement />} />
               <Route path="/manage-environment/:id" element={<EnvironmentDetails />} />
+              <Route path="/manage-environment/create-automation" element={<CreateAutomation />} />
             </Routes>
           </main>
         </div>
