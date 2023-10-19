@@ -37,7 +37,7 @@ const SignIn = () => {
         if (res.data.access_token) {
           localStorage.setItem("high_level_token", res.data.access_token);
         }
-        navigate("/");
+        navigate("/dashboard");
         window.location.reload();
       })
       .catch((error) => {

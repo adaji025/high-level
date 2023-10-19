@@ -1,4 +1,4 @@
-import { Modal, Title, TextInput, Button } from "@mantine/core";
+import { Modal, Title, TextInput, Button, PasswordInput } from "@mantine/core";
 
 type Props = {
   opened: boolean;
@@ -19,13 +19,15 @@ const AddUser = ({ close, opened }: Props) => {
       <Title order={3} ta="center">
         Enter user info
       </Title>
-      <TextInput mt={24} label="Full name" placeholder="Example name" />
+      <TextInput mt={8} label="First name" placeholder="Example name" />
+      <TextInput mt={8} label="Last name name" placeholder="Example name" />
       <TextInput
         type="email"
-        mt={24}
+        mt={8}
         label="Email"
         placeholder="example@gmail.com"
       />
+      <PasswordInput mt={8} label="Password" placeholder="********" />
       <Button my={32} size="lg" className="bg-highLevelRed w-full">
         Add new User
       </Button>

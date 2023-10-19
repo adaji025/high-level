@@ -6,8 +6,9 @@ const useNotification = () => {
 
   const logoutUser = () => {
     toast.error(`User logged out Login in to continue 😑`);
-    localStorage.removeItem("high_level_token");
-    navigate("/sign-in");
+    localStorage.clear();
+    navigate("/");
+    window.location.reload()
   };
 
   const handleError = (error: any) => {
