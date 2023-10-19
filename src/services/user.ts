@@ -25,6 +25,18 @@ export const createUser = (data: any) => {
   });
 };
 
+export const changePassword = (data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.USER.USER_CHANGE_PASSWORD}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const getUserList = () => {
   return new Promise((resolve, reject) => {
     AxoisApi.get(`${APIS.USER.USER_LIST}`)
@@ -36,4 +48,3 @@ export const getUserList = () => {
       });
   });
 };
-
