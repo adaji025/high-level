@@ -5,6 +5,7 @@ export const APIS = {
     LOGIN: `${api}/user/login`,
     USER: `${api}/user/create`,
     USER_LIST: `${api}/user/list`,
+    USER_CHANGE_PASSWORD: `${api}/user/password/change`,
   },
   AUTH: {
     RESET_PASSWORD: `${api}/auth/reset-password`,
