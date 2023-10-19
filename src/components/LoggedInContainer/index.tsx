@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Route, Routes } from "react-router-dom";
-import { FaBars } from "react-icons/fa";
 import Sidebar from "./Sidebar";
 import Dashboard from "../../pages/Dashboard/Dashboard";
 import MobileSidebar from "./MobileSidebar";
@@ -9,6 +8,7 @@ import EnvironmentManagement from "../../pages/EnvironmentManagement/Environment
 import UserManagement from "../../pages/UserManagement/Usermanagement";
 import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDetails";
 import CreateAutomation from "../../pages/EnvironmentManagement/CreateAutomation";
+import Header from "./Header";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
@@ -21,9 +21,9 @@ const LoggedInContainer = () => {
           <Sidebar />
         </div>
         <div className="w-full">
-          <main className="w-full bg-white pt-[50px] lg:ml-[300px] lg:w-[calc(100vw-300px)] px-4 lg:px-10 mb-10">
+          <Header mobileNav={mobileNav} openMobileNav={openMobileNav} />
+          <main className="w-full bg-white pt-5 lg:pt-[50px] lg:ml-[300px] lg:w-[calc(100vw-300px)] px-4 lg:px-10 mb-10 mt-[80px] lg:mt-[unset]">
             <Routes>
-              <Route path="/" element={<Dashboard />} />
               <Route path="/dashboard" element={<Dashboard />} />
               <Route
                 path="/manage-environment"
@@ -43,15 +43,6 @@ const LoggedInContainer = () => {
           </main>
         </div>
       </div>
-
-      {!mobileNav && (
-        <div
-          className="cursor-pointer lg:hidden fixed top-10 right-10 bg-white p-4"
-          onClick={() => openMobileNav(true)}
-        >
-          <FaBars color="#157145" size={24} />
-        </div>
-      )}
     </>
   );
 };

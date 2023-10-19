@@ -8,8 +8,6 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 
 export default function App() {
-  // const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
-  // console.log(loggedIn);
   const token = localStorage.getItem("high_level_token");
 
   return (
@@ -22,7 +20,7 @@ export default function App() {
     >
       <ToastContainer />
       <Routes>
-        <Route path="/sign-in" element={<SignIn />} />
+        <Route path="/" element={<SignIn />} />
         <Route path="/forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/*" element={token ? <LoggedInContainer /> : <SignIn />} />
