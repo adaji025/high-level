@@ -13,4 +13,9 @@ export const APIS = {
     VERIFY_USER: `${api}/auth/verify`,
     SEND_OTP: `${api}/auth/verify-otp`,
   },
+  ENVIRONMENT: {
+    CREATE: `${api}/environment/create`,
+    GET_LIST: (page: number, size: number) =>
+      `${api}/environment/list?page=${page}&size=${size}`,
+  },
 };
