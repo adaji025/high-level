@@ -1,37 +1,34 @@
-import { useState } from "react";
-import { Table, Avatar } from "@mantine/core";
-import { FcCheckmark } from "react-icons/fc";
+import { useState, useMemo, useEffect } from "react";
+import { Table, Avatar, Pagination } from "@mantine/core";
 import { FiEdit2 } from "react-icons/fi";
 import { TbUserDown } from "react-icons/tb";
+import { UserState, UserTypes } from "../../../types/user";
+import moment from "moment";
 
-const data: any = [
-  {
-    id: "1",
-    name: "Contract example name",
-    email: "a@gmail.com",
-    last_login: "10:30",
-    created_at: "10:30",
-    status: "active",
-  },
-  {
-    id: "2",
-    name: "Contract example name",
-    email: "a@gmail.com",
-    last_login: "10:30",
-    created_at: "10:30",
-    status: "pending",
-  },
-];
+type Props = {
+  users: UserState | null;
+};
 
-const UserTable = () => {
-  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
+const UserTable = ({ users }: Props) => {
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const [page, setPage] = useState(1);
+  const [count, setCount] = useState(1);
+
+  const userList = useMemo(() => users?.items, [users]);
+  useEffect(() => {
+    if (users) setCount(users?.count);
+  }, [users]);
+
+  console.log(count && count);
 
   console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
-    data.length > 0 && selectedRowIds.length === data.length;
+    userList &&
+    userList.length > 0 &&
+    selectedRowIds.length === userList.length;
 
-  const handleRowCheckboxChange = (id: string) => {
+  const handleRowCheckboxChange = (id: number) => {
     setSelectedRowIds((prevId) =>
       prevId.includes(id)
         ? prevId.filter((rowId) => rowId !== id)
@@ -40,14 +37,18 @@ const UserTable = () => {
   };
 
   const handleSelectAllRows = () => {
-    if (isAllRowsSelected) {
-      setSelectedRowIds([]);
-    } else {
-      setSelectedRowIds(data.map((row: any) => row.id));
+    if (userList) {
+      if (isAllRowsSelected) {
+        setSelectedRowIds([]);
+      } else {
+        setSelectedRowIds(userList.map((row: any) => row.id));
+      }
     }
   };
 
-  const isRowSelected = (id: string) => selectedRowIds.includes(id);
+  const isRowSelected = (id: number) => selectedRowIds.includes(id);
+
+  console.log(userList);
 
   return (
     <div>
@@ -73,7 +74,7 @@ const UserTable = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {data.map((item: any) => (
+              {userList?.map((item: UserTypes) => (
                 <Table.Tr key={item.id}>
                   <Table.Td>
                     <div className="flex items-center gap-3">
@@ -85,22 +86,32 @@ const UserTable = () => {
                       <div className="h-10 w-10 rounded-full bg-[#EAECF0] flex items-center justify-center">
                         <Avatar>MK</Avatar>
                       </div>
-                      {item.name}
+                      {item.first_name} {item.last_name}
                     </div>
                   </Table.Td>
                   <Table.Td>{item.email}</Table.Td>
-                  <Table.Td>{item.last_login}</Table.Td>
-                  <Table.Td>{item.created_at}</Table.Td>
+                  <Table.Td>
+                    {moment(item.last_login).format("YYYY-MM-DD HH:mm:ss")}
+                  </Table.Td>
+                  <Table.Td>
+                    {moment(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
+                  </Table.Td>
                   <Table.Td>
                     <div
-                      className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex justify-center items-center gap-1 ${
-                        item.status === "active"
+                      className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex justify-center items-center gap-2 font-semibold ${
+                        item.is_active
                           ? "bg-[#ECFDF3] text-[#12B76A]"
                           : "bg-[#E7A94C]/10 text-[#E7A94C]"
                       }`}
                     >
-                      {item.status === "signed" && <FcCheckmark />}
-                      {item.status}
+                      {item.is_active && (
+                        <div
+                          className={`h-[6px] w-[6px] rounded-full ${
+                            item.is_active ? "bg-[#12B76A]" : "bgtext-[#E7A94C]"
+                          }`}
+                        />
+                      )}
+                      {item.is_active ? "Active" : "Disabled"}
                     </div>
                   </Table.Td>
                   <Table.Td>
@@ -115,20 +126,15 @@ const UserTable = () => {
           </Table>
         </Table.ScrollContainer>
       </div>
-      <div className="flex justify-center items-center gap-1 mt-10">
-        <div>Prev</div>
-        {[...Array(7)].map((_, index) => (
-          <div
-            key={index}
-            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue hover:text-white ${
-              index === 0 && "bg-darkBlue text-white"
-            }`}
-          >
-            {" "}
-            {index === 4 ? "..." : index + 1}{" "}
-          </div>
-        ))}
-        <div>Next</div>
+      <div className="flex justify-center mt-10 text-darkBlue">
+        <Pagination
+          value={page}
+          total={count}
+          siblings={1}
+          onChange={setPage}
+          color="blue"
+          className="!text-darkBlue"
+        />
       </div>
     </div>
   );

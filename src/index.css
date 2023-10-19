@@ -35,11 +35,15 @@ table {
 
 td {
   border: none !important;
+  white-space: nowrap !important;
 }
 
 thead {
   border-bottom: 1px solid var(--gray-200, #eaecf0);
-  /* background: var(--gray-50, #f9fafb); */
   border-top-left-radius: 15px;
   border-top-right-radius: 15px;
+}
+
+button.mantine-active.mantine-Pagination-control {
+  color: #232323 !important;
 }
