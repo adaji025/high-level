@@ -91,7 +91,7 @@ const UserTable = ({ users }: Props) => {
                   </Table.Td>
                   <Table.Td>{item.email}</Table.Td>
                   <Table.Td>
-                    {moment(item.last_login).format("YYYY-MM-DD HH:mm:ss")}
+                    {item.last_login? moment(item.last_login).format("YYYY-MM-DD HH:mm:ss") : "- - -"}
                   </Table.Td>
                   <Table.Td>
                     {moment(item.created_at).format("YYYY-MM-DD HH:mm:ss")}

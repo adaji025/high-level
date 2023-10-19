@@ -47,3 +47,7 @@ thead {
 button.mantine-active.mantine-Pagination-control {
   color: #232323 !important;
 }
+
+.mantine-LoadingOverlay-root {
+  position: fixed !important;
+}

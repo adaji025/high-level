@@ -43,7 +43,7 @@ const UserManagement = () => {
   };
   return (
     <Fragment>
-      <AddUser opened={opened} close={close} />
+      <AddUser opened={opened} close={close} setUsers={setUsers} />
       <LoadingOverlay visible={loading} />
       <div>
         <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
