@@ -25,9 +25,9 @@ export const createUser = (data: any) => {
   });
 };
 
-export const getUser = () => {
+export const getUserList = () => {
   return new Promise((resolve, reject) => {
-    AxoisApi.get(`${APIS.USER.USER}`)
+    AxoisApi.get(`${APIS.USER.USER_LIST}`)
       .then((res: any) => {
         resolve(res);
       })

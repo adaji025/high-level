@@ -1,17 +1,50 @@
-import { Button, Divider, Menu, TextInput } from "@mantine/core";
+import {
+  Button,
+  Divider,
+  Menu,
+  TextInput,
+  LoadingOverlay,
+} from "@mantine/core";
 import { BiFilter } from "react-icons/bi";
 import { CiSearch } from "react-icons/ci";
 import { PiUserBold } from "react-icons/pi";
 import UserTable from "./components/UserTable";
 import { useDisclosure } from "@mantine/hooks";
 import AddUser from "./components/AddUser";
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
+import { getUserList } from "../../services/user";
+import useNotification from "../../hooks/useNotification";
+import { UserState } from "../../types/user";
 
 const UserManagement = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
+  const [users, setUsers] = useState<UserState | null>(null);
+
+  const { handleError } = useNotification();
+
+  useEffect(() => {
+    handleGetUsers();
+  }, []);
+
+  const handleGetUsers = () => {
+    setLoading(true);
+    getUserList()
+      .then((res: any) => {
+        console.log(res);
+        setUsers(res.data);
+      })
+      .catch((error) => {
+        handleError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   return (
     <Fragment>
       <AddUser opened={opened} close={close} />
+      <LoadingOverlay visible={loading} />
       <div>
         <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
           User Management
@@ -53,7 +86,7 @@ const UserManagement = () => {
         </div>
 
         <div className="mt-14">
-          <UserTable />
+          <UserTable users={users} />
         </div>
       </div>
     </Fragment>
