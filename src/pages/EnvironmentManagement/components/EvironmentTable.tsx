@@ -1,30 +1,33 @@
-import { useState } from "react";
-import { Table } from "@mantine/core";
+import { useState, useEffect } from "react";
+import { Table, Pagination } from "@mantine/core";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
+import { EnvironmentState, EnvironmentType } from "../../../types/environments";
 
-const data: any = [
-  {
-    id: "1",
-    name: "Contract example name",
-    api_key: "mvon************GHKO",
-  },
-  {
-    id: "2",
-    name: "Contract example name",
-    api_key: "mvon************GHKO",
-  },
-];
+type EnvironmentProps = {
+  environments: EnvironmentState | null;
+  setEnvironments: React.Dispatch<
+    React.SetStateAction<EnvironmentState | null>
+  >;
+};
 
-const EvironmentTable = () => {
-  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
+const EvironmentTable = ({ environments }: EnvironmentProps) => {
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const [count, setCount] = useState(1);
+  const [page, setPage] = useState(1);
 
-  console.log("selectedRowIds", selectedRowIds);
+  useEffect(() => {
+    if (environments) setCount(environments?.count);
+  }, [environments]);
+
+  // console.log("selectedRowIds", selectedRowIds);
+
+  const list = environments?.items;
 
   const isAllRowsSelected =
-    data.length > 0 && selectedRowIds.length === data.length;
+    list && list?.length > 0 && selectedRowIds.length === list.length;
 
-  const handleRowCheckboxChange = (id: string) => {
+  const handleRowCheckboxChange = (id: number) => {
     setSelectedRowIds((prevId) =>
       prevId.includes(id)
         ? prevId.filter((rowId) => rowId !== id)
@@ -32,15 +35,18 @@ const EvironmentTable = () => {
     );
   };
 
+  console.log("list", list);
+
   const handleSelectAllRows = () => {
-    if (isAllRowsSelected) {
-      setSelectedRowIds([]);
-    } else {
-      setSelectedRowIds(data.map((row: any) => row.id));
-    }
+    if (list)
+      if (isAllRowsSelected) {
+        setSelectedRowIds([]);
+      } else {
+        setSelectedRowIds(list.map((row: any) => row.id));
+      }
   };
 
-  const isRowSelected = (id: string) => selectedRowIds.includes(id);
+  const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
   return (
     <div>
@@ -64,7 +70,7 @@ const EvironmentTable = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {data.map((item: any) => (
+              {list?.map((item: EnvironmentType) => (
                 <Table.Tr key={item.id}>
                   <Table.Td>
                     <div className="flex gap-3">
@@ -73,11 +79,11 @@ const EvironmentTable = () => {
                         checked={isRowSelected(item.id)}
                         onChange={() => handleRowCheckboxChange(item.id)}
                       />
-                      {item.name}
+                      {item.agency}
                     </div>
                   </Table.Td>
-                  <Table.Td>{item.api_key}</Table.Td>
-                  
+                  <Table.Td>{item.api_key.substring(0, 30)}</Table.Td>
+
                   <Table.Td>
                     <div className="flex gap-5">
                       <AiOutlineDelete size={20} color="#475467" />
@@ -90,20 +96,15 @@ const EvironmentTable = () => {
           </Table>
         </Table.ScrollContainer>
       </div>
-      <div className="flex justify-center items-center gap-1 mt-10">
-        <div>Prev</div>
-        {[...Array(7)].map((_, index) => (
-          <div
-            key={index}
-            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue hover:text-white ${
-              index === 0 && "bg-darkBlue text-white"
-            }`}
-          >
-            {" "}
-            {index === 4 ? "..." : index + 1}{" "}
-          </div>
-        ))}
-        <div>Next</div>
+      <div className="flex justify-center mt-10 text-darkBlue">
+        <Pagination
+          value={page}
+          total={count}
+          siblings={1}
+          onChange={setPage}
+          color="blue"
+          className="!text-darkBlue"
+        />
       </div>
     </div>
   );

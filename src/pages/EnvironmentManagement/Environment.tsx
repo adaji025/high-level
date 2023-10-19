@@ -1,16 +1,48 @@
+import { useState, useEffect } from "react";
 import { CiSearch } from "react-icons/ci";
 import { PiUserBold } from "react-icons/pi";
-import { Divider, Button, TextInput } from "@mantine/core";
+import { Divider, Button, TextInput, LoadingOverlay } from "@mantine/core";
 import EvironmentTable from "./components/EvironmentTable";
 import { useDisclosure } from "@mantine/hooks";
 import { Fragment } from "react";
 import AddEnvironment from "./components/AddEnvironment";
+import { getEnvironment } from "../../services/environment";
+import useNotification from "../../hooks/useNotification";
+import { EnvironmentState } from "../../types/environments";
 
 const EnvironmentManagement = () => {
   const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
+  const [environments, setEnvironments] = useState<EnvironmentState | null>(
+    null
+  );
+  const [page] = useState(1);
+  const [size] = useState(10);
+
+  const { handleError } = useNotification();
+
+  useEffect(() => {
+    handleGetEnvironments();
+  }, []);
+
+  const handleGetEnvironments = () => {
+    setLoading(true);
+    getEnvironment(page, size)
+      .then((res: any) => {
+        setEnvironments(res.data);
+      })
+      .catch((error) => {
+        handleError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+  
   return (
     <Fragment>
-      <AddEnvironment opened={opened} close={close} />
+      <AddEnvironment opened={opened} close={close} setEnvironments={setEnvironments} />
+      <LoadingOverlay visible={loading} />
       <div>
         <div className="relative text-[24px] md:text-[32px] text-mainText font-extrabold lg:text-[36px]">
           Manage Environments
@@ -43,7 +75,7 @@ const EnvironmentManagement = () => {
           </div>
         </div>
 
-        <EvironmentTable />
+        <EvironmentTable environments={environments} setEnvironments={setEnvironments} />
       </div>
     </Fragment>
   );

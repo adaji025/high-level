@@ -19,7 +19,6 @@ const UserTable = ({ users }: Props) => {
     if (users) setCount(users?.count);
   }, [users]);
 
-  console.log(count && count);
 
   console.log("selectedRowIds", selectedRowIds);
 
