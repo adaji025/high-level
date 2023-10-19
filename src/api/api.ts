@@ -3,7 +3,7 @@ const api: string = import.meta.env.VITE_APP_API!;
 export const APIS = {
   USER: {
     LOGIN: `${api}/user/login`,
-    USER: `${api}/user`,
+    USER: `${api}/user/create`,
     USER_LIST: `${api}/user/list`,
   },
   AUTH: {

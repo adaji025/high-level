@@ -1,16 +1,18 @@
 import { Modal, Title, TextInput, Button, LoadingOverlay } from "@mantine/core";
 import { Fragment, useState } from "react";
-import { createUser } from "../../../services/user";
+import { createUser, getUserList } from "../../../services/user";
 import { useForm } from "@mantine/form";
 import { toast } from "react-toastify";
 import useNotification from "../../../hooks/useNotification";
+import { UserState } from "../../../types/user";
 
 type Props = {
   opened: boolean;
   close: () => void;
+  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>;
 };
 
-const AddUser = ({ close, opened }: Props) => {
+const AddUser = ({ close, opened, setUsers }: Props) => {
   const [loading, setLoading] = useState(false);
 
   const { handleError } = useNotification();
@@ -24,18 +26,35 @@ const AddUser = ({ close, opened }: Props) => {
     },
   });
 
+  const handleGetUsers = () => {
+    getUserList()
+      .then((res: any) => {
+        console.log(res);
+        setUsers(res.data);
+      })
+      .catch((error) => {
+        handleError(error);
+      })
+      .finally(() => {
+      });
+  };
+
   const submit = (values: any) => {
     setLoading(true);
 
     createUser(values)
       .then(() => {
         toast.success("User created successfully");
+        handleGetUsers();
       })
       .catch((error) => {
         handleError(error);
+        console.log(error);
       })
       .finally(() => {
         setLoading(false);
+        close()
+        form.reset();
       });
   };
   return (

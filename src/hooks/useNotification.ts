@@ -8,15 +8,19 @@ const useNotification = () => {
     toast.error(`User logged out Login in to continue 😑`);
     localStorage.clear();
     navigate("/");
-    window.location.reload()
+    window.location.reload();
   };
 
   const handleError = (error: any) => {
     if (!error.response) {
       return toast.error("Network Error, Please check your connection");
     }
+    if (error.response.status === 404) {
+      return toast.error("Route not found");
+    }
 
-    if (error?.response?.status === 401) {
+    if (error?.response?.status === 401 || error?.response?.status === 403) {
+      toast.error("Unauthorized");
       return logoutUser();
     }
 
