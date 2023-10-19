@@ -8,8 +8,8 @@ import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
 
 export default function App() {
-  // const loggedIn = useSelector((state: RootState) => state.user.loggedIn)
-
+  // const loggedIn = useSelector((state: RootState) => state.user.loggedIn);
+  // console.log(loggedIn);
   const token = localStorage.getItem("high_level_token");
 
   return (
