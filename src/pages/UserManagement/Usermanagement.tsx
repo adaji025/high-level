@@ -20,6 +20,8 @@ const UserManagement = () => {
   const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserState | null>(null);
+  const [page, setPage] = useState(1);
+  const [size] = useState(10);
 
   const { handleError } = useNotification();
 
@@ -29,7 +31,7 @@ const UserManagement = () => {
 
   const handleGetUsers = () => {
     setLoading(true);
-    getUserList()
+    getUserList(page, size)
       .then((res: any) => {
         console.log(res);
         setUsers(res.data);
@@ -43,7 +45,13 @@ const UserManagement = () => {
   };
   return (
     <Fragment>
-      <AddUser opened={opened} close={close} setUsers={setUsers} />
+      <AddUser
+        opened={opened}
+        close={close}
+        setUsers={setUsers}
+        page={page}
+        size={size}
+      />
       <LoadingOverlay visible={loading} />
       <div>
         <div className="relative text-[24px] mdtext-[32px] text-mainText font-extrabold lg:text-[36px]">
@@ -86,7 +94,7 @@ const UserManagement = () => {
         </div>
 
         <div className="mt-14">
-          <UserTable users={users} />
+          <UserTable users={users} page={page} size={size} setPage={setPage} />
         </div>
       </div>
     </Fragment>
