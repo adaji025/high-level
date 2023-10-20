@@ -129,7 +129,7 @@ const UserTable = ({ users, page, setPage }: Props) => {
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination
           value={page}
-          total={20}
+          total={count}
           siblings={1}
           onChange={setPage}
           color="blue"
