@@ -10,9 +10,11 @@ type Props = {
   opened: boolean;
   close: () => void;
   setUsers: React.Dispatch<React.SetStateAction<UserState | null>>;
+  page: number
+  size: number
 };
 
-const AddUser = ({ close, opened, setUsers }: Props) => {
+const AddUser = ({ close, opened, setUsers , page, size}: Props) => {
   const [loading, setLoading] = useState(false);
 
   const { handleError } = useNotification();
@@ -27,7 +29,7 @@ const AddUser = ({ close, opened, setUsers }: Props) => {
   });
 
   const handleGetUsers = () => {
-    getUserList()
+    getUserList(page, size)
       .then((res: any) => {
         console.log(res);
         setUsers(res.data);

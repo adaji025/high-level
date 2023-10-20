@@ -7,11 +7,13 @@ import moment from "moment";
 
 type Props = {
   users: UserState | null;
+  page: number
+  size: number
+  setPage: React.Dispatch<React.SetStateAction<number>>
 };
 
-const UserTable = ({ users }: Props) => {
+const UserTable = ({ users, page, setPage }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
-  const [page, setPage] = useState(1);
   const [count, setCount] = useState(1);
 
   const userList = useMemo(() => users?.items, [users]);
@@ -47,7 +49,6 @@ const UserTable = ({ users }: Props) => {
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
-  console.log(userList);
 
   return (
     <div>

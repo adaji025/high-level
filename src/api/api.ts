@@ -4,7 +4,7 @@ export const APIS = {
   USER: {
     LOGIN: `${api}/user/login`,
     USER: `${api}/user/create`,
-    USER_LIST: `${api}/user/list`,
+    USER_LIST:(page: number, size: number) => `${api}/user/list?page=${page}&size=${size}`,
     USER_CHANGE_PASSWORD: `${api}/user/password/change`,
   },
   AUTH: {

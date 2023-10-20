@@ -35,7 +35,6 @@ const EvironmentTable = ({ environments }: EnvironmentProps) => {
     );
   };
 
-  console.log("list", list);
 
   const handleSelectAllRows = () => {
     if (list)

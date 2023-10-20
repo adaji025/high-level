@@ -37,9 +37,9 @@ export const changePassword = (data: any) => {
   });
 };
 
-export const getUserList = () => {
+export const getUserList = (page: number, size: number) => {
   return new Promise((resolve, reject) => {
-    AxoisApi.get(`${APIS.USER.USER_LIST}`)
+    AxoisApi.get(`${APIS.USER.USER_LIST(page, size)}`)
       .then((res: any) => {
         resolve(res);
       })
