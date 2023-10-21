@@ -1,10 +1,16 @@
 import { useState, useEffect } from "react";
-import { Table, Pagination } from "@mantine/core";
+import { Table, Pagination, LoadingOverlay } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { EnvironmentState, EnvironmentType } from "../../../types/environments";
 import AddEnvironment from "./AddEnvironment";
+import {
+  deleteEnvironment,
+  getEnvironment,
+} from "../../../services/environment";
+import { toast } from "react-toastify";
+import useNotification from "../../../hooks/useNotification";
 
 type EnvironmentProps = {
   environments: EnvironmentState | null;
@@ -12,16 +18,24 @@ type EnvironmentProps = {
     React.SetStateAction<EnvironmentState | null>
   >;
   page: number;
+  size: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const EvironmentTable = ({ environments, page, setPage, setEnvironments }: EnvironmentProps) => {
+const EvironmentTable = ({
+  environments,
+  page,
+  setPage,
+  setEnvironments,
+  size,
+}: EnvironmentProps) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [count, setCount] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const [edit, setEdit] = useState<EnvironmentType | undefined>(undefined);
+  const [loading, setLoading] = useState(false);
 
-  console.log(page);
+  const { handleError } = useNotification();
 
   useEffect(() => {
     if (environments) setCount(environments?.count);
@@ -53,9 +67,42 @@ const EvironmentTable = ({ environments, page, setPage, setEnvironments }: Envir
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
+  const handleGetEnvironments = () => {
+    getEnvironment(page, size)
+      .then((res: any) => {
+        setEnvironments(res.data);
+      })
+      .catch((error) => {
+        handleError(error);
+      });
+  };
+
+  const handleDeleteEnv = (id: number) => {
+    setLoading(true);
+
+    // @ts-ignore
+    deleteEnvironment(id)
+      .then(() => {
+        toast.success("Environment deleted successfully");
+        handleGetEnvironments();
+      })
+      .catch((error) => {
+        handleError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   return (
     <div>
-      <AddEnvironment opened={opened} close={close} edit={edit} setEnvironments={setEnvironments} />
+      <LoadingOverlay visible={loading} />
+      <AddEnvironment
+        opened={opened}
+        close={close}
+        edit={edit}
+        setEnvironments={setEnvironments}
+      />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -90,10 +137,16 @@ const EvironmentTable = ({ environments, page, setPage, setEnvironments }: Envir
                   </Table.Td>
                   <Table.Td>{item.api_key.substring(0, 30)}</Table.Td>
 
-                  <Table.Td className="cursor-pointer"
-                  onClick={() => setEdit(item)}>
+                  <Table.Td
+                    className="cursor-pointer"
+                    onClick={() => setEdit(item)}
+                  >
                     <div className="flex gap-5">
-                      <AiOutlineDelete size={20} color="#475467" />
+                      <AiOutlineDelete
+                        size={20}
+                        color="#475467"
+                        onClick={() => handleDeleteEnv(item.id)}
+                      />
                       <FiEdit2 size={20} color="#475467" onClick={open} />
                     </div>
                   </Table.Td>
@@ -109,7 +162,6 @@ const EvironmentTable = ({ environments, page, setPage, setEnvironments }: Envir
           total={count}
           siblings={1}
           onChange={setPage}
-          className="!text-darkBlue"
         />
       </div>
     </div>

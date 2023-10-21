@@ -17,7 +17,7 @@ const EnvironmentManagement = () => {
     null
   );
   const [page, setPage] = useState(1);
-  const [perPage] = useState(3);
+  const [size] = useState(3);
 
   const { handleError } = useNotification();
 
@@ -27,7 +27,7 @@ const EnvironmentManagement = () => {
 
   const handleGetEnvironments = () => {
     setLoading(true);
-    getEnvironment(page, perPage)
+    getEnvironment(page, size)
       .then((res: any) => {
         setEnvironments(res.data);
       })
@@ -38,10 +38,14 @@ const EnvironmentManagement = () => {
         setLoading(false);
       });
   };
-  
+
   return (
     <Fragment>
-      <AddEnvironment opened={opened} close={close} setEnvironments={setEnvironments} />
+      <AddEnvironment
+        opened={opened}
+        close={close}
+        setEnvironments={setEnvironments}
+      />
       <LoadingOverlay visible={loading} />
       <div>
         <div className="relative text-[24px] md:text-[32px] text-mainText font-extrabold lg:text-[36px]">
@@ -75,7 +79,13 @@ const EnvironmentManagement = () => {
           </div>
         </div>
 
-        <EvironmentTable environments={environments} setEnvironments={setEnvironments} page={page} setPage={setPage} />
+        <EvironmentTable
+          environments={environments}
+          setEnvironments={setEnvironments}
+          page={page}
+          setPage={setPage}
+          size={size}
+        />
       </div>
     </Fragment>
   );
