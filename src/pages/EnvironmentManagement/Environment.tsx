@@ -16,18 +16,18 @@ const EnvironmentManagement = () => {
   const [environments, setEnvironments] = useState<EnvironmentState | null>(
     null
   );
-  const [page] = useState(1);
-  const [size] = useState(10);
+  const [page, setPage] = useState(1);
+  const [perPage] = useState(3);
 
   const { handleError } = useNotification();
 
   useEffect(() => {
     handleGetEnvironments();
-  }, []);
+  }, [page]);
 
   const handleGetEnvironments = () => {
     setLoading(true);
-    getEnvironment(page, size)
+    getEnvironment(page, perPage)
       .then((res: any) => {
         setEnvironments(res.data);
       })
@@ -75,7 +75,7 @@ const EnvironmentManagement = () => {
           </div>
         </div>
 
-        <EvironmentTable environments={environments} setEnvironments={setEnvironments} />
+        <EvironmentTable environments={environments} setEnvironments={setEnvironments} page={page} setPage={setPage} />
       </div>
     </Fragment>
   );
