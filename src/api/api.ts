@@ -19,5 +19,6 @@ export const APIS = {
     GET_LIST: (page: number, size: number) =>
       `${api}/environment/list?page=${page}&size=${size}`,
     UPDATE: (id: number) => `${api}/environment/edit/${id}`,
+    DELETE: (id: number) => `${api}/environment/delete/${id}`,
   },
 };

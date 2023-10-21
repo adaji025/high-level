@@ -26,8 +26,6 @@ const AddEnvironment = ({ close, opened, setEnvironments, edit }: Props) => {
 
   const { handleError } = useNotification();
 
-  console.log(edit);
-
   const form = useForm({
     initialValues: {
       agency: "",
@@ -45,7 +43,7 @@ const AddEnvironment = ({ close, opened, setEnvironments, edit }: Props) => {
   const handleGetEnvironments = () => {
     getEnvironment(page, size)
       .then((res: any) => {
-         setEnvironments(res.data);
+        setEnvironments(res.data);
       })
       .catch((error) => {
         handleError(error);
