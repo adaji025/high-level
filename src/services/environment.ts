@@ -13,6 +13,18 @@ export const createEnvironment = (data: any) => {
   });
 };
 
+export const updateEnvironment = (data: any, id: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.ENVIRONMENT.UPDATE(id)}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const getEnvironment = (page: number, size: number) => {
   return new Promise((resolve, reject) => {
     AxoisApi.get(`${APIS.ENVIRONMENT.GET_LIST(page, size)}`)

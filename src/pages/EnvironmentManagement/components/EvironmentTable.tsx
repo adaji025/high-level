@@ -1,20 +1,27 @@
 import { useState, useEffect } from "react";
 import { Table, Pagination } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { EnvironmentState, EnvironmentType } from "../../../types/environments";
+import AddEnvironment from "./AddEnvironment";
 
 type EnvironmentProps = {
   environments: EnvironmentState | null;
   setEnvironments: React.Dispatch<
     React.SetStateAction<EnvironmentState | null>
   >;
+  page: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const EvironmentTable = ({ environments }: EnvironmentProps) => {
+const EvironmentTable = ({ environments, page, setPage, setEnvironments }: EnvironmentProps) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [count, setCount] = useState(1);
-  const [page, setPage] = useState(1);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [edit, setEdit] = useState<EnvironmentType | undefined>(undefined);
+
+  console.log(page);
 
   useEffect(() => {
     if (environments) setCount(environments?.count);
@@ -35,7 +42,6 @@ const EvironmentTable = ({ environments }: EnvironmentProps) => {
     );
   };
 
-
   const handleSelectAllRows = () => {
     if (list)
       if (isAllRowsSelected) {
@@ -49,6 +55,7 @@ const EvironmentTable = ({ environments }: EnvironmentProps) => {
 
   return (
     <div>
+      <AddEnvironment opened={opened} close={close} edit={edit} setEnvironments={setEnvironments} />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -83,10 +90,11 @@ const EvironmentTable = ({ environments }: EnvironmentProps) => {
                   </Table.Td>
                   <Table.Td>{item.api_key.substring(0, 30)}</Table.Td>
 
-                  <Table.Td>
+                  <Table.Td className="cursor-pointer"
+                  onClick={() => setEdit(item)}>
                     <div className="flex gap-5">
                       <AiOutlineDelete size={20} color="#475467" />
-                      <FiEdit2 size={20} color="#475467" />
+                      <FiEdit2 size={20} color="#475467" onClick={open} />
                     </div>
                   </Table.Td>
                 </Table.Tr>
@@ -101,7 +109,6 @@ const EvironmentTable = ({ environments }: EnvironmentProps) => {
           total={count}
           siblings={1}
           onChange={setPage}
-          color="blue"
           className="!text-darkBlue"
         />
       </div>

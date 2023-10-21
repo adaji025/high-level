@@ -1,13 +1,14 @@
 import { Modal, Title, TextInput, Button, LoadingOverlay } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { useState, Fragment } from "react";
+import { useState, Fragment, useEffect } from "react";
 import {
   createEnvironment,
   getEnvironment,
+  updateEnvironment,
 } from "../../../services/environment";
 import useNotification from "../../../hooks/useNotification";
 import { toast } from "react-toastify";
-import { EnvironmentState } from "../../../types/environments";
+import { EnvironmentState, EnvironmentType } from "../../../types/environments";
 
 type Props = {
   opened: boolean;
@@ -15,14 +16,17 @@ type Props = {
   setEnvironments: React.Dispatch<
     React.SetStateAction<EnvironmentState | null>
   >;
+  edit?: EnvironmentType | undefined;
 };
 
-const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
+const AddEnvironment = ({ close, opened, setEnvironments, edit }: Props) => {
   const [loading, setLoading] = useState(false);
   const [page] = useState(1);
   const [size] = useState(10);
 
   const { handleError } = useNotification();
+
+  console.log(edit);
 
   const form = useForm({
     initialValues: {
@@ -31,10 +35,17 @@ const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
     },
   });
 
+  useEffect(() => {
+    form.setValues({
+      agency: edit?.agency,
+      api_key: edit?.api_key.substring(0, 30),
+    });
+  }, [edit]);
+
   const handleGetEnvironments = () => {
     getEnvironment(page, size)
       .then((res: any) => {
-        setEnvironments(res.data);
+         setEnvironments(res.data);
       })
       .catch((error) => {
         handleError(error);
@@ -45,7 +56,7 @@ const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
     setLoading(true);
     createEnvironment(values)
       .then(() => {
-        toast.success("Environment created successfully");
+        toast.success("Environment updated successfully");
         handleGetEnvironments();
       })
       .catch((error) => {
@@ -57,6 +68,27 @@ const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
         close();
       });
   };
+
+  const submitUpdate = (values: any) => {
+    setLoading(true);
+
+    // @ts-ignore
+    updateEnvironment(values, edit.id)
+      .then(() => {
+        toast.success("Environment created successfully");
+        handleGetEnvironments();
+      })
+      .catch((error) => {
+        handleError(error);
+      })
+      .finally(() => {
+        setLoading(false);
+        form.reset();
+        close();
+        handleGetEnvironments();
+      });
+  };
+
   return (
     <Fragment>
       <LoadingOverlay visible={loading} />
@@ -72,7 +104,11 @@ const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
         <Title order={3} ta="center">
           Add New Environment
         </Title>
-        <form onSubmit={form.onSubmit((values) => submit(values))}>
+        <form
+          onSubmit={form.onSubmit((values) =>
+            edit ? submitUpdate(values) : submit(values)
+          )}
+        >
           <TextInput
             mt={24}
             label="Agency Name"
@@ -91,7 +127,7 @@ const AddEnvironment = ({ close, opened, setEnvironments }: Props) => {
             size="lg"
             className="bg-highLevelRed w-full"
           >
-            Add
+            {edit ? "Update" : "Add"}
           </Button>
         </form>
       </Modal>

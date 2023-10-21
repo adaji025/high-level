@@ -27,7 +27,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     handleGetUsers();
-  }, []);
+  }, [page]);
 
   const handleGetUsers = () => {
     setLoading(true);
