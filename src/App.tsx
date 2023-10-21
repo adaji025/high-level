@@ -1,14 +1,21 @@
 import "@mantine/core/styles.css";
 import { MantineProvider } from "@mantine/core";
 import { ToastContainer } from "react-toastify";
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate, useLocation } from "react-router-dom";
 import SignIn from "./pages/Auth/SignIn";
-import LoggedInContainer from "./components/LoggedInContainer";
+import LoggedInContainer from "./components/LoggedIn";
 import ForgotPassword from "./pages/Auth/ForgotPassword";
 import ResetPassword from "./pages/Auth/ResetPassword";
+import { useEffect } from "react";
 
 export default function App() {
+  const navigate = useNavigate()
+  const location = useLocation()
   const token = localStorage.getItem("high_level_token");
+  
+  useEffect(() => {
+    if (location.pathname === "/" && token) navigate("/dashboard");
+  }, []);
 
   return (
     <MantineProvider
