@@ -38,7 +38,7 @@ const SignIn = () => {
           localStorage.setItem("high_level_token", res.data.access_token);
         }
         navigate("/dashboard");
-        window.location.reload();
+        // window.location.reload();
       })
       .catch((error) => {
         handleError(error);

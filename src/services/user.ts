@@ -36,6 +36,17 @@ export const changePassword = (data: any) => {
       });
   });
 };
+export const updateProfile = (data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.USER.USER_UPDATE_PROFILE}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 
 export const getUserList = (page: number, size: number) => {
   return new Promise((resolve, reject) => {

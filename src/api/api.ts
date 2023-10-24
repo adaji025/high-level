@@ -7,6 +7,7 @@ export const APIS = {
     USER_LIST: (page: number, size: number) =>
       `${api}/user/list?page=${page}&size=${size}`,
     USER_CHANGE_PASSWORD: `${api}/user/password/change`,
+    USER_UPDATE_PROFILE: `${api}/user/update`,
   },
   AUTH: {
     RESET_PASSWORD: `${api}/auth/reset-password`,
