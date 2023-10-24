@@ -46,7 +46,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
       <div className="w-full">
         <img src={GoHighLevel} alt="" />
 
-        <div className="mt-14 grid gap-5">
+        <div className="mt-14 grid gap-5 text-sm sm:text-base">
           {users.map((route: any, index: number) => (
             <div
               key={index}
@@ -73,7 +73,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5">
+      <div className="mt-5 grid gap-5 text-sm sm:text-base">
         <div
           className={`flex gap-3 cursor-pointer w-full text-white items-center px-3 py-2  rounded-lg ${
             location.pathname === "/settings" && "bg-[#00D8D8]"
