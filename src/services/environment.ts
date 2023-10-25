@@ -48,3 +48,15 @@ export const getEnvironment = (page: number, size: number) => {
       });
   });
 };
+
+export const getAutomation = (id: string, page: number, size: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.ENVIRONMENT.GET_AUTOMATION(id, page, size)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

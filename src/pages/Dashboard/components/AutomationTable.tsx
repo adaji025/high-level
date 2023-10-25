@@ -6,18 +6,18 @@ import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 
 const data: any = [
-  {
-    id: "1",
-    name: "Contract example name",
-    date: "Dec 1, 2022",
-    status: "completed",
-  },
-  {
-    id: "2",
-    name: "Contract example name",
-    date: "Dec 1, 2022",
-    status: "pending",
-  },
+  // {
+  //   id: "1",
+  //   name: "Contract example name",
+  //   date: "Dec 1, 2022",
+  //   status: "completed",
+  // },
+  // {
+  //   id: "2",
+  //   name: "Contract example name",
+  //   date: "Dec 1, 2022",
+  //   status: "pending",
+  // },
 ];
 
 const AutomationTable = () => {
@@ -72,49 +72,55 @@ const AutomationTable = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {data.map((item: any) => (
-                <Table.Tr key={item.id}>
-                  <Table.Td>
-                    <div className="flex items-center gap-3">
-                      <input
-                        type="checkbox"
-                        checked={isRowSelected(item.id)}
-                        onChange={() => handleRowCheckboxChange(item.id)}
-                      />
-                      <div className="h-10 w-10 rounded-full bg-[#EAECF0] flex items-center justify-center">
-                        <img
-                          src={ExcelIcon}
-                          alt="excel icon"
-                          className="h-6 w-6"
+              {data.length > 0 &&
+                data.map((item: any) => (
+                  <Table.Tr key={item.id}>
+                    <Table.Td>
+                      <div className="flex items-center gap-3">
+                        <input
+                          type="checkbox"
+                          checked={isRowSelected(item.id)}
+                          onChange={() => handleRowCheckboxChange(item.id)}
                         />
+                        <div className="h-10 w-10 rounded-full bg-[#EAECF0] flex items-center justify-center">
+                          <img
+                            src={ExcelIcon}
+                            alt="excel icon"
+                            className="h-6 w-6"
+                          />
+                        </div>
+                        {item.name}
                       </div>
-                      {item.name}
-                    </div>
-                  </Table.Td>
-                  <Table.Td>{item.date}</Table.Td>
-                  <Table.Td>
-                    <div
-                      className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center justify-center gap-1 ${
-                        item.status === "completed"
-                          ? "bg-[#ECFDF3] text-[#12B76A]"
-                          : "bg-[#E7A94C]/10 text-[#E7A94C]"
-                      }`}
-                    >
-                      {item.status === "signed" && <FcCheckmark />}
-                      {item.status}
-                    </div>
-                  </Table.Td>
-                  <Table.Td>
-                    <div className="flex gap-5">
-                      <AiOutlineDelete size={20} color="#475467" />
-                      <FiEdit2 size={20} color="#475467" />
-                    </div>
-                  </Table.Td>
-                </Table.Tr>
-              ))}
+                    </Table.Td>
+                    <Table.Td>{item.date}</Table.Td>
+                    <Table.Td>
+                      <div
+                        className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center justify-center gap-1 ${
+                          item.status === "completed"
+                            ? "bg-[#ECFDF3] text-[#12B76A]"
+                            : "bg-[#E7A94C]/10 text-[#E7A94C]"
+                        }`}
+                      >
+                        {item.status === "signed" && <FcCheckmark />}
+                        {item.status}
+                      </div>
+                    </Table.Td>
+                    <Table.Td>
+                      <div className="flex gap-5">
+                        <AiOutlineDelete size={20} color="#475467" />
+                        <FiEdit2 size={20} color="#475467" />
+                      </div>
+                    </Table.Td>
+                  </Table.Tr>
+                ))}
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
+        {data.length === 0 && (
+          <h2 className="text-center font-bold text-black/80 flex justify-center w-full mx-auto my-20">
+            You have No Latest Automations
+          </h2>
+        )}
       </div>
       <div className="flex justify-center items-center gap-1 mt-10">
         <div>Prev</div>

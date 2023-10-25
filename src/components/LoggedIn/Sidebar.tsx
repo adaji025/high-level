@@ -1,9 +1,8 @@
 import { Avatar, Text } from "@mantine/core";
 import { useLocation, useNavigate } from "react-router-dom";
 import { FaRegUser } from "react-icons/fa";
-import { FiSettings } from "react-icons/fi";
 import { BiLogOut } from "react-icons/bi";
-import { DashboardIcon, GlobeIcon, SupportIcon } from "../Svgs";
+import { DashboardIcon, GlobeIcon } from "../Svgs";
 import { PiUserBold } from "react-icons/pi";
 import useNotification from "../../hooks/useNotification";
 import GoHighLevel from "../../assets/svgs/high-level-dark.svg";
@@ -46,7 +45,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
       <div className="w-full">
         <img src={GoHighLevel} alt="" />
 
-        <div className="mt-14 grid gap-5">
+        <div className="mt-14 grid gap-5 text-sm sm:text-base">
           {users.map((route: any, index: number) => (
             <div
               key={index}
@@ -73,8 +72,8 @@ const Sidebar = ({ openMobileNav }: Props) => {
         </div>
       </div>
 
-      <div className="mt-5 grid gap-5">
-        <div
+      <div className="mt-5 grid gap-5 text-sm sm:text-base">
+        {/* <div
           className={`flex gap-3 cursor-pointer w-full text-white items-center px-3 py-2  rounded-lg ${
             location.pathname === "/settings" && "bg-[#00D8D8]"
           }`}
@@ -97,7 +96,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
         >
           <SupportIcon />
           <div className="font-semibold">Support</div>
-        </div>
+        </div> */}
 
         <div className="flex items-center justify-between border-t w-full pt-3">
           <div className="flex gap-2">

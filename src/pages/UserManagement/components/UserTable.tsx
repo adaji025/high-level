@@ -1,28 +1,32 @@
 import { useState, useMemo, useEffect } from "react";
-import { Table, Avatar, Pagination } from "@mantine/core";
-import { FiEdit2 } from "react-icons/fi";
-import { TbUserDown } from "react-icons/tb";
+import { Table, Avatar, Pagination, Button } from "@mantine/core";
 import { UserState, UserTypes } from "../../../types/user";
 import moment from "moment";
+import { useDisclosure } from "@mantine/hooks";
+import ConfirmStatus from "./ConfirmStatus";
 
 type Props = {
   users: UserState | null;
-  page: number
-  size: number
-  setPage: React.Dispatch<React.SetStateAction<number>>
+  page: number;
+  size: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>
 };
 
-const UserTable = ({ users, page, setPage }: Props) => {
+const UserTable = ({ users, page, setPage, setUsers }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [count, setCount] = useState(1);
+  const [user, setUser] = useState<UserTypes | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const userList = useMemo(() => users?.items, [users]);
   useEffect(() => {
     if (users) setCount(users?.count);
   }, [users]);
 
+  console.log(userList);
 
-  console.log("selectedRowIds", selectedRowIds);
+  // console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
     userList &&
@@ -49,9 +53,9 @@ const UserTable = ({ users, page, setPage }: Props) => {
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
-
   return (
     <div>
+      <ConfirmStatus close={close} opened={opened} user={user} setUsers={setUsers}  />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -91,7 +95,9 @@ const UserTable = ({ users, page, setPage }: Props) => {
                   </Table.Td>
                   <Table.Td>{item.email}</Table.Td>
                   <Table.Td>
-                    {item.last_login? moment(item.last_login).format("YYYY-MM-DD HH:mm:ss") : "- - -"}
+                    {item.last_login
+                      ? moment(item.last_login).format("YYYY-MM-DD HH:mm:ss")
+                      : "- - -"}
                   </Table.Td>
                   <Table.Td>
                     {moment(item.created_at).format("YYYY-MM-DD HH:mm:ss")}
@@ -116,8 +122,17 @@ const UserTable = ({ users, page, setPage }: Props) => {
                   </Table.Td>
                   <Table.Td>
                     <div className="flex gap-5">
-                      <TbUserDown size={20} color="#475467" />
-                      <FiEdit2 size={20} color="#475467" />
+                      <Button
+                        size="xs"
+                        variant="outline"
+                        onClick={() => {
+                          setUser(item);
+                          open();
+                        }}
+                        className="text-xs"
+                      >
+                        {item.is_active ? "Deactivate" : "Activate"}
+                      </Button>
                     </div>
                   </Table.Td>
                 </Table.Tr>

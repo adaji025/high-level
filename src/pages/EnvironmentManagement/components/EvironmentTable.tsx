@@ -11,6 +11,7 @@ import {
 } from "../../../services/environment";
 import { toast } from "react-toastify";
 import useNotification from "../../../hooks/useNotification";
+import { useNavigate } from "react-router-dom";
 
 type EnvironmentProps = {
   environments: EnvironmentState | null;
@@ -36,6 +37,8 @@ const EvironmentTable = ({
   const [loading, setLoading] = useState(false);
 
   const { handleError } = useNotification();
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (environments) setCount(environments?.count);
@@ -124,7 +127,7 @@ const EvironmentTable = ({
             </Table.Thead>
             <Table.Tbody>
               {list?.map((item: EnvironmentType) => (
-                <Table.Tr key={item.id}>
+                <Table.Tr key={item.id} onClick={() => navigate(`/manage-environment/${item.id}`)} className="cursor-pointer">
                   <Table.Td>
                     <div className="flex gap-3">
                       <input

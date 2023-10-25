@@ -1,17 +1,55 @@
-import { Avatar, Divider, TextInput, Button } from "@mantine/core";
-import { useDisclosure } from "@mantine/hooks";
+import {
+  Avatar,
+  Divider,
+  TextInput,
+  Button,
+  LoadingOverlay,
+} from "@mantine/core";
+// import { useDisclosure } from "@mantine/hooks";
 import { CiSearch } from "react-icons/ci";
 import { GoCopy } from "react-icons/go";
 import { PiUserBold } from "react-icons/pi";
-import { Fragment } from "react";
-import AutomationWarning from "./components/AutomationWarning";
+import { Fragment, useEffect } from "react";
+// import AutomationWarning from "./components/AutomationWarning";
 import AutomationTable from "./components/AutomationTable";
+import { useParams, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { getAutomation } from "../../services/environment";
 
 const EnvironmentDetails = () => {
-  const [opened, { open, close }] = useDisclosure(false);
+  // const [opened, { open, close }] = useDisclosure(false);
+  const [loading, setLoading] = useState(false);
+  const [page] = useState(1);
+  const [size] = useState(10);
+  const params = useParams();
+  const id = params && params.id;
+
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    handleGetAutomation();
+  }, []);
+
+  const handleGetAutomation = () => {
+    setLoading(true);
+
+    if (id)
+      getAutomation(id, page, size)
+        .then((res: any) => {
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+  };
+
   return (
     <Fragment>
-      <AutomationWarning close={close} opened={opened} />
+      <LoadingOverlay visible={loading} />
+      {/* <AutomationWarning close={close} opened={opened} /> */}
       <div className="flex gap-5 flex-col sm:flex-row justify-between sm:items-center">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Avatar size="xl">MK</Avatar>
@@ -42,7 +80,9 @@ const EnvironmentDetails = () => {
           size="lg"
           leftSection={<PiUserBold />}
           className="bg-highLevelRed text-sm"
-          onClick={open}
+          onClick={() =>
+            navigate(`/manage-environment/create-automation/${id}`)
+          }
         >
           Add new Automation
         </Button>

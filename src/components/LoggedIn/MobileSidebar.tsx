@@ -22,7 +22,7 @@ const MobileSidebar = ({ openMobileNav, mobileNav }: Props) => {
         <FaTimes
           size={30}
           color="#002500"
-          className="absolute top-10 right-10 cursor-pointer"
+          className="absolute right-3 top-6 sm:right-6 cursor-pointer"
         />
       </div>
     </div>
