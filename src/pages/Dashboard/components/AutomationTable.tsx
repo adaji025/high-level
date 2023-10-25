@@ -5,9 +5,9 @@ import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 
-type Props = {
-  latestAutomation: any[]
-}
+// type Props = {
+//   latestAutomation: any[]
+// }
 
 const data: any[] = []
  

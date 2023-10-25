@@ -7,8 +7,8 @@ import { getAutomationList } from "../../services/automation";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
-  const [recentAutomation, setRecentAutomation] = useState([]);
-  const [latestAutomation, setLatestAutomation] = useState([]);
+  const [recentAutomation,] = useState([]);
+  // const [latestAutomation, setLatestAutomation] = useState([]);
   const [page] = useState(1);
   const [size] = useState(10);
 
