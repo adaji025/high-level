@@ -1,5 +1,5 @@
 import { Modal, Title, Box, Button, LoadingOverlay } from "@mantine/core";
-import { deactivateUser, getUserList } from "../../../services/user";
+import { activateUser, deactivateUser, getUserList } from "../../../services/user";
 import { UserState, UserTypes } from "../../../types/user";
 import { toast } from "react-toastify";
 import { Fragment, useState } from "react";
@@ -40,7 +40,7 @@ const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
       deactivateUser(user.id)
         .then(() => {
           toast.success(
-            `User ${user.is_active ? "Deactivated" : "Activated"} sucessfully`
+            `User Deactivated sucessfully`
           );
           handleGetUsers();
           close();
@@ -57,7 +57,7 @@ const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
     setLoading(true);
 
     if (user)
-      deactivateUser(user.id)
+      activateUser(user.id)
         .then(() => {
           toast.success(
             `User Activated sucessfully`

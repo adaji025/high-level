@@ -49,7 +49,7 @@ export const updateProfile = (data: any) => {
   });
 };
 
-export const activateUser = (id: number) => {
+export const deactivateUser = (id: number) => {
   return new Promise((resolve, reject) => {
     AxoisApi.put(`${APIS.USER.DEACTIVATE(id)}`)
       .then((res: any) => {
@@ -60,7 +60,7 @@ export const activateUser = (id: number) => {
       });
   });
 };
-export const deactivateUser = (id: number) => {
+export const  activateUser = (id: number) => {
   return new Promise((resolve, reject) => {
     AxoisApi.put(`${APIS.USER.ACTIVATE(id)}`)
       .then((res: any) => {
@@ -71,6 +71,8 @@ export const deactivateUser = (id: number) => {
       });
   });
 };
+
+
 
 export const getUserList = (page: number, size: number) => {
   return new Promise((resolve, reject) => {
