@@ -8,6 +8,8 @@ export const APIS = {
       `${api}/user/list?page=${page}&size=${size}`,
     USER_CHANGE_PASSWORD: `${api}/user/password/change`,
     USER_UPDATE_PROFILE: `${api}/user/update`,
+    DEACTIVATE: (id: number) => `${api}/user/deactivate/${id}/`,
+    ACTIVATE: (id: number) => `${api}/user/activate/${id}/`,
   },
   AUTH: {
     RESET_PASSWORD: `${api}/auth/reset-password`,
@@ -21,5 +23,7 @@ export const APIS = {
       `${api}/environment/list?page=${page}&size=${size}`,
     UPDATE: (id: number) => `${api}/environment/edit/${id}`,
     DELETE: (id: number) => `${api}/environment/delete/${id}`,
+    GET_AUTOMATION: (id: string, page: number, size: number) =>
+      `${api}/environment/${id}/automation/list?page=${page}&size=${size}`,
   },
 };

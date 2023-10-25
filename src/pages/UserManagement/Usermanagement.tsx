@@ -94,7 +94,7 @@ const UserManagement = () => {
         </div>
 
         <div className="mt-14">
-          <UserTable users={users} page={page} size={size} setPage={setPage} />
+          <UserTable users={users} page={page} size={size} setPage={setPage} setUsers={setUsers} />
         </div>
       </div>
     </Fragment>

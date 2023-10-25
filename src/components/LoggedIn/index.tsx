@@ -36,7 +36,7 @@ const LoggedInContainer = () => {
                 element={<EnvironmentDetails />}
               />
               <Route
-                path="/manage-environment/create-automation"
+                path="/manage-environment/create-automation/:id"
                 element={<CreateAutomation />}
               />
             </Routes>
