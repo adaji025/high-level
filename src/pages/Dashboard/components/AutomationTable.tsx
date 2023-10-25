@@ -5,20 +5,12 @@ import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 
-const data: any = [
-  // {
-  //   id: "1",
-  //   name: "Contract example name",
-  //   date: "Dec 1, 2022",
-  //   status: "completed",
-  // },
-  // {
-  //   id: "2",
-  //   name: "Contract example name",
-  //   date: "Dec 1, 2022",
-  //   status: "pending",
-  // },
-];
+type Props = {
+  latestAutomation: any[]
+}
+
+const data: any[] = []
+ 
 
 const AutomationTable = () => {
   const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
