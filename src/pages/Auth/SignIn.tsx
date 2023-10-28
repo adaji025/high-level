@@ -10,15 +10,13 @@ import { useNavigate } from "react-router-dom";
 import { useForm } from "@mantine/form";
 import { userlogin } from "../../services/user";
 import { useState } from "react";
-import useNotification from "../../hooks/useNotification";
-import { toast } from "react-toastify";
+import { toast,  } from "react-toastify";
 import HighLevel from "../../assets/svgs/high-level.svg";
 
 const SignIn = () => {
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
-  const { handleError } = useNotification();
 
   const notify = () => toast("Wow so easy!");
 
@@ -38,10 +36,9 @@ const SignIn = () => {
           localStorage.setItem("high_level_token", res.data.access_token);
         }
         navigate("/dashboard");
-        // window.location.reload();
       })
       .catch((error) => {
-        handleError(error);
+        toast.error(error.response.data.error);
       })
       .finally(() => {
         setLoading(false);

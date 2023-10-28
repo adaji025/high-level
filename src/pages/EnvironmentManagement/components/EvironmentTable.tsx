@@ -127,7 +127,7 @@ const EvironmentTable = ({
             </Table.Thead>
             <Table.Tbody>
               {list?.map((item: EnvironmentType) => (
-                <Table.Tr key={item.id} onClick={() => navigate(`/manage-environment/${item.id}`)} className="cursor-pointer">
+                <Table.Tr key={item.id} onClick={() => navigate(`/manage-environment/${item.id}`, {state : item})} className="cursor-pointer">
                   <Table.Td>
                     <div className="flex gap-3">
                       <input
@@ -158,6 +158,7 @@ const EvironmentTable = ({
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
+        {list?.length === 0 && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
       </div>
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination
