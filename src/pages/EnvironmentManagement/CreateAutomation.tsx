@@ -12,7 +12,6 @@ import {
 import { randomId } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { CiSearch } from "react-icons/ci";
-import { Upload } from "./components/Upload";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useLocation } from "react-router-dom";
@@ -21,8 +20,13 @@ import {
   PipelineTypes,
   StageTypes,
   CustomFieldProps,
+  AutomationResponseTypes,
 } from "../../types/environments";
 import axios from "axios";
+import { createAutomation } from "../../services/automation";
+import { toast } from "react-toastify";
+import { useDisclosure } from "@mantine/hooks";
+import { UploadExcel } from "./components/UploadExcel";
 
 const modules = {
   toolbar: [
@@ -47,11 +51,15 @@ const CreateAutomation = () => {
   const [customFields, setCustomFields] = useState<CustomFieldProps[] | null>(
     null
   );
+  const [automationResponse, setAutomationResponse] =
+    useState<AutomationResponseTypes | null>(null);
+  const [opened, { open, close }] = useDisclosure(false);
 
   const location = useLocation();
   const env: EnvironmentType = location?.state;
 
   // console.log(env.agency);
+  console.log(automationResponse)
 
   const icons = Quill.import("ui/icons");
   icons["undo"] = Undo;
@@ -59,11 +67,14 @@ const CreateAutomation = () => {
 
   const form = useForm({
     initialValues: {
-      name: "",
-      pipeline: "",
-      start_stage: "",
-      end_stage: "",
-      use_excel: false,
+      automation: {
+        env_id: env.id,
+        name: "",
+        pipeline: "",
+        start_stage: "",
+        end_stage: "",
+        use_excel: false,
+      },
       datapoints: [
         {
           cell_location: "",
@@ -71,6 +82,10 @@ const CreateAutomation = () => {
           key: randomId(),
         },
       ],
+      messages: {
+        sms: "",
+        email: "",
+      },
     },
   });
 
@@ -87,7 +102,7 @@ const CreateAutomation = () => {
     axios
       .get(`${PIPELINE_URL}/pipelines/`, {
         headers: {
-          Authorization: `Bearer ${env.api_key}`,
+          Authorization: `Bearer ${env?.api_key}`,
         },
       })
       .then((res) => {
@@ -105,7 +120,7 @@ const CreateAutomation = () => {
     axios
       .get(`${PIPELINE_URL}/custom-fields/`, {
         headers: {
-          Authorization: `Bearer ${env.api_key}`,
+          Authorization: `Bearer ${env?.api_key}`,
         },
       })
       .then((res) => {
@@ -129,9 +144,9 @@ const CreateAutomation = () => {
         required
         data={customFields?.map((field) => ({
           label: field.name,
-          value: field.name,
+          value: field.id,
         }))}
-        {...form.getInputProps(`datapoints.${index}.name`)}
+        {...form.getInputProps(`datapoints.${index}.field_id`)}
       />
 
       <TextInput
@@ -147,17 +162,37 @@ const CreateAutomation = () => {
 
   useEffect(() => {
     pipeline?.find((p) => {
-      if (p.id === form.values.pipeline) {
+      if (p.id === form.values.automation.pipeline) {
         setStages(p.stages);
       }
     });
-  }, [form.values.pipeline]);
+  }, [form.values.automation.pipeline]);
 
+  const submit = (values: any) => {
+    setLoading(true);
 
+    createAutomation(values)
+      .then((res: any) => {
+        toast.success("Automation created successfully");
+        setAutomationResponse(res.data);
+        open()
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   return (
     <div>
       <LoadingOverlay visible={loading} />
+      <UploadExcel
+        opened={opened}
+        close={close}
+        automationResponse={automationResponse}
+      />
       <div className="flex gap-5 flex-col sm:flex-row justify-between sm:items-center">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Avatar size="xl">MK</Avatar>
@@ -182,11 +217,24 @@ const CreateAutomation = () => {
       </div>
       <Divider mt={16} />
 
-      <form onSubmit={form.onSubmit((values) => console.log(values))}>
+      <form
+        onSubmit={form.onSubmit((values) =>
+          submit({
+            ...values,
+            automation: { ...values.automation, env_id: env.id },
+            messages: { ...values.messages, email },
+          })
+        )}
+      >
         <div className="mt-10">
           <h2 className="font-bold text-2xl">Create Automation</h2>
           <div className="flex gap-10 mt-10">
-            <TextInput size="lg" label="Name" className="w-1/2" />
+            <TextInput
+              size="lg"
+              label="Name"
+              className="w-1/2"
+              {...form.getInputProps("automation.name")}
+            />
             <Select
               size="lg"
               label="Select pipeline"
@@ -195,7 +243,7 @@ const CreateAutomation = () => {
                 value: item.id,
               }))}
               className="flex-1"
-              {...form.getInputProps("pipeline")}
+              {...form.getInputProps("automation.pipeline")}
             />
           </div>
           <div className="flex gap-10 mt-10">
@@ -207,6 +255,7 @@ const CreateAutomation = () => {
                 value: stage.id,
               }))}
               className="flex-1"
+              {...form.getInputProps("automation.start_stage")}
             />
             <Select
               size="lg"
@@ -216,23 +265,21 @@ const CreateAutomation = () => {
                 value: stage.id,
               }))}
               className="flex-1"
+              {...form.getInputProps("automation.end_stage")}
             />
           </div>
         </div>
 
         <Checkbox
-          checked={form.values.use_excel}
+          checked={form.values.automation.use_excel}
           mt={40}
           label="Use Excel Sheet"
-          {...form.getInputProps("use_excel")}
+          {...form.getInputProps("automation.use_excel")}
         />
 
-        {form.values.use_excel && (
+        {form.values.automation.use_excel && (
           <div className="mt-14">
             <h3 className="text-xl font-bold">Upload your Excel file:</h3>
-            <div className="mt-10">
-              <Upload />
-            </div>
 
             <div className="mt-10">
               <h3 className="text-xl font-bold">List of data points</h3>
@@ -258,7 +305,12 @@ const CreateAutomation = () => {
             </div>
 
             <div className="mt-14">
-              <Textarea autosize minRows={6} className="!text-base" />
+              <Textarea
+                autosize
+                minRows={6}
+                className="!text-base"
+                {...form.getInputProps("messages.sms")}
+              />
             </div>
 
             <div className="mt-14 mb-32 md:mb-24">
@@ -272,7 +324,7 @@ const CreateAutomation = () => {
               />
             </div>
             <div className="flex justify-end">
-              <Button size="lg" className="bg-highLevelRed">
+              <Button type="submit" size="lg" className="bg-highLevelRed">
                 Submit
               </Button>
             </div>

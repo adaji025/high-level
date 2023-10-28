@@ -29,6 +29,7 @@ export const APIS = {
   AUTOMATION: {
     LIST: (order_by: string, page: number, size: number) =>
       `${api}/automation/list?order_by=${order_by}&page=${page}&size=${size}`,
+    CREATE_AUTOMATION: `${api}/automation/create`,
+    UPLOAD_EXCEL: (id: number) => `${api}/automation/${id}/upload/excel`,
   },
-  CREATE_AUTOMATION: `${api}/automation/create`,
 };

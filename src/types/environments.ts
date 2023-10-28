@@ -36,3 +36,25 @@ export type CustomFieldProps =  {
     position: number
  
 }
+
+export type AutomationResponseTypes = {
+  env_id: number
+  name: string
+  pipeline: string
+  start_stage: string
+  end_stage: string
+  use_excel: boolean
+  id: number
+  excel_file: any
+  run_count: number
+  progress: number
+  last_run: any
+  created_at: string
+  datapoints: Datapoint[]
+}
+
+export interface Datapoint {
+  field_id: string
+  cell_location: string
+  id: number
+}

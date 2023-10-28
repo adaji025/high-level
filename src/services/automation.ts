@@ -16,3 +16,29 @@ export const getAutomationList = (
       });
   });
 };
+
+export const createAutomation = (data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.post(`${APIS.AUTOMATION.CREATE_AUTOMATION}`, data)
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
+
+export const uploadExcel = (id: number, data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.AUTOMATION.UPLOAD_EXCEL(id)}`, data, {
+      headers: { "Content-Type": "multipart/form-data" },
+    })
+      .then((res) => {
+        resolve(res);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+};
