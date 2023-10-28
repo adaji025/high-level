@@ -205,7 +205,6 @@ const CreateAutomation = () => {
               <span className="text-secondaryText/50 text-sm">
                 {env?.api_key.substring(0, 30)}
               </span>
-              {/* <GoCopy /> */}
             </div>
           </div>
         </div>
