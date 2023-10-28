@@ -30,4 +30,5 @@ export const APIS = {
     LIST: (order_by: string, page: number, size: number) =>
       `${api}/automation/list?order_by=${order_by}&page=${page}&size=${size}`,
   },
+  CREATE_AUTOMATION: `${api}/automation/create`,
 };

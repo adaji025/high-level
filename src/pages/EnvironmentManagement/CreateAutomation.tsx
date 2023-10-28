@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   Avatar,
   TextInput,
@@ -7,14 +7,22 @@ import {
   Checkbox,
   Button,
   Textarea,
+  LoadingOverlay,
 } from "@mantine/core";
 import { randomId } from "@mantine/hooks";
 import { useForm } from "@mantine/form";
 import { CiSearch } from "react-icons/ci";
-import { GoCopy } from "react-icons/go";
 import { Upload } from "./components/Upload";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useLocation } from "react-router-dom";
+import {
+  EnvironmentType,
+  PipelineTypes,
+  StageTypes,
+  CustomFieldProps,
+} from "../../types/environments";
+import axios from "axios";
 
 const modules = {
   toolbar: [
@@ -32,8 +40,18 @@ const modules = {
 };
 
 const CreateAutomation = () => {
-  const [checked, setChecked] = useState(false);
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [pipeline, setPipeline] = useState<PipelineTypes[] | null>(null);
+  const [stages, setStages] = useState<StageTypes[] | null>(null);
+  const [customFields, setCustomFields] = useState<CustomFieldProps[] | null>(
+    null
+  );
+
+  const location = useLocation();
+  const env: EnvironmentType = location?.state;
+
+  // console.log(env.agency);
 
   const icons = Quill.import("ui/icons");
   icons["undo"] = Undo;
@@ -43,22 +61,77 @@ const CreateAutomation = () => {
     initialValues: {
       name: "",
       pipeline: "",
-      startStage: "",
-      endStage: "",
-      upload: "",
-      dataEndPoints: [{ endPointName: "", cell_sheet: "", key: randomId() }],
+      start_stage: "",
+      end_stage: "",
+      use_excel: false,
+      datapoints: [
+        {
+          cell_location: "",
+          field_id: "",
+          key: randomId(),
+        },
+      ],
     },
   });
 
-  const DataEndPointsFields = form.values.dataEndPoints.map((item, index) => (
+  useEffect(() => {
+    handleGetPipeline();
+    handleGetCustomField();
+  }, []);
+
+  const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
+
+  const handleGetPipeline = () => {
+    setLoading(true);
+
+    axios
+      .get(`${PIPELINE_URL}/pipelines/`, {
+        headers: {
+          Authorization: `Bearer ${env.api_key}`,
+        },
+      })
+      .then((res) => {
+        setPipeline(res.data.pipelines);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const handleGetCustomField = () => {
+    axios
+      .get(`${PIPELINE_URL}/custom-fields/`, {
+        headers: {
+          Authorization: `Bearer ${env.api_key}`,
+        },
+      })
+      .then((res) => {
+        setCustomFields(res.data.customFields);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const DataEndPointsFields = form.values.datapoints.map((item, index) => (
     <div className="flex gap-10 mb-5" key={item.key}>
-      <TextInput
+      <Select
         className="w-1/2"
         size="lg"
         label="Field Name"
         placeholder="state"
         required
-        {...form.getInputProps(`dataEndPoints.${index}.endPointName`)}
+        data={customFields?.map((field) => ({
+          label: field.name,
+          value: field.name,
+        }))}
+        {...form.getInputProps(`datapoints.${index}.name`)}
       />
 
       <TextInput
@@ -67,24 +140,37 @@ const CreateAutomation = () => {
         label="Sheet Cell"
         placeholder="B6"
         required
-        {...form.getInputProps(`dataEndPoints.${index}.cell_sheet`)}
+        {...form.getInputProps(`datapoints.${index}.cell_location`)}
       />
     </div>
   ));
 
+  useEffect(() => {
+    pipeline?.find((p) => {
+      if (p.id === form.values.pipeline) {
+        setStages(p.stages);
+      }
+    });
+  }, [form.values.pipeline]);
+
+
+
   return (
     <div>
+      <LoadingOverlay visible={loading} />
       <div className="flex gap-5 flex-col sm:flex-row justify-between sm:items-center">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Avatar size="xl">MK</Avatar>
           <div className="text-center sm:text-start">
-            <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold">DStomps Agency</h1>
+            <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold">
+              {env?.agency}
+            </h1>
             <div className="flex items-center mt-2 gap-1 font-medium">
               Api key:
               <span className="text-secondaryText/50 text-sm">
-                mvonsdnDNVNDSIVIKe29832
+                {env?.api_key.substring(0, 30)}
               </span>
-              <GoCopy />
+              {/* <GoCopy /> */}
             </div>
           </div>
         </div>
@@ -104,46 +190,44 @@ const CreateAutomation = () => {
             <Select
               size="lg"
               label="Select pipeline"
-              data={[
-                { label: "one", value: "one" },
-                { label: "two", value: "two" },
-                { label: "three", value: "three" },
-              ]}
+              data={pipeline?.map((item) => ({
+                label: item.name,
+                value: item.id,
+              }))}
               className="flex-1"
+              {...form.getInputProps("pipeline")}
             />
           </div>
           <div className="flex gap-10 mt-10">
             <Select
               size="lg"
               label="Start stage"
-              data={[
-                { label: "one", value: "one" },
-                { label: "two", value: "two" },
-                { label: "three", value: "three" },
-              ]}
+              data={stages?.map((stage) => ({
+                label: stage.name,
+                value: stage.id,
+              }))}
               className="flex-1"
             />
             <Select
               size="lg"
               label="End stage"
-              data={[
-                { label: "one", value: "one" },
-                { label: "two", value: "two" },
-                { label: "three", value: "three" },
-              ]}
+              data={stages?.map((stage) => ({
+                label: stage.name,
+                value: stage.id,
+              }))}
               className="flex-1"
             />
           </div>
         </div>
 
         <Checkbox
-          checked={checked}
+          checked={form.values.use_excel}
           mt={40}
           label="Use Excel Sheet"
-          onChange={(event) => setChecked(event.currentTarget.checked)}
+          {...form.getInputProps("use_excel")}
         />
 
-        {checked && (
+        {form.values.use_excel && (
           <div className="mt-14">
             <h3 className="text-xl font-bold">Upload your Excel file:</h3>
             <div className="mt-10">
@@ -153,9 +237,6 @@ const CreateAutomation = () => {
             <div className="mt-10">
               <h3 className="text-xl font-bold">List of data points</h3>
             </div>
-            <div className="flex">
-              <TextInput placeholder="" />
-            </div>
 
             <div className="mt-10">
               {DataEndPointsFields}
@@ -163,13 +244,13 @@ const CreateAutomation = () => {
                 <Button
                   size="lg"
                   className="bg-highLevelRed mt-10 mx-auto text-base"
-                  onClick={() =>
-                    form.insertListItem("dataEndPoints", {
-                      state: "",
-                      cell_sheet: "",
+                  onClick={() => {
+                    form.insertListItem("datapoints", {
+                      cell_location: "",
+                      field_id: "",
                       key: randomId(),
-                    })
-                  }
+                    });
+                  }}
                 >
                   Add custom data points
                 </Button>
@@ -191,7 +272,9 @@ const CreateAutomation = () => {
               />
             </div>
             <div className="flex justify-end">
-              <Button size="lg" className="bg-highLevelRed">Submit</Button>
+              <Button size="lg" className="bg-highLevelRed">
+                Submit
+              </Button>
             </div>
           </div>
         )}

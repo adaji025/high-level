@@ -32,8 +32,8 @@ const useNotification = () => {
       );
     }
 
-    if (typeof error?.response?.data?.errors === "object" && error !== null) {
-      for (const [_, value] of Object?.entries(error?.response?.data?.errors)) {
+    if (typeof error?.response?.data === "object" && error !== null) {
+      for (const [_, value] of Object?.entries(error?.response?.data)) {
         if (typeof value === "string") {
           toast.error(`${value} 🤥`);
         }

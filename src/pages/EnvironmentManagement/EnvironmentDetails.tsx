@@ -5,7 +5,7 @@ import {
   Button,
   LoadingOverlay,
 } from "@mantine/core";
-// import { useDisclosure } from "@mantine/hooks";
+import { useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { GoCopy } from "react-icons/go";
 import { PiUserBold } from "react-icons/pi";
@@ -15,6 +15,7 @@ import AutomationTable from "./components/AutomationTable";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { getAutomation } from "../../services/environment";
+import { EnvironmentType } from "../../types/environments";
 
 const EnvironmentDetails = () => {
   // const [opened, { open, close }] = useDisclosure(false);
@@ -25,6 +26,11 @@ const EnvironmentDetails = () => {
   const id = params && params.id;
 
   const navigate = useNavigate();
+  const location = useLocation();
+
+  const env: EnvironmentType = location?.state;
+
+  console.log(env.agency)
 
   useEffect(() => {
     handleGetAutomation();
@@ -55,14 +61,14 @@ const EnvironmentDetails = () => {
           <Avatar size="xl">MK</Avatar>
           <div className="text-center sm:text-start">
             <h1 className="text-xl sm:text-2xl lg:text-3xl font-semibold">
-              DStomps Agency
+              {env?.agency}
             </h1>
             <div className="flex items-center mt-2 gap-1 font-medium">
               Api key:
               <span className="text-secondaryText/50 text-sm">
-                mvonsdnDNVNDSIVIKe29832
+                {env?.api_key.substring(0, 30)}
               </span>
-              <GoCopy />
+              {/* <GoCopy /> */}
             </div>
           </div>
         </div>
@@ -81,7 +87,7 @@ const EnvironmentDetails = () => {
           leftSection={<PiUserBold />}
           className="bg-highLevelRed text-sm"
           onClick={() =>
-            navigate(`/manage-environment/create-automation/${id}`)
+            navigate(`/manage-environment/create-automation/${id}`, {state: env})
           }
         >
           Add new Automation
