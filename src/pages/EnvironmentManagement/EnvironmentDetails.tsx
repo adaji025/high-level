@@ -7,10 +7,8 @@ import {
 } from "@mantine/core";
 import { useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
-import { GoCopy } from "react-icons/go";
 import { PiUserBold } from "react-icons/pi";
 import { Fragment, useEffect } from "react";
-// import AutomationWarning from "./components/AutomationWarning";
 import AutomationTable from "./components/AutomationTable";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -18,7 +16,6 @@ import { getAutomation } from "../../services/environment";
 import { EnvironmentType } from "../../types/environments";
 
 const EnvironmentDetails = () => {
-  // const [opened, { open, close }] = useDisclosure(false);
   const [loading, setLoading] = useState(false);
   const [page] = useState(1);
   const [size] = useState(10);
@@ -55,7 +52,6 @@ const EnvironmentDetails = () => {
   return (
     <Fragment>
       <LoadingOverlay visible={loading} />
-      {/* <AutomationWarning close={close} opened={opened} /> */}
       <div className="flex gap-5 flex-col sm:flex-row justify-between sm:items-center">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Avatar size="xl">MK</Avatar>
@@ -68,7 +64,6 @@ const EnvironmentDetails = () => {
               <span className="text-secondaryText/50 text-sm">
                 {env?.api_key.substring(0, 30)}
               </span>
-              {/* <GoCopy /> */}
             </div>
           </div>
         </div>
