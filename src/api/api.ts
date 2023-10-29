@@ -8,8 +8,8 @@ export const APIS = {
       `${api}/user/list?page=${page}&size=${size}`,
     USER_CHANGE_PASSWORD: `${api}/user/password/change`,
     USER_UPDATE_PROFILE: `${api}/user/update`,
-    DEACTIVATE: (id: number) => `${api}/user/activate/${id}/`,
-    ACTIVATE: (id: number) => `${api}/user/deactivate/${id}/`,
+    DEACTIVATE: (id: number) => `${api}/user/deactivate/${id}/`,
+    ACTIVATE: (id: number) => `${api}/user/activate/${id}/`,
   },
   AUTH: {
     RESET_PASSWORD: `${api}/auth/reset-password`,
