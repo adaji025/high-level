@@ -4,13 +4,19 @@ import { CiSearch } from "react-icons/ci";
 import AutomationTable from "./components/AutomationTable";
 import { useState, useEffect } from "react";
 import { getAutomationList } from "../../services/automation";
+import { RecentAutomationTypes } from "../../types/automation";
+import useNotification from "../../hooks/useNotification";
 
 const Dashboard = () => {
   const [loading, setLoading] = useState(false);
-  const [recentAutomation,] = useState([]);
-  // const [latestAutomation, setLatestAutomation] = useState([]);
-  const [page] = useState(1);
-  const [size] = useState(10);
+  const [recentAutomation, setRecentAutomation] =
+    useState<RecentAutomationTypes | null>(null);
+  const [latestAutomation, setLatestAutomation] =
+    useState<RecentAutomationTypes | null>(null);
+  const [page,] = useState(1);
+  const [size,] = useState(10);
+
+  const { handleError } = useNotification();
 
   useEffect(() => {
     handleGetRecentAutomation();
@@ -22,10 +28,10 @@ const Dashboard = () => {
 
     getAutomationList("recent", page, size)
       .then((res: any) => {
-        console.log(res);
+        setRecentAutomation(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
@@ -33,24 +39,32 @@ const Dashboard = () => {
   };
 
   const handleGetLatestAutomation = () => {
-    getAutomationList("latest", page, size).then((res: any) => {
-      console.log(res);
-    });
+    getAutomationList("latest", page, size)
+      .then((res: any) => {
+        setLatestAutomation(res.data);
+      })
+      .catch((err) => {
+        handleError(err);
+      });
   };
 
+  
+  const recent = recentAutomation && recentAutomation?.items.slice(0, 4)
+  
+ 
   return (
     <div>
       <LoadingOverlay visible={loading} />
       <h2 className="font-bold text-3xl mb-5">Recent automations</h2>
-      {recentAutomation.length > 0 && (
+      {recentAutomation && recentAutomation?.items.length > 0 && (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
-          {[...Array(4)].map((_, index) => (
-            <AutomationCards key={index} />
+          {recent?.map((item) => (
+            <AutomationCards key={item.id} item={item} />
           ))}
         </div>
       )}
 
-      {recentAutomation.length === 0 && (
+      {recent?.length === 0 && (
         <h2 className="text-center font-bold text-2xl text-black/80 mt-10">
           No Recent Automation
         </h2>
@@ -72,7 +86,7 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-5">
-        <AutomationTable />
+        <AutomationTable latestAutomation={latestAutomation} />
       </div>
     </div>
   );
