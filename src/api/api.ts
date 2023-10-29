@@ -21,8 +21,8 @@ export const APIS = {
     CREATE: `${api}/environment/create`,
     GET_LIST: (page: number, size: number) =>
       `${api}/environment/list?page=${page}&size=${size}`,
-    UPDATE: (id: number) => `${api}/environment/edit/${id}`,
-    DELETE: (id: number) => `${api}/environment/delete/${id}`,
+    UPDATE: (id: number) => `${api}/environment/edit/${id}/`,
+    DELETE: (id: number) => `${api}/environment/delete/${id}/`,
     GET_AUTOMATION: (id: string, page: number, size: number) =>
       `${api}/environment/${id}/automation/list?page=${page}&size=${size}`,
     SINGLE_ENV: (id: number, page: number, size: number) =>

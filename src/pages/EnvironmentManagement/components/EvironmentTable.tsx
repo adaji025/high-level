@@ -38,7 +38,7 @@ const EvironmentTable = ({
 
   const { handleError } = useNotification();
 
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (environments) setCount(environments?.count);
@@ -127,8 +127,15 @@ const EvironmentTable = ({
             </Table.Thead>
             <Table.Tbody>
               {list?.map((item: EnvironmentType) => (
-                <Table.Tr key={item.id} onClick={() => navigate(`/manage-environment/${item.id}`, {state : item})} className="cursor-pointer">
-                  <Table.Td>
+                <Table.Tr key={item.id}>
+                  <Table.Td
+                    onClick={() =>
+                      navigate(`/manage-environment/${item.id}`, {
+                        state: item,
+                      })
+                    }
+                    className="cursor-pointer"
+                  >
                     <div className="flex gap-3">
                       <input
                         type="checkbox"
@@ -138,7 +145,16 @@ const EvironmentTable = ({
                       {item.agency}
                     </div>
                   </Table.Td>
-                  <Table.Td>{item.api_key.substring(0, 30)}</Table.Td>
+                  <Table.Td
+                    onClick={() =>
+                      navigate(`/manage-environment/${item.id}`, {
+                        state: item,
+                      })
+                    }
+                    className="cursor-pointer"
+                  >
+                    {item.api_key.substring(0, 30)}
+                  </Table.Td>
 
                   <Table.Td
                     className="cursor-pointer"
@@ -158,8 +174,16 @@ const EvironmentTable = ({
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {list?.length === 0 && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
-        {!list && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
+        {list?.length === 0 && (
+          <h2 className="text-2xl font-bold text-center my-10">
+            You have no Environment
+          </h2>
+        )}
+        {!list && (
+          <h2 className="text-2xl font-bold text-center my-10">
+            You have no Environment
+          </h2>
+        )}
       </div>
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination
