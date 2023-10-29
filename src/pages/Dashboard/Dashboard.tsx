@@ -86,7 +86,7 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-5">
-        <AutomationTable latestAutomation={latestAutomation} />
+        <AutomationTable automation={latestAutomation} />
       </div>
     </div>
   );

@@ -25,11 +25,14 @@ export const APIS = {
     DELETE: (id: number) => `${api}/environment/delete/${id}`,
     GET_AUTOMATION: (id: string, page: number, size: number) =>
       `${api}/environment/${id}/automation/list?page=${page}&size=${size}`,
+    SINGLE_ENV: (id: number, page: number, size: number) =>
+      `${api}/environment/${id}/automation/list?page=${page}&size=${size}`,
   },
   AUTOMATION: {
     LIST: (order_by: string, page: number, size: number) =>
       `${api}/automation/list?order_by=${order_by}&page=${page}&size=${size}`,
     CREATE_AUTOMATION: `${api}/automation/create`,
     UPLOAD_EXCEL: (id: number) => `${api}/automation/${id}/upload/excel`,
+    AUTOMATION_DETAILS: (id: number) => `${api}/automation/${id}/`,
   },
 };
