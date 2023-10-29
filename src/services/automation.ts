@@ -16,6 +16,7 @@ export const getAutomationList = (
       });
   });
 };
+
 export const getAutomationDetails = (id: number) => {
   return new Promise((resolve, reject) => {
     AxoisApi.get(`${APIS.AUTOMATION.AUTOMATION_DETAILS(id)}`)
@@ -50,6 +51,18 @@ export const uploadExcel = (id: number, data: any) => {
       })
       .catch((err) => {
         reject(err);
+      });
+  });
+};
+
+export const runAutomation = (id: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.post(`${APIS.AUTOMATION.RUN(id)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
       });
   });
 };

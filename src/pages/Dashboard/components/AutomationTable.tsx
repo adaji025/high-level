@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Table } from "@mantine/core";
 import { FcCheckmark } from "react-icons/fc";
-import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import {
@@ -113,7 +112,6 @@ const AutomationTable = ({ automation }: Props) => {
                     <Table.Td>
                       <div className="flex gap-5">
                         <AiOutlineDelete size={20} color="#475467" />
-                        <FiEdit2 size={20} color="#475467" />
                       </div>
                     </Table.Td>
                   </Table.Tr>

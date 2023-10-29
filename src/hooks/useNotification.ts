@@ -19,6 +19,10 @@ const useNotification = () => {
       return toast.error("Route not found");
     }
 
+    if(error){
+      return toast.error(error.response.data.error);
+    }
+
     if (error?.response?.status === 401 || error?.response?.status === 403) {
       toast.error("Unauthorized");
       return logoutUser();
@@ -39,7 +43,7 @@ const useNotification = () => {
         }
       }
     } else {
-      toast.error(`${error?.response?.data?.message} 🤥`);
+      toast.error(`${error?.response?.data?.error} 🤥`);
     }
   };
   return {
