@@ -4,23 +4,27 @@ import { FcCheckmark } from "react-icons/fc";
 import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
+import {
+  AutomationItemTypes,
+  RecentAutomationTypes,
+} from "../../../types/automation";
+import moment from "moment";
 
-// type Props = {
-//   latestAutomation: any[]
-// }
+type Props = {
+  latestAutomation: RecentAutomationTypes | null;
+};
 
-const data: any[] = []
- 
-
-const AutomationTable = () => {
-  const [selectedRowIds, setSelectedRowIds] = useState<string[]>([]);
-
+const AutomationTable = ({ latestAutomation }: Props) => {
+  const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const automationTableData = latestAutomation?.items;
   console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
-    data.length > 0 && selectedRowIds.length === data.length;
+    automationTableData &&
+    automationTableData?.length > 0 &&
+    selectedRowIds.length === automationTableData.length;
 
-  const handleRowCheckboxChange = (id: string) => {
+  const handleRowCheckboxChange = (id: number) => {
     setSelectedRowIds((prevId) =>
       prevId.includes(id)
         ? prevId.filter((rowId) => rowId !== id)
@@ -29,15 +33,19 @@ const AutomationTable = () => {
   };
 
   const handleSelectAllRows = () => {
-    if (isAllRowsSelected) {
-      setSelectedRowIds([]);
-    } else {
-      setSelectedRowIds(data.map((row: any) => row.id));
-    }
+    if (automationTableData)
+      if (isAllRowsSelected) {
+        setSelectedRowIds([]);
+      } else {
+        setSelectedRowIds(automationTableData.map((row: any) => row.id));
+      }
   };
 
-  const isRowSelected = (id: string) => selectedRowIds.includes(id);
+  const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
+  const latest = latestAutomation && latestAutomation?.items.slice(0, 6);
+
+  console.log("latest", latest);
   return (
     <div>
       <div className="rounded-[15px] border border-gray-200">
@@ -64,8 +72,9 @@ const AutomationTable = () => {
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {data.length > 0 &&
-                data.map((item: any) => (
+              {latest &&
+                latest?.length > 0 &&
+                automationTableData?.map((item: AutomationItemTypes) => (
                   <Table.Tr key={item.id}>
                     <Table.Td>
                       <div className="flex items-center gap-3">
@@ -84,7 +93,11 @@ const AutomationTable = () => {
                         {item.name}
                       </div>
                     </Table.Td>
-                    <Table.Td>{item.date}</Table.Td>
+                    <Table.Td>
+                      {item.last_run
+                        ? moment(item.last_run).format("YY.MM.DD")
+                        : "----"}
+                    </Table.Td>
                     <Table.Td>
                       <div
                         className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center justify-center gap-1 ${
@@ -108,26 +121,11 @@ const AutomationTable = () => {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {data.length === 0 && (
+        {latestAutomation?.items.length === 0 && (
           <h2 className="text-center font-bold text-black/80 flex justify-center w-full mx-auto my-20">
             You have No Latest Automations
           </h2>
         )}
-      </div>
-      <div className="flex justify-center items-center gap-1 mt-10">
-        <div>Prev</div>
-        {[...Array(7)].map((_, index) => (
-          <div
-            key={index}
-            className={`h-[30px] w-[30px] rounded-md flex justify-center items-center cursor-pointer hover:bg-darkBlue ${
-              index === 0 && "bg-darkBlue"
-            }`}
-          >
-            {" "}
-            {index === 4 ? "..." : index + 1}{" "}
-          </div>
-        ))}
-        <div>Next</div>
       </div>
     </div>
   );
