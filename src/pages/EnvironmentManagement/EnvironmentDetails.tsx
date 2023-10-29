@@ -9,25 +9,30 @@ import { useLocation } from "react-router-dom";
 import { CiSearch } from "react-icons/ci";
 import { PiUserBold } from "react-icons/pi";
 import { Fragment, useEffect } from "react";
-import AutomationTable from "./components/AutomationTable";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import { getAutomation } from "../../services/environment";
-import { EnvironmentType } from "../../types/environments";
+import {  EnvironmentType } from "../../types/environments";
+import {  RecentAutomationTypes } from "../../types/automation";
+import useNotification from "../../hooks/useNotification";
+import { getSingleEnv } from "../../services/environment";
+import AutomationTable from "./components/AutomationTable";
 
 const EnvironmentDetails = () => {
   const [loading, setLoading] = useState(false);
   const [page] = useState(1);
   const [size] = useState(10);
+  const [envList, setEnvList] = useState<RecentAutomationTypes | null>(null);
   const params = useParams();
-  const id = params && params.id;
+  const id = params && Number(params.id);
 
   const navigate = useNavigate();
   const location = useLocation();
 
+  const { handleError } = useNotification();
+
   const env: EnvironmentType = location?.state;
 
-  console.log(env.agency)
+  console.log(env.agency);
 
   useEffect(() => {
     handleGetAutomation();
@@ -37,12 +42,12 @@ const EnvironmentDetails = () => {
     setLoading(true);
 
     if (id)
-      getAutomation(id, page, size)
+      getSingleEnv(id, page, size)
         .then((res: any) => {
-          console.log(res);
+          setEnvList(res.data);
         })
         .catch((error) => {
-          console.log(error);
+          handleError(error);
         })
         .finally(() => {
           setLoading(false);
@@ -82,14 +87,16 @@ const EnvironmentDetails = () => {
           leftSection={<PiUserBold />}
           className="bg-highLevelRed text-sm"
           onClick={() =>
-            navigate(`/manage-environment/create-automation/${id}`, {state: env})
+            navigate(`/manage-environment/create-automation/${id}`, {
+              state: env,
+            })
           }
         >
           Add new Automation
         </Button>
       </div>
 
-      <AutomationTable />
+      <AutomationTable envList={envList} />
     </Fragment>
   );
 };

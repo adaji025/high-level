@@ -16,6 +16,17 @@ export const getAutomationList = (
       });
   });
 };
+export const getAutomationDetails = (id: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.AUTOMATION.AUTOMATION_DETAILS(id)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
 
 export const createAutomation = (data: any) => {
   return new Promise((resolve, reject) => {

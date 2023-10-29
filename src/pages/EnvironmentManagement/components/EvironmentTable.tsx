@@ -159,6 +159,7 @@ const EvironmentTable = ({
           </Table>
         </Table.ScrollContainer>
         {list?.length === 0 && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
+        {!list && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
       </div>
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination

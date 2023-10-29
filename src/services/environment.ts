@@ -60,3 +60,15 @@ export const getAutomation = (id: string, page: number, size: number) => {
       });
   });
 };
+
+export const getSingleEnv = (id: number, page: number, size: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.ENVIRONMENT.SINGLE_ENV(id, page, size)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

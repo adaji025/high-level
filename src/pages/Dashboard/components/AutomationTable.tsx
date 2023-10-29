@@ -11,12 +11,12 @@ import {
 import moment from "moment";
 
 type Props = {
-  latestAutomation: RecentAutomationTypes | null;
+  automation?: RecentAutomationTypes | null;
 };
 
-const AutomationTable = ({ latestAutomation }: Props) => {
+const AutomationTable = ({ automation }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
-  const automationTableData = latestAutomation?.items;
+  const automationTableData = automation?.items;
   console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
@@ -43,7 +43,7 @@ const AutomationTable = ({ latestAutomation }: Props) => {
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
-  const latest = latestAutomation && latestAutomation?.items.slice(0, 6);
+  const latest = automation && automation?.items.slice(0, 6);
 
   console.log("latest", latest);
   return (
@@ -121,7 +121,7 @@ const AutomationTable = ({ latestAutomation }: Props) => {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {latestAutomation?.items.length === 0 && (
+        {automation?.items.length === 0 && (
           <h2 className="text-center font-bold text-black/80 flex justify-center w-full mx-auto my-20">
             You have No Latest Automations
           </h2>
