@@ -2,6 +2,7 @@ export type UserState = {
   page: number;
   size: number;
   count: number;
+  total: number;
   items: UserTypes[];
 };
 

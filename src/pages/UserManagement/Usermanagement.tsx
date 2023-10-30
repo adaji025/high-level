@@ -21,7 +21,7 @@ const UserManagement = () => {
   const [loading, setLoading] = useState(false);
   const [users, setUsers] = useState<UserState | null>(null);
   const [page, setPage] = useState(1);
-  const [size] = useState(10);
+  const [size] = useState(5);
 
   const { handleError } = useNotification();
 

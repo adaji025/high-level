@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Table } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Pagination, Table } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { FcCheckmark } from "react-icons/fc";
 import { FiEdit2 } from "react-icons/fi";
@@ -16,19 +16,28 @@ import { useNavigate } from "react-router-dom";
 type Props = {
   envList: RecentAutomationTypes | null;
   handleGetAutomation: () => void;
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
 const AutomationTable = ({
   envList: automation,
   handleGetAutomation,
+  page,
+  setPage
 }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [automationId, setAutomationId] = useState<number | null>(null);
+  const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
 
   const automationTableData = automation?.items;
+
+  useEffect(() => {
+    if (automation) setTotalPages(Math.ceil(automation?.total / automation.size));
+  }, [automation]);
 
   const isAllRowsSelected =
     automationTableData &&
@@ -159,6 +168,14 @@ const AutomationTable = ({
             You have No Latest Automations
           </h2>
         )}
+      </div>
+      <div className="flex justify-center mt-10 text-darkBlue">
+        <Pagination
+          value={page}
+          total={totalPages}
+          siblings={1}
+          onChange={setPage}
+        />
       </div>
     </div>
   );

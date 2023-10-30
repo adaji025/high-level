@@ -10,23 +10,21 @@ type Props = {
   page: number;
   size: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>
+  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>;
 };
 
 const UserTable = ({ users, page, setPage, setUsers }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
-  const [count, setCount] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
   const [user, setUser] = useState<UserTypes | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
 
+  // const totalPages =   Math.ceil(users?.total / users.size) ?? 0;
+
   const userList = useMemo(() => users?.items, [users]);
   useEffect(() => {
-    if (users) setCount(users?.count);
+    if (users) setTotalPages(Math.ceil(users?.total / users.size));
   }, [users]);
-
-  console.log(userList);
-
-  // console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
     userList &&
@@ -55,7 +53,12 @@ const UserTable = ({ users, page, setPage, setUsers }: Props) => {
 
   return (
     <div>
-      <ConfirmStatus close={close} opened={opened} user={user} setUsers={setUsers}  />
+      <ConfirmStatus
+        close={close}
+        opened={opened}
+        user={user}
+        setUsers={setUsers}
+      />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -144,7 +147,7 @@ const UserTable = ({ users, page, setPage, setUsers }: Props) => {
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination
           value={page}
-          total={count}
+          total={totalPages}
           siblings={1}
           onChange={setPage}
           color="blue"

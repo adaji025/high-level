@@ -19,8 +19,8 @@ import AutomationTable from "./components/AutomationTable";
 
 const EnvironmentDetails = () => {
   const [loading, setLoading] = useState(false);
-  const [page] = useState(1);
-  const [size] = useState(10);
+  const [page, setPage] = useState(1);
+  const [size] = useState(1);
   const [envList, setEnvList] = useState<RecentAutomationTypes | null>(null);
   const params = useParams();
   const id = params && Number(params.id);
@@ -99,6 +99,8 @@ const EnvironmentDetails = () => {
       <AutomationTable
         envList={envList}
         handleGetAutomation={handleGetAutomation}
+        page={page}
+        setPage={setPage}
       />
     </Fragment>
   );
