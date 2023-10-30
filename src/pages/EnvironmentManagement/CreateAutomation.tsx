@@ -14,7 +14,7 @@ import { useForm } from "@mantine/form";
 import { CiSearch } from "react-icons/ci";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useLocation } from "react-router-dom";
+import { useLocation,  } from "react-router-dom";
 import {
   EnvironmentType,
   PipelineTypes,
@@ -23,10 +23,14 @@ import {
   AutomationResponseTypes,
 } from "../../types/environments";
 import axios from "axios";
-import { createAutomation } from "../../services/automation";
+import {
+  createAutomation,
+} from "../../services/automation";
 import { toast } from "react-toastify";
 import { useDisclosure } from "@mantine/hooks";
 import { UploadExcel } from "./components/UploadExcel";
+
+const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
 
 const modules = {
   toolbar: [
@@ -54,14 +58,11 @@ const CreateAutomation = () => {
   const [automationResponse, setAutomationResponse] =
     useState<AutomationResponseTypes | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
+  
+
 
   const location = useLocation();
   const env: EnvironmentType = location && location?.state;
-
-  console.log(location);
-
-  // console.log(env.agency);
-  console.log(automationResponse);
 
   const icons = Quill.import("ui/icons");
   icons["undo"] = Undo;
@@ -96,7 +97,13 @@ const CreateAutomation = () => {
     handleGetCustomField();
   }, []);
 
-  const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
+  useEffect(() => {
+    pipeline?.find((p) => {
+      if (p.id === form.values.automation.pipeline) {
+        setStages(p.stages);
+      }
+    });
+  }, [form.values.automation.pipeline]);
 
   const handleGetPipeline = () => {
     setLoading(true);
@@ -136,6 +143,23 @@ const CreateAutomation = () => {
       });
   };
 
+  const submit = (values: any) => {
+    setLoading(true);
+
+    createAutomation(values)
+      .then((res: any) => {
+        toast.success("Automation created successfully");
+        setAutomationResponse(res.data);
+        open();
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
   const DataEndPointsFields = form.values.datapoints.map((item, index) => (
     <div className="flex gap-10 mb-5" key={item.key}>
       <Select
@@ -161,31 +185,6 @@ const CreateAutomation = () => {
       />
     </div>
   ));
-
-  useEffect(() => {
-    pipeline?.find((p) => {
-      if (p.id === form.values.automation.pipeline) {
-        setStages(p.stages);
-      }
-    });
-  }, [form.values.automation.pipeline]);
-
-  const submit = (values: any) => {
-    setLoading(true);
-
-    createAutomation(values)
-      .then((res: any) => {
-        toast.success("Automation created successfully");
-        setAutomationResponse(res.data);
-        open();
-      })
-      .catch((err) => {
-        console.log(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
 
   return (
     <div>

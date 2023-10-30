@@ -140,11 +140,12 @@ const AutomationTable = ({
                         <FiEdit2
                           size={20}
                           color="#475467"
-                          // onClick={() =>
-                          //   navigate(
-                          //     `/manage-environment/create-automation/${item.id}`
-                          //   )
-                          // }
+                          onClick={() =>
+                            navigate(
+                              `/manage-environment/edit-automation/${item.id}`,
+                              { state: item }
+                            )
+                          }
                         />
                       </div>
                     </Table.Td>
