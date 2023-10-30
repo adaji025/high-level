@@ -9,6 +9,7 @@ import UserManagement from "../../pages/UserManagement/Usermanagement";
 import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDetails";
 import CreateAutomation from "../../pages/EnvironmentManagement/CreateAutomation";
 import Header from "./Header";
+import EditAutomation from "../../pages/EnvironmentManagement/EditAutomation";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
@@ -38,6 +39,10 @@ const LoggedInContainer = () => {
               <Route
                 path="/manage-environment/create-automation/:id"
                 element={<CreateAutomation />}
+              />
+              <Route
+                path="/manage-environment/edit-automation/:id"
+                element={<EditAutomation />}
               />
             </Routes>
           </main>

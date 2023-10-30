@@ -2,6 +2,7 @@ export type EnvironmentState = {
   page: number;
   size: number;
   count: number;
+  total: number;
   items: EnvironmentType[];
 };
 

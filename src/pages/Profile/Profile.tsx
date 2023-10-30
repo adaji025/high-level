@@ -4,9 +4,16 @@ import { CiSearch } from "react-icons/ci";
 import { useState } from "react";
 import ProfileDetails from "./components/ProfileDetails";
 import Password from "./components/Password";
+import { useEffect } from "react";
 
 const Profile = () => {
   const [active, setActive] = useState("details");
+
+  useEffect(() => {
+    handleGetUser()
+  }, []);
+
+  const handleGetUser = () => {};
   return (
     <Fragment>
       <div>

@@ -1,5 +1,6 @@
-import { useState } from "react";
-import { Table } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Pagination, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { FcCheckmark } from "react-icons/fc";
 import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
@@ -9,15 +10,34 @@ import {
   RecentAutomationTypes,
 } from "../../../types/automation";
 import moment from "moment";
+import ConfirmDeleteAutomation from "../../Dashboard/components/ConfirmDeleteAutomation";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
-  envList: RecentAutomationTypes | null
+  envList: RecentAutomationTypes | null;
+  handleGetAutomation: () => void;
+  page: number
+  setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const AutomationTable = ({ envList: automation }: Props) => {
+const AutomationTable = ({
+  envList: automation,
+  handleGetAutomation,
+  page,
+  setPage
+}: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const [opened, { open, close }] = useDisclosure(false);
+  const [automationId, setAutomationId] = useState<number | null>(null);
+  const [totalPages, setTotalPages] = useState(1);
+
+  const navigate = useNavigate();
+
   const automationTableData = automation?.items;
-  console.log("selectedRowIds", selectedRowIds);
+
+  useEffect(() => {
+    if (automation) setTotalPages(Math.ceil(automation?.total / automation.size));
+  }, [automation]);
 
   const isAllRowsSelected =
     automationTableData &&
@@ -48,6 +68,12 @@ const AutomationTable = ({ envList: automation }: Props) => {
   console.log("latest", latest);
   return (
     <div>
+      <ConfirmDeleteAutomation
+        close={close}
+        opened={opened}
+        handleGetLatestAutomation={handleGetAutomation}
+        automationId={automationId}
+      />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -112,8 +138,24 @@ const AutomationTable = ({ envList: automation }: Props) => {
                     </Table.Td>
                     <Table.Td>
                       <div className="flex gap-5">
-                        <AiOutlineDelete size={20} color="#475467" />
-                        <FiEdit2 size={20} color="#475467" />
+                        <div
+                          onClick={() => {
+                            setAutomationId(item.id);
+                            open();
+                          }}
+                        >
+                          <AiOutlineDelete size={20} color="#475467" />
+                        </div>
+                        <FiEdit2
+                          size={20}
+                          color="#475467"
+                          onClick={() =>
+                            navigate(
+                              `/manage-environment/edit-automation/${item.id}`,
+                              { state: item }
+                            )
+                          }
+                        />
                       </div>
                     </Table.Td>
                   </Table.Tr>
@@ -126,6 +168,14 @@ const AutomationTable = ({ envList: automation }: Props) => {
             You have No Latest Automations
           </h2>
         )}
+      </div>
+      <div className="flex justify-center mt-10 text-darkBlue">
+        <Pagination
+          value={page}
+          total={totalPages}
+          siblings={1}
+          onChange={setPage}
+        />
       </div>
     </div>
   );

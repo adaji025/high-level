@@ -14,7 +14,6 @@ type EnvironmentProps = {
     React.SetStateAction<EnvironmentState | null>
   >;
   page: number;
-  size: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   handleGetEnvironments: () => void;
 };
@@ -27,18 +26,20 @@ const EvironmentTable = ({
   handleGetEnvironments,
 }: EnvironmentProps) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
-  const [count, setCount] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const [edit, setEdit] = useState<EnvironmentType | undefined>(undefined);
   const [loading] = useState(false);
   const [envId, setEnvId] = useState<number | null>(null);
   const [openDelModal, setOpenDelModal] = useState(false);
+  const [totalPages, setTotalPages] = useState(1);
 
   const navigate = useNavigate();
 
+ 
   useEffect(() => {
-    if (environments) setCount(environments?.count);
+    if (environments) setTotalPages(Math.ceil(environments?.total / environments.size));
   }, [environments]);
+
 
 
   const list = environments?.items;
@@ -166,7 +167,7 @@ const EvironmentTable = ({
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination
           value={page}
-          total={count}
+          total={totalPages}
           siblings={1}
           onChange={setPage}
         />

@@ -11,16 +11,16 @@ import { PiUserBold } from "react-icons/pi";
 import { Fragment, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { useState } from "react";
-import {  EnvironmentType } from "../../types/environments";
-import {  RecentAutomationTypes } from "../../types/automation";
+import { EnvironmentType } from "../../types/environments";
+import { RecentAutomationTypes } from "../../types/automation";
 import useNotification from "../../hooks/useNotification";
 import { getSingleEnv } from "../../services/environment";
 import AutomationTable from "./components/AutomationTable";
 
 const EnvironmentDetails = () => {
   const [loading, setLoading] = useState(false);
-  const [page] = useState(1);
-  const [size] = useState(10);
+  const [page, setPage] = useState(1);
+  const [size] = useState(1);
   const [envList, setEnvList] = useState<RecentAutomationTypes | null>(null);
   const params = useParams();
   const id = params && Number(params.id);
@@ -96,7 +96,12 @@ const EnvironmentDetails = () => {
         </Button>
       </div>
 
-      <AutomationTable envList={envList} />
+      <AutomationTable
+        envList={envList}
+        handleGetAutomation={handleGetAutomation}
+        page={page}
+        setPage={setPage}
+      />
     </Fragment>
   );
 };

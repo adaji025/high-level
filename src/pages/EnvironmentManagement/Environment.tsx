@@ -17,8 +17,8 @@ const EnvironmentManagement = () => {
     null
   );
   
-  const [page, setPage] = useState(1);
-  const [size] = useState(3);
+  const [page, setPage] = useState(1)
+  const [size] = useState(5);
 
   const { handleError } = useNotification();
 
@@ -85,7 +85,6 @@ const EnvironmentManagement = () => {
           setEnvironments={setEnvironments}
           page={page}
           setPage={setPage}
-          size={size}
           handleGetEnvironments={handleGetEnvironments}
         />
       </div>
