@@ -13,8 +13,8 @@ const Dashboard = () => {
     useState<RecentAutomationTypes | null>(null);
   const [latestAutomation, setLatestAutomation] =
     useState<RecentAutomationTypes | null>(null);
-  const [page,] = useState(1);
-  const [size,] = useState(10);
+  const [page] = useState(1);
+  const [size] = useState(10);
 
   const { handleError } = useNotification();
 
@@ -48,10 +48,8 @@ const Dashboard = () => {
       });
   };
 
-  
-  const recent = recentAutomation && recentAutomation?.items.slice(0, 4)
-  
- 
+  const recent = recentAutomation && recentAutomation?.items.slice(0, 4);
+
   return (
     <div>
       <LoadingOverlay visible={loading} />
@@ -86,7 +84,10 @@ const Dashboard = () => {
       </div>
 
       <div className="mt-5">
-        <AutomationTable automation={latestAutomation} />
+        <AutomationTable
+          automation={latestAutomation}
+          handleGetLatestAutomation={handleGetLatestAutomation}
+        />
       </div>
     </div>
   );

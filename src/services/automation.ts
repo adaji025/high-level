@@ -66,3 +66,15 @@ export const runAutomation = (id: number) => {
       });
   });
 };
+
+export const deleteAutomation = (id: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.delete(`${APIS.AUTOMATION.DELETE(id)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
