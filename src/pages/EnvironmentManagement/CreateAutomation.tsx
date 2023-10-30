@@ -56,10 +56,12 @@ const CreateAutomation = () => {
   const [opened, { open, close }] = useDisclosure(false);
 
   const location = useLocation();
-  const env: EnvironmentType = location?.state;
+  const env: EnvironmentType = location && location?.state;
+
+  console.log(location);
 
   // console.log(env.agency);
-  console.log(automationResponse)
+  console.log(automationResponse);
 
   const icons = Quill.import("ui/icons");
   icons["undo"] = Undo;
@@ -175,7 +177,7 @@ const CreateAutomation = () => {
       .then((res: any) => {
         toast.success("Automation created successfully");
         setAutomationResponse(res.data);
-        open()
+        open();
       })
       .catch((err) => {
         console.log(err);
