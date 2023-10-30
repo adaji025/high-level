@@ -36,7 +36,7 @@ const AddEnvironment = ({ close, opened, setEnvironments, edit }: Props) => {
   useEffect(() => {
     form.setValues({
       agency: edit?.agency,
-      api_key: edit?.api_key.substring(0, 30),
+      api_key: edit?.api_key,
     });
   }, [edit]);
 

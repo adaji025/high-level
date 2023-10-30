@@ -5,13 +5,8 @@ import { AiOutlineDelete } from "react-icons/ai";
 import { FiEdit2 } from "react-icons/fi";
 import { EnvironmentState, EnvironmentType } from "../../../types/environments";
 import AddEnvironment from "./AddEnvironment";
-import {
-  deleteEnvironment,
-  getEnvironment,
-} from "../../../services/environment";
-import { toast } from "react-toastify";
-import useNotification from "../../../hooks/useNotification";
 import { useNavigate } from "react-router-dom";
+import ConfirmDeleteEnv from "./ConfirmDeleteEnv";
 
 type EnvironmentProps = {
   environments: EnvironmentState | null;
@@ -21,6 +16,7 @@ type EnvironmentProps = {
   page: number;
   size: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  handleGetEnvironments: () => void;
 };
 
 const EvironmentTable = ({
@@ -28,23 +24,22 @@ const EvironmentTable = ({
   page,
   setPage,
   setEnvironments,
-  size,
+  handleGetEnvironments,
 }: EnvironmentProps) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [count, setCount] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
   const [edit, setEdit] = useState<EnvironmentType | undefined>(undefined);
-  const [loading, setLoading] = useState(false);
+  const [loading] = useState(false);
+  const [envId, setEnvId] = useState<number | null>(null);
+  const [openDelModal, setOpenDelModal] = useState(false);
 
-  const { handleError } = useNotification();
-
-  const navigate = useNavigate()
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (environments) setCount(environments?.count);
   }, [environments]);
 
-  // console.log("selectedRowIds", selectedRowIds);
 
   const list = environments?.items;
 
@@ -70,33 +65,6 @@ const EvironmentTable = ({
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
-  const handleGetEnvironments = () => {
-    getEnvironment(page, size)
-      .then((res: any) => {
-        setEnvironments(res.data);
-      })
-      .catch((error) => {
-        handleError(error);
-      });
-  };
-
-  const handleDeleteEnv = (id: number) => {
-    setLoading(true);
-
-    // @ts-ignore
-    deleteEnvironment(id)
-      .then(() => {
-        toast.success("Environment deleted successfully");
-        handleGetEnvironments();
-      })
-      .catch((error) => {
-        handleError(error);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
-
   return (
     <div>
       <LoadingOverlay visible={loading} />
@@ -106,6 +74,13 @@ const EvironmentTable = ({
         edit={edit}
         setEnvironments={setEnvironments}
       />
+      <ConfirmDeleteEnv
+        openDelModal={openDelModal}
+        close={() => setOpenDelModal(false)}
+        envId={envId}
+        handleGetEnvironments={handleGetEnvironments}
+      />
+
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -127,8 +102,15 @@ const EvironmentTable = ({
             </Table.Thead>
             <Table.Tbody>
               {list?.map((item: EnvironmentType) => (
-                <Table.Tr key={item.id} onClick={() => navigate(`/manage-environment/${item.id}`, {state : item})} className="cursor-pointer">
-                  <Table.Td>
+                <Table.Tr key={item.id}>
+                  <Table.Td
+                    onClick={() =>
+                      navigate(`/manage-environment/${item.id}`, {
+                        state: item,
+                      })
+                    }
+                    className="cursor-pointer"
+                  >
                     <div className="flex gap-3">
                       <input
                         type="checkbox"
@@ -138,7 +120,16 @@ const EvironmentTable = ({
                       {item.agency}
                     </div>
                   </Table.Td>
-                  <Table.Td>{item.api_key.substring(0, 30)}</Table.Td>
+                  <Table.Td
+                    onClick={() =>
+                      navigate(`/manage-environment/${item.id}`, {
+                        state: item,
+                      })
+                    }
+                    className="cursor-pointer"
+                  >
+                    {item.api_key.substring(0, 30)}
+                  </Table.Td>
 
                   <Table.Td
                     className="cursor-pointer"
@@ -148,7 +139,10 @@ const EvironmentTable = ({
                       <AiOutlineDelete
                         size={20}
                         color="#475467"
-                        onClick={() => handleDeleteEnv(item.id)}
+                        onClick={() => {
+                          setEnvId(item.id);
+                          setOpenDelModal(true);
+                        }}
                       />
                       <FiEdit2 size={20} color="#475467" onClick={open} />
                     </div>
@@ -158,8 +152,16 @@ const EvironmentTable = ({
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {list?.length === 0 && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
-        {!list && <h2 className="text-2xl font-bold text-center my-10">You have no Environment</h2>}
+        {list?.length === 0 && (
+          <h2 className="text-2xl font-bold text-center my-10">
+            You have no Environment
+          </h2>
+        )}
+        {!list && (
+          <h2 className="text-2xl font-bold text-center my-10">
+            You have no Environment
+          </h2>
+        )}
       </div>
       <div className="flex justify-center mt-10 text-darkBlue">
         <Pagination

@@ -21,8 +21,8 @@ export const APIS = {
     CREATE: `${api}/environment/create`,
     GET_LIST: (page: number, size: number) =>
       `${api}/environment/list?page=${page}&size=${size}`,
-    UPDATE: (id: number) => `${api}/environment/edit/${id}`,
-    DELETE: (id: number) => `${api}/environment/delete/${id}`,
+    UPDATE: (id: number) => `${api}/environment/edit/${id}/`,
+    DELETE: (id: number) => `${api}/environment/delete/${id}/`,
     GET_AUTOMATION: (id: string, page: number, size: number) =>
       `${api}/environment/${id}/automation/list?page=${page}&size=${size}`,
     SINGLE_ENV: (id: number, page: number, size: number) =>
@@ -34,5 +34,7 @@ export const APIS = {
     CREATE_AUTOMATION: `${api}/automation/create`,
     UPLOAD_EXCEL: (id: number) => `${api}/automation/${id}/upload/excel`,
     AUTOMATION_DETAILS: (id: number) => `${api}/automation/${id}/`,
+    RUN: (id: number) => `${api}/automation/${id}/run`,
+    DELETE: (id: number) => `${api}/automation/delete/${id}/`,
   },
 };

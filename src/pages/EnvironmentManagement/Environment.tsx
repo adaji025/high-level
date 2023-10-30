@@ -16,6 +16,7 @@ const EnvironmentManagement = () => {
   const [environments, setEnvironments] = useState<EnvironmentState | null>(
     null
   );
+  
   const [page, setPage] = useState(1);
   const [size] = useState(3);
 
@@ -85,6 +86,7 @@ const EnvironmentManagement = () => {
           page={page}
           setPage={setPage}
           size={size}
+          handleGetEnvironments={handleGetEnvironments}
         />
       </div>
     </Fragment>

@@ -1,7 +1,6 @@
 import { useState } from "react";
 import { Table } from "@mantine/core";
 import { FcCheckmark } from "react-icons/fc";
-import { FiEdit2 } from "react-icons/fi";
 import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import {
@@ -9,15 +8,19 @@ import {
   RecentAutomationTypes,
 } from "../../../types/automation";
 import moment from "moment";
+import ConfirmDeleteAutomation from "./ConfirmDeleteAutomation";
+import { useDisclosure } from "@mantine/hooks";
 
 type Props = {
   automation?: RecentAutomationTypes | null;
+  handleGetLatestAutomation: () => void
 };
 
-const AutomationTable = ({ automation }: Props) => {
+const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
+  const [opened, { open, close }] = useDisclosure(false);
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
+  const [automationId, setAutomationId] = useState<number | null>(null);
   const automationTableData = automation?.items;
-  console.log("selectedRowIds", selectedRowIds);
 
   const isAllRowsSelected =
     automationTableData &&
@@ -45,9 +48,14 @@ const AutomationTable = ({ automation }: Props) => {
 
   const latest = automation && automation?.items.slice(0, 6);
 
-  console.log("latest", latest);
   return (
     <div>
+      <ConfirmDeleteAutomation
+        close={close}
+        opened={opened}
+        automationId={automationId}
+        handleGetLatestAutomation={handleGetLatestAutomation}
+      />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -111,9 +119,14 @@ const AutomationTable = ({ automation }: Props) => {
                       </div>
                     </Table.Td>
                     <Table.Td>
-                      <div className="flex gap-5">
+                      <div
+                        className="flex gap-5"
+                        onClick={() => {
+                          setAutomationId(item.id);
+                          open();
+                        }}
+                      >
                         <AiOutlineDelete size={20} color="#475467" />
-                        <FiEdit2 size={20} color="#475467" />
                       </div>
                     </Table.Td>
                   </Table.Tr>
