@@ -33,7 +33,6 @@ const UserManagement = () => {
     setLoading(true);
     getUserList(page, size)
       .then((res: any) => {
-        console.log(res);
         setUsers(res.data);
       })
       .catch((error) => {

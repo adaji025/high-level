@@ -65,7 +65,6 @@ const AutomationTable = ({
 
   const latest = automation && automation?.items.slice(0, 6);
 
-  console.log("latest", latest);
   return (
     <div>
       <ConfirmDeleteAutomation

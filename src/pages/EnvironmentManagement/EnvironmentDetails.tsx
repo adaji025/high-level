@@ -20,7 +20,7 @@ import AutomationTable from "./components/AutomationTable";
 const EnvironmentDetails = () => {
   const [loading, setLoading] = useState(false);
   const [page, setPage] = useState(1);
-  const [size] = useState(1);
+  const [size] = useState(5);
   const [envList, setEnvList] = useState<RecentAutomationTypes | null>(null);
   const params = useParams();
   const id = params && Number(params.id);
@@ -32,11 +32,10 @@ const EnvironmentDetails = () => {
 
   const env: EnvironmentType = location?.state;
 
-  console.log(env.agency);
 
   useEffect(() => {
     handleGetAutomation();
-  }, []);
+  }, [page]);
 
   const handleGetAutomation = () => {
     setLoading(true);
