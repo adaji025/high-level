@@ -25,6 +25,18 @@ export const createUser = (data: any) => {
   });
 };
 
+export const getUser = () => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.USER.GET_USER}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const changePassword = (data: any) => {
   return new Promise((resolve, reject) => {
     AxoisApi.put(`${APIS.USER.USER_CHANGE_PASSWORD}`, data)
@@ -60,7 +72,7 @@ export const deactivateUser = (id: number) => {
       });
   });
 };
-export const  activateUser = (id: number) => {
+export const activateUser = (id: number) => {
   return new Promise((resolve, reject) => {
     AxoisApi.put(`${APIS.USER.ACTIVATE(id)}`)
       .then((res: any) => {
@@ -71,8 +83,6 @@ export const  activateUser = (id: number) => {
       });
   });
 };
-
-
 
 export const getUserList = (page: number, size: number) => {
   return new Promise((resolve, reject) => {

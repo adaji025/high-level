@@ -11,24 +11,44 @@ import { Upload } from "./Upload";
 import { updateProfile } from "../../../services/user";
 import { toast } from "react-toastify";
 import useNotification from "../../../hooks/useNotification";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { UserTypes } from "../../../types/user";
 
-const ProfileDetails = () => {
+type Props = {
+  user: UserTypes | null;
+  handleGetUser: () => void
+};
+
+const ProfileDetails = ({ user, handleGetUser }: Props) => {
   const { handleError } = useNotification();
   const [loading, setLoading] = useState(false);
+
+
   const form = useForm({
     initialValues: {
-      first_name: "",
+      first_name: user ? user.first_name :"",
       last_name: "",
       email: "",
     },
   });
 
+  console.log(user)
+
+  useEffect(() => {
+    form.setValues({
+      first_name: user ? user?.first_name : "",
+      last_name: user ? user?.last_name : "",
+      email: user ? user?.email : "",
+    });
+  }, []);
+
   const handleUpdateProfile = (values: any) => {
     setLoading(true);
+
     updateProfile(values)
       .then(() => {
         toast.success("Profile updated successfully");
+        handleGetUser()
       })
       .catch((error) => {
         handleError(error);
@@ -58,7 +78,7 @@ const ProfileDetails = () => {
             <TextInput
               size="lg"
               label="Last name"
-              {...form.getInputProps("email")}
+              {...form.getInputProps("last_name")}
               className="sm:w-1/2"
             />
           </div>
