@@ -134,11 +134,12 @@ const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {automation?.items.length === 0 && (
+        {automation?.items.length === 0 || !automation && (
           <h2 className="text-center font-bold text-black/80 flex justify-center w-full mx-auto my-20">
             You have No Latest Automations
           </h2>
         )}
+       
       </div>
     </div>
   );

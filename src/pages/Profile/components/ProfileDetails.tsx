@@ -16,26 +16,24 @@ import { UserTypes } from "../../../types/user";
 
 type Props = {
   user: UserTypes | null;
-  handleGetUser: () => void
+  handleGetUser: () => void;
 };
 
 const ProfileDetails = ({ user, handleGetUser }: Props) => {
   const { handleError } = useNotification();
   const [loading, setLoading] = useState(false);
 
-
   const form = useForm({
     initialValues: {
-      first_name: user ? user.first_name :"",
+      first_name: "",
       last_name: "",
       email: "",
     },
   });
 
-  console.log(user)
 
   useEffect(() => {
-    form.setValues({
+    form.setInitialValues({
       first_name: user ? user?.first_name : "",
       last_name: user ? user?.last_name : "",
       email: user ? user?.email : "",
@@ -48,7 +46,7 @@ const ProfileDetails = ({ user, handleGetUser }: Props) => {
     updateProfile(values)
       .then(() => {
         toast.success("Profile updated successfully");
-        handleGetUser()
+        handleGetUser();
       })
       .catch((error) => {
         handleError(error);
@@ -94,7 +92,7 @@ const ProfileDetails = ({ user, handleGetUser }: Props) => {
               variant="filled"
               radius="xl"
               size="xl"
-              src={Hannah}
+              src={null}
               className="mx-auto rounded-full"
             />
           </div>

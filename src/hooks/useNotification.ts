@@ -18,8 +18,12 @@ const useNotification = () => {
     if (error.response.status === 404) {
       return toast.error("Route not found");
     }
+    if (error.response.data.error === "Invalid Token") {
+      logoutUser();
+      return toast.error("Route not found");
+    }
 
-    if(error){
+    if (error) {
       return toast.error(error.response.data.error);
     }
 
