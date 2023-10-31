@@ -6,7 +6,6 @@ import {
   LoadingOverlay,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import Hannah from "../../../assets/images/hannah.png";
 import { Upload } from "./Upload";
 import { updateProfile } from "../../../services/user";
 import { toast } from "react-toastify";

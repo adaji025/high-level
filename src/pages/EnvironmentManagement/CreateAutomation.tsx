@@ -14,7 +14,7 @@ import { useForm } from "@mantine/form";
 import { CiSearch } from "react-icons/ci";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import { useLocation,  } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import {
   EnvironmentType,
   PipelineTypes,
@@ -23,9 +23,7 @@ import {
   AutomationResponseTypes,
 } from "../../types/environments";
 import axios from "axios";
-import {
-  createAutomation,
-} from "../../services/automation";
+import { createAutomation } from "../../services/automation";
 import { toast } from "react-toastify";
 import { useDisclosure } from "@mantine/hooks";
 import { UploadExcel } from "./components/UploadExcel";
@@ -58,8 +56,6 @@ const CreateAutomation = () => {
   const [automationResponse, setAutomationResponse] =
     useState<AutomationResponseTypes | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
-  
-
 
   const location = useLocation();
   const env: EnvironmentType = location && location?.state;
@@ -230,12 +226,15 @@ const CreateAutomation = () => {
           <h2 className="font-bold text-2xl">Create Automation</h2>
           <div className="flex gap-10 mt-10">
             <TextInput
+              required
               size="lg"
               label="Name"
-              className="w-1/2"
+              placeholder="Type name"
+              className="flex-1"
               {...form.getInputProps("automation.name")}
             />
             <Select
+              required
               size="lg"
               label="Select pipeline"
               data={pipeline?.map((item) => ({
@@ -248,6 +247,7 @@ const CreateAutomation = () => {
           </div>
           <div className="flex gap-10 mt-10">
             <Select
+              required
               size="lg"
               label="Start stage"
               data={stages?.map((stage) => ({
@@ -258,6 +258,7 @@ const CreateAutomation = () => {
               {...form.getInputProps("automation.start_stage")}
             />
             <Select
+              required
               size="lg"
               label="End stage"
               data={stages?.map((stage) => ({
@@ -309,27 +310,30 @@ const CreateAutomation = () => {
                 autosize
                 minRows={6}
                 className="!text-base"
+                label="SMS"
+                placeholder="Type message"
                 {...form.getInputProps("messages.sms")}
               />
             </div>
 
             <div className="mt-14 mb-32 md:mb-24">
+              <div className="mb-1 font-semibold">Email</div>
               <ReactQuill
                 theme="snow"
-                placeholder="type here ...."
+                placeholder="Type email here ...."
                 value={email}
                 onChange={setEmail}
                 modules={modules}
                 className="h-[30vh] "
               />
             </div>
-            <div className="flex justify-end">
-              <Button type="submit" size="lg" className="bg-highLevelRed">
-                Submit
-              </Button>
-            </div>
           </div>
         )}
+        <div className="flex justify-end">
+          <Button type="submit" size="lg" className="bg-highLevelRed">
+            Submit
+          </Button>
+        </div>
       </form>
     </div>
   );
