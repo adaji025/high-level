@@ -51,3 +51,8 @@ button.mantine-active.mantine-Pagination-control {
 .mantine-LoadingOverlay-root {
   position: fixed !important;
 }
+
+label {
+  font-weight: 600 !important;
+  margin-bottom: 4px !important;
+}

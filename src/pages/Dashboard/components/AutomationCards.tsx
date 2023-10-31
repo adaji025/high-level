@@ -19,7 +19,7 @@ const AutomationCards = ({ item }: Props) => {
 
     runAutomation(item.id)
       .then(() => {
-        toast.success("Automation completed");
+        toast.success("Automation has started");
       })
       .catch((err) => {
         handleError(err);
@@ -37,7 +37,17 @@ const AutomationCards = ({ item }: Props) => {
         </div>
         <div className="mt-6 flex items-center gap-3 text-xs">
           <h6 className="font-semibold">Status</h6>
-          <div className="text-[#027A48]">{item.status}</div>
+          <div
+            className={`${
+              item.status === "FAILED"
+                ? "text-red-600"
+                : item.status === "NOT_RUNNING"
+                ? "text-yellow-600"
+                : "text-[#027A48]"
+            }`}
+          >
+            {item.status}
+          </div>
         </div>
         <div className="mt-3 flex items-center gap-3 text-xs">
           <h6 className="font-semibold">Last Run Date</h6>
