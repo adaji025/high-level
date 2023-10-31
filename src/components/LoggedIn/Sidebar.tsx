@@ -22,6 +22,8 @@ const Sidebar = ({ openMobileNav }: Props) => {
 
   const { logoutUser, handleError } = useNotification();
 
+  console.log(user);
+
   const users = [
     {
       title: "Dashboard",
