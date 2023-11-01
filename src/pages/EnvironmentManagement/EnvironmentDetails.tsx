@@ -100,6 +100,7 @@ const EnvironmentDetails = () => {
         handleGetAutomation={handleGetAutomation}
         page={page}
         setPage={setPage}
+        env={env}
       />
     </Fragment>
   );

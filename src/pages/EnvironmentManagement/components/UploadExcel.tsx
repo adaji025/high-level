@@ -5,6 +5,7 @@ import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import { useState } from "react";
 import { uploadExcel } from "../../../services/automation";
 import { AutomationResponseTypes } from "../../../types/environments";
+import useNotification from "../../../hooks/useNotification";
 
 type Props = {
   opened: boolean;
@@ -18,6 +19,8 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
     maxFiles: 1,
   });
 
+  const { handleError } = useNotification();
+
   const handleUploadExcel = () => {
     setLoading(true);
     const data = {
@@ -25,8 +28,11 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
     };
     if (automationResponse)
       uploadExcel(automationResponse?.id, data)
-        .then((res) => {
-          console.log(res);
+        .then(() => {
+          close();
+        })
+        .catch((err) => {
+          handleError(err);
         })
         .finally(() => {
           setLoading(false);
