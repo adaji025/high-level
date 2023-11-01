@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { useState, Fragment } from "react";
 import { LoadingOverlay } from "@mantine/core";
 import { AiOutlineEye } from "react-icons/ai";
+import AutomationStatus from "./AutomationStatus";
 
 type Props = {
   item: AutomationItemTypes;
@@ -14,6 +15,8 @@ type Props = {
 
 const AutomationCards = ({ item }: Props) => {
   const [loading, setLoading] = useState(false);
+  const [viewStatus, setViewStatus] = useState(false);
+
   const { handleError } = useNotification();
   const handleRunAutomation = () => {
     setLoading(true);
@@ -32,6 +35,11 @@ const AutomationCards = ({ item }: Props) => {
   return (
     <Fragment>
       <LoadingOverlay visible={loading} />
+      <AutomationStatus
+        autDetails={item}
+        close={() => setViewStatus(false)}
+        viewStatus={viewStatus}
+      />
       <div className="border min-w-[200px] w-full p-5 shadow rounded-md">
         <div className="flex justify-between gap-5">
           <h2 className="font-semibold capitalize">{item.name}</h2>
@@ -59,19 +67,34 @@ const AutomationCards = ({ item }: Props) => {
         <div className="mt-10 flex gap-5 items-center">
           <div className="h-[34px] w-[34px] rounded-full flex justify-center items-center border border-darkBlue">
             {item.status === "RUNNING" ? (
-              <AiOutlineEye size={24} />
+              <AiOutlineEye
+                size={24}
+                className="cursor-pointer"
+                onClick={() => setViewStatus(true)}
+              />
             ) : (
               <BsFillPlayFill
                 size={24}
                 color="#E84E38"
                 onClick={handleRunAutomation}
+                className="cursor-pointer"
               />
             )}
           </div>
           {item.status === "RUNNING" ? (
-            <div className="font-semibold">View Automation</div>
+            <div
+              className="font-semibold cursor-pointer"
+              onClick={() => setViewStatus(true)}
+            >
+              View Automation
+            </div>
           ) : (
-            <div className="font-semibold">Start Automation</div>
+            <div
+              className="font-semibold cursor-pointer"
+              onClick={handleRunAutomation}
+            >
+              Start Automation
+            </div>
           )}
         </div>
       </div>
