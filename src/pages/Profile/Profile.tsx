@@ -1,40 +1,15 @@
-import { TextInput, LoadingOverlay } from "@mantine/core";
+import { TextInput } from "@mantine/core";
 import { Fragment } from "react";
 import { CiSearch } from "react-icons/ci";
 import ProfileDetails from "./components/ProfileDetails";
 import Password from "./components/Password";
-import { useEffect, useState } from "react";
-import { getUser } from "../../services/user";
-import useNotification from "../../hooks/useNotification";
-import { UserTypes } from "../../types/user";
+import { useState } from "react";
 
 const Profile = () => {
   const [active, setActive] = useState("details");
-  const [user, setUser] = useState<UserTypes | null>(null);
-  const [loading, setLoading] = useState(false);
-  const { handleError } = useNotification();
 
-  useEffect(() => {
-    handleGetUser();
-  }, []);
-
-  const handleGetUser = () => {
-    setLoading(true);
-
-    getUser()
-      .then((res: any) => {
-        setUser(res.data);
-      })
-      .catch((err) => {
-        handleError(err);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
-  };
   return (
     <Fragment>
-      <LoadingOverlay visible={loading} />
       <div>
         <div className="flex justify-between">
           <h2 className="font-bold text-3xl">Settings</h2>
@@ -69,9 +44,7 @@ const Profile = () => {
         </div>
 
         <div className="mt-14">
-          {active === "details" && (
-            <ProfileDetails user={user} handleGetUser={handleGetUser} />
-          )}
+          {active === "details" && <ProfileDetails />}
           {active === "pw" && <Password />}
         </div>
       </div>

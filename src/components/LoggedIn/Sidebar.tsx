@@ -15,16 +15,36 @@ type Props = {
 };
 
 const Sidebar = ({ openMobileNav }: Props) => {
-  const [user, setUser] = useState<UserTypes | null>(null);
+  const [users, setUsers] = useState<UserTypes | null>(null);
   const [loading, setLoading] = useState(false);
+  const [routes, setRoutes] = useState<any[]>([]);
   const location = useLocation();
   const navigate = useNavigate();
 
   const { logoutUser, handleError } = useNotification();
 
-  console.log(user);
+  useEffect(() => {
+    users?.is_admin ? setRoutes(adminRoutes) : setRoutes(usersRoutes);
+  }, []);
 
-  const users = [
+  const usersRoutes = [
+    {
+      title: "Dashboard",
+      icon: <DashboardIcon />,
+      route: "/dashboard",
+    },
+    {
+      title: "Profile Page",
+      icon: <FaRegUser />,
+      route: "/profile",
+    },
+    {
+      title: "Manage Environments",
+      icon: <GlobeIcon />,
+      route: "/manage-environment",
+    },
+  ];
+  const adminRoutes = [
     {
       title: "Dashboard",
       icon: <DashboardIcon />,
@@ -56,7 +76,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
 
     getUser()
       .then((res: any) => {
-        setUser(res.data);
+        setUsers(res.data);
       })
       .catch((err) => {
         handleError(err);
@@ -74,7 +94,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
           <img src={GoHighLevel} alt="" />
 
           <div className="mt-14 grid gap-5 text-sm sm:text-base">
-            {users.map((route: any, index: number) => (
+            {routes.map((route: any, index: number) => (
               <div
                 key={index}
                 className={`flex cursor-pointer gap-3  items-center px-3 py-2  rounded-lg ${
@@ -133,9 +153,9 @@ const Sidebar = ({ openMobileNav }: Props) => {
               </Avatar>
               <div className="text-white text-xs sm:text-sm">
                 <Text fw={600}>
-                  {user?.first_name} {user?.last_name}
+                  {users?.first_name} {users?.last_name}
                 </Text>
-                <Text>{user?.email}</Text>
+                <Text>{users?.email}</Text>
               </div>
             </div>
             <BiLogOut

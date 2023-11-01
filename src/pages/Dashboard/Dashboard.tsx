@@ -50,6 +50,7 @@ const Dashboard = () => {
   };
 
   const recent = recentAutomation && recentAutomation?.items.slice(0, 4);
+  console.log("recent", recent);
 
   return (
     <div>
@@ -63,12 +64,11 @@ const Dashboard = () => {
         </div>
       )}
 
-      {recent?.length === 0 ||
-        (!recent && (
-          <h2 className="text-center font-bold text-2xl text-black/80 mt-10">
-            No Recent Automation
-          </h2>
-        ))}
+      {recent?.length === 0 && (
+        <h2 className="text-center font-bold text-2xl text-black/80 mt-10">
+          No Recent Automation
+        </h2>
+      )}
 
       <div className="flex justify-between mt-14">
         <div>
