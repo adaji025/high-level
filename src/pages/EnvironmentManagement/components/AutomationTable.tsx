@@ -1,9 +1,13 @@
 import { useEffect, useState } from "react";
-import { Pagination, Table } from "@mantine/core";
+import { Pagination, Table, LoadingOverlay } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { FcCheckmark } from "react-icons/fc";
 import { FiEdit2 } from "react-icons/fi";
-import { AiOutlineArrowDown, AiOutlineDelete } from "react-icons/ai";
+import {
+  AiOutlineArrowDown,
+  AiOutlineDelete,
+  AiOutlineEye,
+} from "react-icons/ai";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import {
   AutomationItemTypes,
@@ -12,11 +16,16 @@ import {
 import moment from "moment";
 import ConfirmDeleteAutomation from "../../Dashboard/components/ConfirmDeleteAutomation";
 import { useNavigate } from "react-router-dom";
+import { BsFillPlayFill } from "react-icons/bs";
+import { runAutomation } from "../../../services/automation";
+import useNotification from "../../../hooks/useNotification";
+import { toast } from "react-toastify";
+import AutomationStatus from "./AutomationStatus";
 
 type Props = {
   envList: RecentAutomationTypes | null;
   handleGetAutomation: () => void;
-  page: number
+  page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
@@ -24,19 +33,26 @@ const AutomationTable = ({
   envList: automation,
   handleGetAutomation,
   page,
-  setPage
+  setPage,
 }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
   const [automationId, setAutomationId] = useState<number | null>(null);
   const [totalPages, setTotalPages] = useState(1);
+  const [loading, setLoading] = useState(false);
+  const [viewStatus, setViewStatus] = useState(false);
+  const [autDetails, setAutDetails] = useState<AutomationItemTypes | null>(
+    null
+  );
 
+  const { handleError } = useNotification();
   const navigate = useNavigate();
 
   const automationTableData = automation?.items;
 
   useEffect(() => {
-    if (automation) setTotalPages(Math.ceil(automation?.total / automation.size));
+    if (automation)
+      setTotalPages(Math.ceil(automation?.total / automation.size));
   }, [automation]);
 
   const isAllRowsSelected =
@@ -63,8 +79,20 @@ const AutomationTable = ({
 
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
-  const latest = automation && automation?.items.slice(0, 6);
+  const handleRunAutomation = (id: number) => {
+    setLoading(true);
 
+    runAutomation(id)
+      .then(() => {
+        toast.success("Automation has started");
+      })
+      .catch((err) => {
+        handleError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
   return (
     <div>
       <ConfirmDeleteAutomation
@@ -73,6 +101,13 @@ const AutomationTable = ({
         handleGetLatestAutomation={handleGetAutomation}
         automationId={automationId}
       />
+
+      <AutomationStatus
+        close={() => setViewStatus(false)}
+        viewStatus={viewStatus}
+        autDetails={autDetails}
+      />
+      <LoadingOverlay visible={loading} />
       <div className="rounded-[15px] border border-gray-200">
         <Table.ScrollContainer minWidth={700}>
           <Table verticalSpacing={10} className="!rounded-xl">
@@ -86,19 +121,19 @@ const AutomationTable = ({
                       onChange={handleSelectAllRows}
                     />
                     <div className="flex items-center gap-1">
-                      Automation position
+                      Automation name
                       <AiOutlineArrowDown />
                     </div>
                   </div>
                 </Table.Th>
                 <Table.Th>Last Run</Table.Th>
+                <Table.Th>Run Times</Table.Th>
                 <Table.Th>Status</Table.Th>
                 <Table.Th>Actions</Table.Th>
               </Table.Tr>
             </Table.Thead>
             <Table.Tbody>
-              {latest &&
-                latest?.length > 0 &&
+              {automation &&
                 automationTableData?.map((item: AutomationItemTypes) => (
                   <Table.Tr key={item.id}>
                     <Table.Td>
@@ -118,6 +153,7 @@ const AutomationTable = ({
                         {item.name}
                       </div>
                     </Table.Td>
+                    <Table.Td>{item.run_count}</Table.Td>
                     <Table.Td>
                       {item.last_run
                         ? moment(item.last_run).format("YY.MM.DD")
@@ -155,6 +191,22 @@ const AutomationTable = ({
                             )
                           }
                         />
+                        {item.status === "RUNNING" ? (
+                          <AiOutlineEye
+                            size={24}
+                            onClick={() => {
+                              setAutDetails(item);
+                              setViewStatus(true);
+                            }}
+                          />
+                        ) : (
+                          <BsFillPlayFill
+                            size={24}
+                            color="#E84E38"
+                            className="cursor-pointer"
+                            onClick={handleRunAutomation(item.id)}
+                          />
+                        )}
                       </div>
                     </Table.Td>
                   </Table.Tr>
