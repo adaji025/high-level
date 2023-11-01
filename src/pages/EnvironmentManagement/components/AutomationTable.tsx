@@ -21,12 +21,14 @@ import { runAutomation } from "../../../services/automation";
 import useNotification from "../../../hooks/useNotification";
 import { toast } from "react-toastify";
 import AutomationStatus from "./AutomationStatus";
+import { EnvironmentType } from "../../../types/environments";
 
 type Props = {
   envList: RecentAutomationTypes | null;
   handleGetAutomation: () => void;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
+  env: EnvironmentType
 };
 
 const AutomationTable = ({
@@ -34,6 +36,7 @@ const AutomationTable = ({
   handleGetAutomation,
   page,
   setPage,
+  env
 }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
@@ -187,7 +190,7 @@ const AutomationTable = ({
                           onClick={() =>
                             navigate(
                               `/manage-environment/edit-automation/${item.id}`,
-                              { state: item }
+                              { state: {env, item }}
                             )
                           }
                         />
@@ -204,7 +207,7 @@ const AutomationTable = ({
                             size={24}
                             color="#E84E38"
                             className="cursor-pointer"
-                            onClick={handleRunAutomation(item.id)}
+                            onClick={() => handleRunAutomation(item.id)}
                           />
                         )}
                       </div>
