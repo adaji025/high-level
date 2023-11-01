@@ -6,6 +6,7 @@ import useNotification from "../../../hooks/useNotification";
 import { toast } from "react-toastify";
 import { useState, Fragment } from "react";
 import { LoadingOverlay } from "@mantine/core";
+import { AiOutlineEye } from "react-icons/ai";
 
 type Props = {
   item: AutomationItemTypes;
@@ -55,14 +56,23 @@ const AutomationCards = ({ item }: Props) => {
             {item.last_run ? moment(item.last_run).format("DD.MM.YY") : "---"}
           </div>
         </div>
-        <div
-          className="mt-10 flex gap-5 items-center cursor-pointer"
-          onClick={handleRunAutomation}
-        >
+        <div className="mt-10 flex gap-5 items-center">
           <div className="h-[34px] w-[34px] rounded-full flex justify-center items-center border border-darkBlue">
-            <BsFillPlayFill size={24} color="#E84E38" />
+            {item.status === "RUNNING" ? (
+              <AiOutlineEye size={24} />
+            ) : (
+              <BsFillPlayFill
+                size={24}
+                color="#E84E38"
+                onClick={handleRunAutomation}
+              />
+            )}
           </div>
-          <div className="font-semibold">Start Automation</div>
+          {item.status === "RUNNING" ? (
+            <div className="font-semibold">View Automation</div>
+          ) : (
+            <div className="font-semibold">Start Automation</div>
+          )}
         </div>
       </div>
     </Fragment>
