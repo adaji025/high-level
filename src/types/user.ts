@@ -12,6 +12,7 @@ export type UserTypes = {
   last_name: string;
   email: string;
   is_active: boolean;
+  is_admin: boolean;
   last_login: string;
   created_at: string;
 };

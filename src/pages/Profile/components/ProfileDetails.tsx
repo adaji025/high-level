@@ -7,20 +7,38 @@ import {
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { Upload } from "./Upload";
-import { updateProfile } from "../../../services/user";
+import { getUser, updateProfile } from "../../../services/user";
 import { toast } from "react-toastify";
 import useNotification from "../../../hooks/useNotification";
 import { useEffect, useState } from "react";
 import { UserTypes } from "../../../types/user";
 
-type Props = {
-  user: UserTypes | null;
-  handleGetUser: () => void;
-};
-
-const ProfileDetails = ({ user, handleGetUser }: Props) => {
+const ProfileDetails = () => {
   const { handleError } = useNotification();
   const [loading, setLoading] = useState(false);
+  const [user, setUser] = useState<UserTypes | null>(null);
+  const [first_name, setFirst_name] = useState(user?.first_name);
+  const [last_name, setLast_name] = useState(user?.last_name);
+  const [email, setEmail] = useState(user?.email);
+
+  useEffect(() => {
+    handleGetUser();
+  }, []);
+
+  const handleGetUser = () => {
+    setLoading(true);
+
+    getUser()
+      .then((res: any) => {
+        setUser(res.data);
+      })
+      .catch((err) => {
+        handleError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
 
   const form = useForm({
     initialValues: {
@@ -30,19 +48,16 @@ const ProfileDetails = ({ user, handleGetUser }: Props) => {
     },
   });
 
-
-  useEffect(() => {
-    form.setInitialValues({
-      first_name: user ? user?.first_name : "",
-      last_name: user ? user?.last_name : "",
-      email: user ? user?.email : "",
-    });
-  }, []);
-
-  const handleUpdateProfile = (values: any) => {
+  const handleUpdateProfile = () => {
     setLoading(true);
 
-    updateProfile(values)
+    const data = {
+      first_name,
+      last_name,
+      email,
+    };
+
+    updateProfile(data)
       .then(() => {
         toast.success("Profile updated successfully");
         handleGetUser();
@@ -63,27 +78,30 @@ const ProfileDetails = ({ user, handleGetUser }: Props) => {
           Update your photo and personal details here.
         </div>
       </div>
-      <form onSubmit={form.onSubmit((values) => handleUpdateProfile(values))}>
+      <form onSubmit={form.onSubmit(handleUpdateProfile)}>
         <div className="border rounded-xl mt-14 p-5">
           <div className="flex flex-col sm:flex-row w-full gap-10">
             <TextInput
               size="lg"
               label="First name"
-              {...form.getInputProps("first_name")}
               className="sm:w-1/2"
+              defaultValue={user?.first_name}
+              onChange={(e) => setFirst_name(e.target.value)}
             />
             <TextInput
               size="lg"
               label="Last name"
-              {...form.getInputProps("last_name")}
-              className="sm:w-1/2"
+              className="flex-1"
+              defaultValue={user?.last_name}
+              onChange={(e) => setLast_name(e.target.value)}
             />
           </div>
           <div className="mt-5 w-full sm:w-1/2">
             <TextInput
               size="lg"
               label="Email"
-              {...form.getInputProps("email")}
+              defaultValue={user?.email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="flex  justify-center items-center mt-5">
@@ -110,6 +128,7 @@ const ProfileDetails = ({ user, handleGetUser }: Props) => {
             Cancel
           </Button>
           <Button
+            type="submit"
             size="lg"
             className="bg-darkBlue rounded-lg font-semibold text-white flex"
           >
