@@ -1,10 +1,12 @@
 import { GrStatusGood } from "react-icons/gr";
 import { Text, Button } from "@mantine/core";
+import { MIME_TYPES } from "@mantine/dropzone";
 import ExcelIcon from "../../../../assets/svgs/excel-icon.svg";
 import { useDropzone } from "react-dropzone";
-import { uploadExcel } from "../../../../services/automation";
+import { reUploadExcel } from "../../../../services/automation";
 import useNotification from "../../../../hooks/useNotification";
 import { AutomationDetailsTypes } from "../../../../types/automation";
+import { toast } from "react-toastify";
 
 type Props = {
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,6 +15,8 @@ type Props = {
 const EditExcel = ({ setLoading, autDetails }: Props) => {
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
+    accept: { "text/csv": [MIME_TYPES.xls, MIME_TYPES.xlsx] },
+    onDropRejected: () => toast.error("Please choose an excel file")
   });
 
   const { handleError } = useNotification();
@@ -24,8 +28,9 @@ const EditExcel = ({ setLoading, autDetails }: Props) => {
     };
 
     if (autDetails)
-      uploadExcel(autDetails?.id, data)
+      reUploadExcel(autDetails?.id, data)
         .then(() => {
+          toast.success("Excel uploaded successfully");
           close();
         })
         .catch((err) => {
