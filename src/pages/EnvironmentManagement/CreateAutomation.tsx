@@ -139,6 +139,17 @@ const CreateAutomation = () => {
       });
   };
 
+  const data = {
+    automation: {
+      env_id: env.id,
+      name: form.values.automation.name,
+      pipeline: form.values.automation.pipeline,
+      start_stage: form.values.automation.start_stage,
+      end_stage: form.values.automation.end_stage,
+      use_excel: form.values.automation.use_excel,
+    },
+  };
+
   const submit = (values: any) => {
     setLoading(true);
 
@@ -153,6 +164,7 @@ const CreateAutomation = () => {
       })
       .finally(() => {
         setLoading(false);
+        form.reset();
       });
   };
 
@@ -215,11 +227,15 @@ const CreateAutomation = () => {
 
       <form
         onSubmit={form.onSubmit((values) =>
-          submit({
-            ...values,
-            automation: { ...values.automation, env_id: env.id },
-            messages: { ...values.messages, email },
-          })
+          submit(
+            values.automation.use_excel
+              ? {
+                  ...values,
+                  automation: { ...values.automation, env_id: env.id },
+                  messages: { ...values.messages, email },
+                }
+              : data
+          )
         )}
       >
         <div className="mt-10">
