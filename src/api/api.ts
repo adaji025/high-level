@@ -38,5 +38,7 @@ export const APIS = {
     RUN: (id: number) => `${api}/automation/${id}/run`,
     DELETE: (id: number) => `${api}/automation/delete/${id}/`,
     UPDATE_MESSAGE: `${api}/automation/message/edit/`,
+    UPDATE_DATAPOINTS: `${api}/automation/datapoint/edit/`,
+    UPDATE_PIPELINE: (id: number) => `${api}/automation/edit/${id}/`,
   },
 };

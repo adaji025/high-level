@@ -8,6 +8,9 @@ import {
   EnvironmentType,
 } from "../../../../types/environments";
 import axios from "axios";
+import { editDatapoints } from "../../../../services/automation";
+import useNotification from "../../../../hooks/useNotification";
+import { toast } from "react-toastify";
 
 type Props = {
   autDetails: AutomationDetailsTypes | null;
@@ -21,6 +24,8 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
   const [customFields, setCustomFields] = useState<CustomFieldProps[] | null>(
     null
   );
+
+  const { handleError } = useNotification();
 
   useEffect(() => {
     handleGetCustomField();
@@ -56,49 +61,70 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
     },
   });
 
-  const DataEndPointsFields = autDetails?.datapoints.map((item) => (
-    <form
-      onSubmit={form.onSubmit((values) => console.log(values))}
-      className="flex gap-10 mb-5"
-      key={item.id}
-    >
-      <Select
-        className="w-1/2"
-        size="lg"
-        label="Field Name"
-        placeholder="state"
-        required
-        data={customFields?.map((field) => ({
-          label: field.name,
-          value: field.id,
-        }))}
-        defaultValue={item.field_id}
-      />
+  const submit = (values: any) => {
+    setLoading(true);
 
-      <TextInput
-        className="w-1/2"
-        size="lg"
-        label="Sheet Cell"
-        placeholder="B6"
-        required
-        defaultValue={item.cell_location}
-      />
-    </form>
+    const data: any = autDetails?.datapoints.map((item) => ({
+      ...values.datapoints,
+      id: item.id,
+    }));
+    console.log(data);
+    editDatapoints(data)
+      .then(() => {
+        toast.success("Datapoint updated successfully");
+      })
+      .catch((err) => {
+        handleError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  const DataEndPointsFields = form.values?.datapoints?.map((item, index) => (
+    <div className="flex gap-10 mb-5" key={item.field_id}>
+      {autDetails &&
+        autDetails?.datapoints?.map((p) => (
+          <>
+            <Select
+              className="w-1/2"
+              size="lg"
+              label="Field Name"
+              placeholder={item.field_id}
+              // required
+              data={customFields?.map((field) => ({
+                label: field.name,
+                value: field.id,
+              }))}
+              {...form.getInputProps(`datapoints.${index}.field_id`)}
+              defaultValue={p.field_id}
+            />
+
+            <TextInput
+              className="w-1/2"
+              size="lg"
+              label="Sheet Cell"
+              placeholder={item.cell_location}
+              // required
+              {...form.getInputProps(`datapoints.${index}.cell_location`)}
+              defaultValue={p.cell_location}
+            />
+          </>
+        ))}
+    </div>
   ));
 
   return (
     <div>
-      <div className="mt-10">
+      <form className="mt-10" onSubmit={form.onSubmit(submit)}>
         {DataEndPointsFields}
-        <Button size="md" className="bg-highLevelRed mt-10 mx-auto text-base">
-          Update Datapoints
-        </Button>
-        {/* <div className="flex justify-center">
+
+        <div className="flex justify-center">
           <Button
             size="lg"
             className="bg-highLevelRed mt-10 mx-auto text-base"
             onClick={() => {
-              datapointsForm.insertListItem("datapoints", {
+              form.insertListItem("datapoints", {
                 cell_location: "",
                 field_id: "",
                 key: randomId(),
@@ -107,8 +133,15 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
           >
             Add custom data points
           </Button>
-        </div> */}
-      </div>
+        </div>
+        <Button
+          type="submit"
+          size="md"
+          className="bg-highLevelRed mt-10 mx-auto text-base"
+        >
+          Update Datapoints
+        </Button>
+      </form>
     </div>
   );
 };
