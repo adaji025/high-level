@@ -105,4 +105,16 @@ export const editMessage = (data: any[]) => {
   });
 };
 
+export const editDatapoints = (data: any[]) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.AUTOMATION.UPDATE_DATAPOINTS}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 
