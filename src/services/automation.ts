@@ -92,3 +92,17 @@ export const deleteAutomation = (id: number) => {
       });
   });
 };
+
+export const editMessage = (data: any[]) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.AUTOMATION.UPDATE_MESSAGE}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+

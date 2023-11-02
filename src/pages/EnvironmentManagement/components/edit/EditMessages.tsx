@@ -1,6 +1,10 @@
-import { useState } from "react";
-import { Textarea } from "@mantine/core";
+import { useEffect, useState } from "react";
+import { Textarea, Button } from "@mantine/core";
 import ReactQuill, { Quill } from "react-quill";
+import { AutomationDetailsTypes } from "../../../../types/automation";
+import { editMessage } from "../../../../services/automation";
+import useNotification from "../../../../hooks/useNotification";
+import { toast } from "react-toastify";
 
 const modules = {
   toolbar: [
@@ -17,11 +21,54 @@ const modules = {
   ],
 };
 
-const EditMessages = () => {
-  const [email, setEmail] = useState("");
+type Props = {
+  autDetails: AutomationDetailsTypes | null;
+  setLoading: React.Dispatch<React.SetStateAction<boolean>>;
+};
+
+const EditMessages = ({ autDetails, setLoading }: Props) => {
+  const defaultEmail = autDetails?.messages[0];
+  const defaultSms = autDetails?.messages[1];
+  const [email, setEmail] = useState(
+    localStorage.getItem("savedDefaultEmail") ?? ""
+  );
+  const [sms, setSms] = useState(defaultSms?.content);
+  const { handleError } = useNotification();
   const icons = Quill.import("ui/icons");
   icons["undo"] = Undo;
   icons["redo"] = Redo;
+
+  const handleUpdateMessage = (e: any) => {
+    e.preventDefault();
+    // setLoading(true);
+    const data = [
+      {
+        id: defaultEmail?.id,
+        content: email,
+      },
+      {
+        id: defaultSms?.id,
+        content: sms,
+      },
+    ];
+    editMessage(data)
+      .then(() => {
+        toast.success("Messages updated successfully");
+        localStorage.removeItem('savedDefaultEmail')
+      })
+      .catch((err) => {
+        handleError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+  };
+
+  useEffect(() => {
+    if (defaultEmail)
+      localStorage.setItem("savedDefaultEmail", defaultEmail?.content);
+  }, []);
+
   return (
     <div>
       <div className="mt-14">
@@ -31,6 +78,8 @@ const EditMessages = () => {
           className="!text-base"
           label="SMS"
           placeholder="Type message"
+          defaultValue={defaultSms?.content}
+          onChange={(e) => setSms(e.target.value)}
         />
       </div>
 
@@ -45,6 +94,14 @@ const EditMessages = () => {
           className="h-[30vh] "
         />
       </div>
+      <Button
+        type="submit"
+        size="md"
+        className="bg-highLevelRed mt-10 mx-auto text-base"
+        onClick={handleUpdateMessage}
+      >
+        Update Pipeline
+      </Button>
     </div>
   );
 };
