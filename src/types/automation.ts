@@ -35,11 +35,20 @@ export type AutomationDetailsTypes = {
   progress: 0;
   last_run: string;
   created_at: string;
-  datapoints: [
-    {
-      field_id: string;
-      cell_location: string;
-      id: number;
-    }
-  ];
+  datapoints: Datapoint[];
+  messages: Message[]
+
 };
+
+
+export interface Datapoint {
+  field_id: string
+  cell_location: string
+  id: number
+}
+
+export interface Message {
+  id: number
+  type: string
+  content: string
+}

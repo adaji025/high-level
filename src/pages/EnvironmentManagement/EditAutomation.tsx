@@ -9,6 +9,7 @@ import PipelineEdit from "./components/edit/PipelineEdit";
 import DataPointsEdit from "./components/edit/DataPointsEdit";
 import EditMessages from "./components/edit/EditMessages";
 import EditExcel from "./components/edit/EditExcel";
+import useNotification from "../../hooks/useNotification";
 
 const EditAutomation = () => {
   const [loading, setLoading] = useState(false);
@@ -16,6 +17,8 @@ const EditAutomation = () => {
   const [autDetails, setAutDetails] = useState<AutomationDetailsTypes | null>(
     null
   );
+
+  const { handleError } = useNotification();
 
   const location = useLocation();
   const env: EnvironmentType = location && location?.state.env;
@@ -31,9 +34,16 @@ const EditAutomation = () => {
   const handleGetAutomationDetails = () => {
     setLoading(true);
 
-    getAutomationDetails(aut.id).then((res: any) => {
-      setAutDetails(res.data);
-    });
+    getAutomationDetails(aut.id)
+      .then((res: any) => {
+        setAutDetails(res.data);
+      })
+      .catch((err: any) => {
+        handleError(err);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
@@ -74,9 +84,9 @@ const EditAutomation = () => {
 
       <Divider label="Re-upload Excel" my={54} />
       <EditExcel autDetails={autDetails} setLoading={setLoading} />
-      
+
       <Divider label="Edit Messages" my={54} />
-      <EditMessages />
+      <EditMessages autDetails={autDetails} setLoading={setLoading} />
     </div>
   );
 };
