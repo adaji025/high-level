@@ -73,20 +73,30 @@ const EditAutomation = () => {
       </div>
       <Divider mt={16} label="Edit automation" />
 
-      <PipelineEdit setLoading={setLoading} autDetails={autDetails} env={env} />
+      {
+        <PipelineEdit
+          setLoading={setLoading}
+          autDetails={autDetails}
+          env={env}
+        />
+      }
 
       <Divider label="Edit data point" my={54} />
-      <DataPointsEdit
-        env={env}
-        setLoading={setLoading}
-        autDetails={autDetails}
-      />
+      {autDetails?.datapoints && (
+        <DataPointsEdit
+          env={env}
+          setLoading={setLoading}
+          autDetails={autDetails}
+        />
+      )}
 
       <Divider label="Re-upload Excel" my={54} />
       <EditExcel autDetails={autDetails} setLoading={setLoading} />
 
       <Divider label="Edit Messages" my={54} />
-      <EditMessages autDetails={autDetails} setLoading={setLoading} />
+      {autDetails?.messages && (
+        <EditMessages autDetails={autDetails} setLoading={setLoading} />
+      )}
     </div>
   );
 };

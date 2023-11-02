@@ -83,34 +83,33 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
       });
   };
 
-  const DataEndPointsFields = form.values?.datapoints.map((item, index) => (
+ 
+  const DataEndPointsFields = form.values?.datapoints?.map((item, index) => (
     <div className="flex gap-10 mb-5" key={item.field_id}>
-      {autDetails?.datapoints.map((p) => (
+      {autDetails && autDetails?.datapoints?.map((p) => (
         <>
           <Select
             className="w-1/2"
             size="lg"
             label="Field Name"
-            placeholder="state"
-            required
+            placeholder={item.field_id}
+            // required
             data={customFields?.map((field) => ({
               label: field.name,
               value: field.id,
             }))}
             {...form.getInputProps(`datapoints.${index}.field_id`)}
             defaultValue={p.field_id}
-            // onChange={(e: any) => setFieldId(e.target.value)}
           />
 
           <TextInput
             className="w-1/2"
             size="lg"
             label="Sheet Cell"
-            placeholder="B6"
-            required
+            placeholder={item.cell_location}
+            // required
             {...form.getInputProps(`datapoints.${index}.cell_location`)}
             defaultValue={p.cell_location}
-            // onChange={(e: any) => setCellLocation(e.target.value)}
           />
         </>
       ))}
