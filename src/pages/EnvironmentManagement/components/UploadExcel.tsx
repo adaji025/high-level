@@ -6,6 +6,7 @@ import { useState } from "react";
 import { uploadExcel } from "../../../services/automation";
 import { AutomationResponseTypes } from "../../../types/environments";
 import useNotification from "../../../hooks/useNotification";
+import { toast } from "react-toastify";
 
 type Props = {
   opened: boolean;
@@ -17,6 +18,7 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
   const [loading, setLoading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
+    onDropRejected: () => toast.error("Please choose an excel file")
   });
 
   const { handleError } = useNotification();
@@ -29,6 +31,7 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
     if (automationResponse)
       uploadExcel(automationResponse?.id, data)
         .then(() => {
+          toast.success("Excel uploaded successfully");
           close();
         })
         .catch((err) => {
