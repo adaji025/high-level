@@ -25,7 +25,6 @@ const EditAutomation = () => {
 
   const aut: AutomationDetailsTypes = location && location.state.item;
 
-  console.log("aut", autDetails);
 
   useEffect(() => {
     handleGetAutomationDetails();

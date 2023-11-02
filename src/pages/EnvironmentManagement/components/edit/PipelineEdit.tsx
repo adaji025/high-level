@@ -4,6 +4,9 @@ import { TextInput, Select, Button } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { EnvironmentType, PipelineTypes } from "../../../../types/environments";
 import axios from "axios";
+import { updatePipeline } from "../../../../services/automation";
+import useNotification from "../../../../hooks/useNotification";
+import { toast } from "react-toastify";
 
 type Props = {
   autDetails: AutomationDetailsTypes | null;
@@ -14,8 +17,15 @@ type Props = {
 const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
 const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
   const [pipeline, setPipeline] = useState<PipelineTypes[] | null>(null);
+  const [stages, setStages] = useState([]);
 
-  let stages: any[] = [];
+  const { handleError } = useNotification();
+
+  useEffect(() => {
+    if (autDetails) localStorage.setItem("savedName", autDetails?.name);
+  }, []);
+
+  const pname = localStorage.getItem("savedName");
 
   useEffect(() => {
     handleGetPipeline();
@@ -43,17 +53,41 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
 
   const form = useForm({
     initialValues: {
-      name: "string",
-      pipeline: "string",
-      start_stage: "string",
-      end_stage: "string",
-      use_excel: true,
+      name: pname,
+      pipeline: "",
+      start_stage: "",
+      end_stage: "",
+      use_excel: false,
     },
   });
 
+  useEffect(() => {
+    pipeline?.find((p: any) => {
+      if (p.id === form.values.pipeline) {
+        setStages(p.stages);
+      }
+    });
+  }, [form.values.pipeline]);
+
+  const submit = (values: any) => {
+    setLoading(true);
+
+    if (autDetails)
+      updatePipeline(autDetails?.id, values)
+        .then(() => {
+          toast.success("Pipeline updated successfully");
+        })
+        .catch((err) => {
+          handleError(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+  };
+
   return (
     <form
-      onSubmit={form.onSubmit((values) => console.log(values))}
+      onSubmit={form.onSubmit((values) => submit(values))}
       className="mt-10"
     >
       <div className="flex gap-10 mt-10">
@@ -64,6 +98,7 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
           placeholder="Type name"
           className="flex-1"
           defaultValue={autDetails?.name}
+          {...form.getInputProps("name")}
         />
         <Select
           required
@@ -75,6 +110,7 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
           }))}
           className="flex-1"
           defaultValue={autDetails?.pipeline}
+          {...form.getInputProps("pipeline")}
         />
       </div>
       <div className="flex gap-10 mt-10">
@@ -82,26 +118,32 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
           required
           size="lg"
           label="Start stage"
-          data={pipeline?.map((stage) => ({
+          data={stages?.map((stage: any) => ({
             label: stage.name,
             value: stage.id,
           }))}
           className="flex-1"
           defaultValue={autDetails?.start_stage}
+          {...form.getInputProps("start_stage")}
         />
         <Select
           required
           size="lg"
           label="End stage"
-          data={stages?.map((stage) => ({
+          data={stages?.map((stage: any) => ({
             label: stage.name,
             value: stage.id,
           }))}
           className="flex-1"
           defaultValue={autDetails?.end_stage}
+          {...form.getInputProps("end_stage")}
         />
       </div>
-      <Button size="md" className="bg-highLevelRed mt-10 mx-auto text-base">
+      <Button
+        type="submit"
+        size="md"
+        className="bg-highLevelRed mt-10 mx-auto text-base"
+      >
         Update Pipeline
       </Button>
     </form>

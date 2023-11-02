@@ -117,4 +117,14 @@ export const editDatapoints = (data: any[]) => {
   });
 };
 
-
+export const updatePipeline = (id: number, data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.AUTOMATION.UPDATE_PIPELINE(id)}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

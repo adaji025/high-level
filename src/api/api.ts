@@ -39,5 +39,6 @@ export const APIS = {
     DELETE: (id: number) => `${api}/automation/delete/${id}/`,
     UPDATE_MESSAGE: `${api}/automation/message/edit/`,
     UPDATE_DATAPOINTS: `${api}/automation/datapoint/edit/`,
+    UPDATE_PIPELINE: (id: number) => `${api}/automation/edit/${id}/`,
   },
 };
