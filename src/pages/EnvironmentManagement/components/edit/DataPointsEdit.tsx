@@ -11,6 +11,7 @@ import axios from "axios";
 import { editDatapoints } from "../../../../services/automation";
 import useNotification from "../../../../hooks/useNotification";
 import { toast } from "react-toastify";
+import { BiTrash } from "react-icons/bi";
 
 type Props = {
   autDetails: AutomationDetailsTypes | null;
@@ -68,6 +69,7 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
       ...values.datapoints,
       id: item.id,
     }));
+
     console.log(data);
     editDatapoints(data)
       .then(() => {
@@ -82,35 +84,45 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
   };
 
   const DataEndPointsFields = form.values?.datapoints?.map((item, index) => (
-    <div className="flex gap-10 mb-5" key={item.field_id}>
-      {autDetails &&
-        autDetails?.datapoints?.map((p) => (
-          <>
-            <Select
-              className="w-1/2"
-              size="lg"
-              label="Field Name"
-              placeholder={item.field_id}
-              // required
-              data={customFields?.map((field) => ({
-                label: field.name,
-                value: field.id,
-              }))}
-              {...form.getInputProps(`datapoints.${index}.field_id`)}
-              defaultValue={p.field_id}
-            />
+    <div className="relative">
+      <div className="flex items-center gap-10 mb-5 w-[90%] sm:w-[96%]" key={item.field_id}>
+        {autDetails &&
+          autDetails?.datapoints?.map((p) => (
+            <>
+              <Select
+                className="w-1/2"
+                size="lg"
+                label="Field Name"
+                placeholder={item.field_id}
+                // required
+                data={customFields?.map((field) => ({
+                  label: field.name,
+                  value: field.id,
+                }))}
+                {...form.getInputProps(`datapoints.${index}.field_id`)}
+                defaultValue={p.field_id}
+              />
 
-            <TextInput
-              className="w-1/2"
-              size="lg"
-              label="Sheet Cell"
-              placeholder={item.cell_location}
-              // required
-              {...form.getInputProps(`datapoints.${index}.cell_location`)}
-              defaultValue={p.cell_location}
-            />
-          </>
-        ))}
+              <TextInput
+                className="w-1/2"
+                size="lg"
+                label="Sheet Cell"
+                placeholder="B6"
+                // required
+                {...form.getInputProps(`datapoints.${index}.cell_location`)}
+                defaultValue={p.cell_location}
+              />
+            </>
+          ))}
+      </div>
+      {index !== 0 && (
+        <BiTrash
+          size={24}
+          color="red"
+          className="absolute right-0 top-8 ml-3"
+          onClick={() => form.removeListItem("datapoints", index)}
+        />
+      )}
     </div>
   ));
 

@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-import { LoadingOverlay, TextInput, Avatar, Divider } from "@mantine/core";
+import { LoadingOverlay, TextInput, Avatar, Tabs } from "@mantine/core";
 import { EnvironmentType } from "../../types/environments";
 import { getAutomationDetails } from "../../services/automation";
 import { CiSearch } from "react-icons/ci";
@@ -24,7 +24,6 @@ const EditAutomation = () => {
   const env: EnvironmentType = location && location?.state.env;
 
   const aut: AutomationDetailsTypes = location && location.state.item;
-
 
   useEffect(() => {
     handleGetAutomationDetails();
@@ -70,32 +69,42 @@ const EditAutomation = () => {
           placeholder="Search"
         />
       </div>
-      <Divider mt={16} label="Edit automation" />
 
-      {
-        <PipelineEdit
-          setLoading={setLoading}
-          autDetails={autDetails}
-          env={env}
-        />
-      }
+      <Tabs mt={52} defaultValue="pipeline">
+        <Tabs.List className="overflow-auto ">
+          <Tabs.Tab value="pipeline">Edit Pipeline</Tabs.Tab>
+          <Tabs.Tab value="datapoints">Edit Datapoints</Tabs.Tab>
+          <Tabs.Tab value="messages">Edit messages</Tabs.Tab>
+          <Tabs.Tab value="excel">Re-upload Excel</Tabs.Tab>
+        </Tabs.List>
+        <Tabs.Panel value="pipeline">
+          <PipelineEdit
+            setLoading={setLoading}
+            autDetails={autDetails}
+            env={env}
+          />
+        </Tabs.Panel>
 
-      <Divider label="Edit data point" my={54} />
-      {autDetails?.datapoints && (
-        <DataPointsEdit
-          env={env}
-          setLoading={setLoading}
-          autDetails={autDetails}
-        />
-      )}
+        <Tabs.Panel value="datapoints">
+          {autDetails?.datapoints && (
+            <DataPointsEdit
+              env={env}
+              setLoading={setLoading}
+              autDetails={autDetails}
+            />
+          )}
+        </Tabs.Panel>
 
-      <Divider label="Re-upload Excel" my={54} />
-      <EditExcel autDetails={autDetails} setLoading={setLoading} />
+        <Tabs.Panel value="messages">
+          {autDetails?.messages && (
+            <EditMessages autDetails={autDetails} setLoading={setLoading} />
+          )}
+        </Tabs.Panel>
 
-      <Divider label="Edit Messages" my={54} />
-      {autDetails?.messages && (
-        <EditMessages autDetails={autDetails} setLoading={setLoading} />
-      )}
+        <Tabs.Panel value="excel">
+          <EditExcel autDetails={autDetails} setLoading={setLoading} />
+        </Tabs.Panel>
+      </Tabs>
     </div>
   );
 };
