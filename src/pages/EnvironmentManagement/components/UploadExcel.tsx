@@ -4,10 +4,7 @@ import { GrStatusGood } from "react-icons/gr";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import { useState } from "react";
 import { uploadExcel } from "../../../services/automation";
-import {
-  AutomationResponseTypes,
-  EnvironmentType,
-} from "../../../types/environments";
+import { AutomationResponseTypes } from "../../../types/environments";
 import useNotification from "../../../hooks/useNotification";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
