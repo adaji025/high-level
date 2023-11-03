@@ -161,14 +161,13 @@ const CreateAutomation = () => {
         open();
         setStages(null);
         setPipeline(null);
-        window.location.reload()
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
-        form.reset();
+        console.log(form.values.automation.use_excel);
       });
   };
 

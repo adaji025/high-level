@@ -4,9 +4,13 @@ import { GrStatusGood } from "react-icons/gr";
 import ExcelIcon from "../../../assets/svgs/excel-icon.svg";
 import { useState } from "react";
 import { uploadExcel } from "../../../services/automation";
-import { AutomationResponseTypes } from "../../../types/environments";
+import {
+  AutomationResponseTypes,
+  EnvironmentType,
+} from "../../../types/environments";
 import useNotification from "../../../hooks/useNotification";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 type Props = {
   opened: boolean;
@@ -18,10 +22,11 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
   const [loading, setLoading] = useState(false);
   const { acceptedFiles, getRootProps, getInputProps } = useDropzone({
     maxFiles: 1,
-    onDropRejected: () => toast.error("Please choose an excel file")
+    onDropRejected: () => toast.error("Please choose an excel file"),
   });
 
   const { handleError } = useNotification();
+  const navigate = useNavigate();
 
   const handleUploadExcel = () => {
     setLoading(true);
@@ -33,6 +38,7 @@ export const UploadExcel = ({ opened, close, automationResponse }: Props) => {
         .then(() => {
           toast.success("Excel uploaded successfully");
           close();
+          navigate(`/manage-environment/`);
         })
         .catch((err) => {
           handleError(err);
