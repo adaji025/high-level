@@ -27,6 +27,7 @@ import { createAutomation } from "../../services/automation";
 import { toast } from "react-toastify";
 import { useDisclosure } from "@mantine/hooks";
 import { UploadExcel } from "./components/UploadExcel";
+import { BiTrash } from "react-icons/bi";
 
 const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
 
@@ -158,50 +159,65 @@ const CreateAutomation = () => {
         toast.success("Automation created successfully");
         setAutomationResponse(res.data);
         open();
+        setStages(null);
+        setPipeline(null);
       })
       .catch((err) => {
         console.log(err);
       })
       .finally(() => {
         setLoading(false);
-        form.reset();
+        console.log(form.values.automation.use_excel);
       });
   };
 
   const DataEndPointsFields = form.values.datapoints.map((item, index) => (
-    <div className="flex gap-10 mb-5" key={item.key}>
-      <Select
-        className="w-1/2"
-        size="lg"
-        label="Field Name"
-        placeholder="state"
-        required
-        data={customFields?.map((field) => ({
-          label: field.name,
-          value: field.id,
-        }))}
-        {...form.getInputProps(`datapoints.${index}.field_id`)}
-      />
+    <div className="relative">
+      <div className="flex items-center gap-10 mb-5 w-[96%]" key={item.key}>
+        <Select
+          className="w-1/2"
+          size="lg"
+          label="Field Name"
+          placeholder="state"
+          required
+          data={customFields?.map((field) => ({
+            label: field.name,
+            value: field.id,
+          }))}
+          {...form.getInputProps(`datapoints.${index}.field_id`)}
+        />
 
-      <TextInput
-        className="w-1/2"
-        size="lg"
-        label="Sheet Cell"
-        placeholder="B6"
-        required
-        {...form.getInputProps(`datapoints.${index}.cell_location`)}
-      />
+        <TextInput
+          className="w-1/2"
+          size="lg"
+          label="Sheet Cell"
+          placeholder="B6"
+          required
+          {...form.getInputProps(`datapoints.${index}.cell_location`)}
+        />
+
+        {index !== 0 && (
+          <BiTrash
+            size={24}
+            color="red"
+            className="absolute right-0"
+            onClick={() => form.removeListItem("datapoints", index)}
+          />
+        )}
+      </div>
     </div>
   ));
 
   return (
     <div>
       <LoadingOverlay visible={loading} />
-      <UploadExcel
-        opened={opened}
-        close={close}
-        automationResponse={automationResponse}
-      />
+      {form.values.automation.use_excel && (
+        <UploadExcel
+          opened={opened}
+          close={close}
+          automationResponse={automationResponse}
+        />
+      )}
       <div className="flex gap-5 flex-col sm:flex-row justify-between sm:items-center">
         <div className="flex flex-col sm:flex-row items-center gap-3">
           <Avatar size="xl">MK</Avatar>
