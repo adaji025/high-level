@@ -6,10 +6,11 @@ import { getAutomationDetails } from "../../services/automation";
 import { CiSearch } from "react-icons/ci";
 import { AutomationDetailsTypes } from "../../types/automation";
 import PipelineEdit from "./components/edit/PipelineEdit";
-import DataPointsEdit from "./components/edit/DataPointsEdit";
+// import DataPointsEdit from "./components/edit/DataPointsEdit";
 import EditMessages from "./components/edit/EditMessages";
 import EditExcel from "./components/edit/EditExcel";
 import useNotification from "../../hooks/useNotification";
+import DataPoints from "./components/edit/Datapoints";
 
 const EditAutomation = () => {
   const [loading, setLoading] = useState(false);
@@ -87,8 +88,9 @@ const EditAutomation = () => {
 
         <Tabs.Panel value="datapoints">
           {autDetails?.datapoints && (
-            <DataPointsEdit
+            <DataPoints
               env={env}
+              loading={loading}
               setLoading={setLoading}
               autDetails={autDetails}
             />
