@@ -115,7 +115,7 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
                 name="field_id"
                 defaultValue={element.field_id}
                 onChange={(e) => handleChange(index, e)}
-                className="border p-2 outline-none w-full rounded-md"
+                className="border p-3 outline-none w-full rounded-md"
               >
                 {customFields &&
                   customFields.map((field) => (
