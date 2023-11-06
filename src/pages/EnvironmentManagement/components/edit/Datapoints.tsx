@@ -81,13 +81,13 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
     setFormValues(newFormValues);
   };
 
-//   let handleSubmit = (event: any) => {
-//     event.preventDefault();
-//     alert(JSON.stringify(formValues));
-//   };
+  //   let handleSubmit = (event: any) => {
+  //     event.preventDefault();
+  //     alert(JSON.stringify(formValues));
+  //   };
 
-    const submitUpdate = (event: any) => {
-        event.preventDefault();
+  const submitUpdate = (event: any) => {
+    event.preventDefault();
     setLoading(true);
 
     editDatapoints(formValues)
@@ -153,7 +153,6 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
           <button
             className="bg-highLevelRed py-2 px-6 font-bold text-white"
             type="submit"
-            // onClick={() => submitUpdate()}
           >
             Submit
           </button>
