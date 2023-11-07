@@ -1,6 +1,7 @@
 import { useState, useEffect, Fragment } from "react";
 import axios from "axios";
 import { LoadingOverlay } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { toast } from "react-toastify";
 import { BiTrash } from "react-icons/bi";
 import { AutomationDetailsTypes } from "../../../../types/automation";
@@ -10,6 +11,7 @@ import {
   CustomFieldProps,
   EnvironmentType,
 } from "../../../../types/environments";
+import ConfirmDeleteDatapoint from "./ConfirmDeleteDatapoint";
 
 const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
 
@@ -18,15 +20,24 @@ type Props = {
   loading: boolean;
   setLoading: React.Dispatch<React.SetStateAction<boolean>>;
   env: EnvironmentType;
+  callback: () => void;
 };
 
-const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
+const DataPoints = ({
+  autDetails,
+  setLoading,
+  env,
+  loading,
+  callback,
+}: Props) => {
   const [formValues, setFormValues] = useState([
     { field_id: "", cell_location: "", id: 0 },
   ]);
   const [customFields, setCustomFields] = useState<CustomFieldProps[] | null>(
     null
   );
+  const [opened, { open, close }] = useDisclosure(false);
+  const [datapointId, setDatapointId] = useState<number | null>(null);
 
   const { handleError } = useNotification();
 
@@ -71,21 +82,6 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
     setFormValues(newFormValues);
   };
 
-  let addFormFields = () => {
-    setFormValues([...formValues, { field_id: "", cell_location: "", id: 0 }]);
-  };
-
-  let removeFormFields = (i: any) => {
-    let newFormValues = [...formValues];
-    newFormValues.splice(i, 1);
-    setFormValues(newFormValues);
-  };
-
-  //   let handleSubmit = (event: any) => {
-  //     event.preventDefault();
-  //     alert(JSON.stringify(formValues));
-  //   };
-
   const submitUpdate = (event: any) => {
     event.preventDefault();
     setLoading(true);
@@ -104,6 +100,12 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
 
   return (
     <Fragment>
+      <ConfirmDeleteDatapoint
+        close={close}
+        datapointId={datapointId}
+        opened={opened}
+        callback={callback}
+      />
       <LoadingOverlay visible={loading} />
       <form className="mt-10" onSubmit={submitUpdate}>
         {autDetails?.datapoints.map((element, index) => (
@@ -136,20 +138,32 @@ const DataPoints = ({ autDetails, setLoading, env, loading }: Props) => {
             <div className="flex justify-end">
               <BiTrash
                 size={24}
-                className="cursor-pointer"
-                onClick={() => removeFormFields(index)}
+                className="cursor-pointer hidden sm:block"
+                onClick={() => {
+                  setDatapointId(element.id);
+                  open();
+                }}
               />
+              <div
+                className="text-red-500 text-xs sm:hidden"
+                onClick={() => {
+                  setDatapointId(element.id);
+                  open();
+                }}
+              >
+                Remove
+              </div>
             </div>
           </div>
         ))}
         <div className="flex gap-5 mt-6">
-          <button
+          {/* <button
             className="bg-green-500 py-2 px-6 font-bold text-white"
             type="button"
             onClick={() => addFormFields()}
           >
             Add
-          </button>
+          </button> */}
           <button
             className="bg-highLevelRed py-2 px-6 font-bold text-white"
             type="submit"
