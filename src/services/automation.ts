@@ -128,3 +128,15 @@ export const updatePipeline = (id: number, data: any) => {
       });
   });
 };
+
+export const deleteDatapoint = (id: number) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.delete(`${APIS.AUTOMATION.DELETE_DATAPOINT(id)}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};

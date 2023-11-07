@@ -93,6 +93,7 @@ const EditAutomation = () => {
               loading={loading}
               setLoading={setLoading}
               autDetails={autDetails}
+              callback={handleGetAutomationDetails}
             />
           )}
         </Tabs.Panel>
