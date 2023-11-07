@@ -27,8 +27,8 @@ type Props = {
 };
 
 const EditMessages = ({ autDetails, setLoading }: Props) => {
-  const defaultEmail = autDetails && autDetails?.messages[0];
-  const defaultSms = autDetails?.messages[1];
+  const defaultEmail = autDetails && autDetails?.messages[1];
+  const defaultSms = autDetails?.messages[0];
   const [email, setEmail] = useState(
     localStorage.getItem("savedDefaultEmail") ?? ""
   );
