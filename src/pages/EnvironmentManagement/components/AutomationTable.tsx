@@ -28,7 +28,8 @@ type Props = {
   handleGetAutomation: () => void;
   page: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  env: EnvironmentType
+  env: EnvironmentType;
+  callback: () => void;
 };
 
 const AutomationTable = ({
@@ -36,7 +37,8 @@ const AutomationTable = ({
   handleGetAutomation,
   page,
   setPage,
-  env
+  env,
+  callback
 }: Props) => {
   const [selectedRowIds, setSelectedRowIds] = useState<number[]>([]);
   const [opened, { open, close }] = useDisclosure(false);
@@ -88,6 +90,7 @@ const AutomationTable = ({
     runAutomation(id)
       .then(() => {
         toast.success("Automation has started");
+        callback();
       })
       .catch((err) => {
         handleError(err);
@@ -164,13 +167,17 @@ const AutomationTable = ({
                     </Table.Td>
                     <Table.Td>
                       <div
-                        className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center justify-center gap-1 ${
-                          item.status === "completed"
+                        className={`text-center font-semibold text-sm w-full md:w-4/6 p-2 whitespace-nowrap rounded-full flex items-center justify-center gap-1 ${
+                          item.status === "SUCCESSFUL"
                             ? "bg-[#ECFDF3] text-[#12B76A]"
+                            : item.status === "FAILED"
+                            ? "bg-[#E7A94C]/10 text-red-500"
+                            : item.status === "NOT_RUNNING"
+                            ? "text-gray-500 bg-white"
                             : "bg-[#E7A94C]/10 text-[#E7A94C]"
                         }`}
                       >
-                        {item.status === "signed" && <FcCheckmark />}
+                        {item.status === "SUCCESSFUL" && <FcCheckmark />}
                         {item.status}
                       </div>
                     </Table.Td>
@@ -190,7 +197,7 @@ const AutomationTable = ({
                           onClick={() =>
                             navigate(
                               `/manage-environment/edit-automation/${item.id}`,
-                              { state: {env, item }}
+                              { state: { env, item } }
                             )
                           }
                         />

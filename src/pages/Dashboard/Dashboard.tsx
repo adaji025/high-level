@@ -59,7 +59,7 @@ const Dashboard = () => {
       {recentAutomation && recentAutomation?.items.length > 0 && (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
           {recent?.map((item) => (
-            <AutomationCards key={item.id} item={item} />
+            <AutomationCards key={item.id} item={item} callback={handleGetRecentAutomation} />
           ))}
         </div>
       )}
