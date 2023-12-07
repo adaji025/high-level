@@ -13,7 +13,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 type Props = {
   automation?: RecentAutomationTypes | null;
-  handleGetLatestAutomation: () => void
+  handleGetLatestAutomation: () => void;
 };
 
 const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
@@ -47,6 +47,8 @@ const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
   const isRowSelected = (id: number) => selectedRowIds.includes(id);
 
   const latest = automation && automation?.items.slice(0, 6);
+
+  console.log(latest);
 
   return (
     <div>
@@ -108,13 +110,17 @@ const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
                     </Table.Td>
                     <Table.Td>
                       <div
-                        className={`text-center p-1 whitespace-nowrap rounded-full w-[80px] flex items-center justify-center gap-1 ${
-                          item.status === "completed"
+                        className={`text-center font-semibold text-sm w-full md:w-4/6 p-2 whitespace-nowrap rounded-full flex items-center justify-center gap-1 ${
+                          item.status === "SUCCESSFUL"
                             ? "bg-[#ECFDF3] text-[#12B76A]"
+                            : item.status === "FAILED"
+                            ? "bg-[#E7A94C]/10 text-red-500"
+                            : item.status === "NOT_RUNNING"
+                            ? "text-gray-500 bg-white"
                             : "bg-[#E7A94C]/10 text-[#E7A94C]"
                         }`}
                       >
-                        {item.status === "signed" && <FcCheckmark />}
+                        {item.status === "SUCCESSFUL" && <FcCheckmark />}
                         {item.status}
                       </div>
                     </Table.Td>
@@ -134,12 +140,11 @@ const AutomationTable = ({ automation, handleGetLatestAutomation }: Props) => {
             </Table.Tbody>
           </Table>
         </Table.ScrollContainer>
-        {automation?.items.length === 0  && (
+        {automation?.items.length === 0 && (
           <h2 className="text-center font-bold text-black/80 flex justify-center w-full mx-auto my-20">
             You have No Latest Automations
           </h2>
         )}
-       
       </div>
     </div>
   );

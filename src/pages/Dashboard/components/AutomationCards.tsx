@@ -11,9 +11,10 @@ import AutomationStatus from "./AutomationStatus";
 
 type Props = {
   item: AutomationItemTypes;
+  callback: () => void;
 };
 
-const AutomationCards = ({ item }: Props) => {
+const AutomationCards = ({ item, callback }: Props) => {
   const [loading, setLoading] = useState(false);
   const [viewStatus, setViewStatus] = useState(false);
 
@@ -24,6 +25,7 @@ const AutomationCards = ({ item }: Props) => {
     runAutomation(item.id)
       .then(() => {
         toast.success("Automation has started");
+        callback()
       })
       .catch((err) => {
         handleError(err);
@@ -50,7 +52,7 @@ const AutomationCards = ({ item }: Props) => {
             className={`${
               item.status === "FAILED"
                 ? "text-red-600"
-                : item.status === "NOT_RUNNING"
+                : item.status === "NOT_RUNNING"? "text-gray-500 bg-white" : item.status === "RUNNING"
                 ? "text-yellow-600"
                 : "text-[#027A48]"
             }`}

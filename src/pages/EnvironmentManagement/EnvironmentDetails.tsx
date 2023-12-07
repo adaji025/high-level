@@ -32,7 +32,6 @@ const EnvironmentDetails = () => {
 
   const env: EnvironmentType = location?.state;
 
-
   useEffect(() => {
     handleGetAutomation();
   }, [page]);
@@ -101,6 +100,7 @@ const EnvironmentDetails = () => {
         page={page}
         setPage={setPage}
         env={env}
+        callback={handleGetAutomation}
       />
     </Fragment>
   );

@@ -21,6 +21,9 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
 
   const { handleError } = useNotification();
 
+  console.log(autDetails?.pipeline)
+  console.log(pipeline)
+
   useEffect(() => {
     if (autDetails) localStorage.setItem("savedName", autDetails?.name);
   }, []);
@@ -54,12 +57,22 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
   const form = useForm({
     initialValues: {
       name: pname,
-      pipeline: "",
-      start_stage: "",
-      end_stage: "",
-      use_excel: false,
+      pipeline: autDetails?.pipeline,
+      start_stage: autDetails?.start_stage,
+      end_stage: autDetails?.end_stage,
+      use_excel: autDetails?.use_excel,
     },
   });
+
+  useEffect(() => {
+    form.setValues({
+      name: pname,
+      pipeline: autDetails?.pipeline,
+      start_stage: autDetails?.start_stage,
+      end_stage: autDetails?.end_stage,
+      use_excel: false,
+    })
+   }, [autDetails])
 
   useEffect(() => {
     pipeline?.find((p: any) => {
