@@ -27,7 +27,6 @@ const Sidebar = ({ openMobileNav }: Props) => {
     users?.is_admin ? setRoutes(adminRoutes) : setRoutes(usersRoutes);
   }, [users]);
 
-  // console.log(users)
 
   const usersRoutes = [
     {

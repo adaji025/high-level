@@ -32,7 +32,6 @@ const Dashboard = () => {
       })
       .catch((err) => {
         handleError(err);
-        console.log(err);
       })
       .finally(() => {
         setLoading(false);

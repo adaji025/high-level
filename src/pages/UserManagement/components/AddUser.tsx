@@ -31,7 +31,6 @@ const AddUser = ({ close, opened, setUsers , page, size}: Props) => {
   const handleGetUsers = () => {
     getUserList(page, size)
       .then((res: any) => {
-        console.log(res);
         setUsers(res.data);
       })
       .catch((error) => {
@@ -51,7 +50,6 @@ const AddUser = ({ close, opened, setUsers , page, size}: Props) => {
       })
       .catch((error) => {
         handleError(error);
-        console.log(error);
       })
       .finally(() => {
         setLoading(false);

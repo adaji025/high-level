@@ -28,6 +28,7 @@ import { toast } from "react-toastify";
 import { useDisclosure } from "@mantine/hooks";
 import { UploadExcel } from "./components/UploadExcel";
 import { BiTrash } from "react-icons/bi";
+import useNotification from "../../hooks/useNotification";
 
 const PIPELINE_URL = import.meta.env.VITE_APP_API_PIPELINE;
 
@@ -58,6 +59,7 @@ const CreateAutomation = () => {
     useState<AutomationResponseTypes | null>(null);
   const [opened, { open, close }] = useDisclosure(false);
 
+  const { handleError } = useNotification();
   const location = useLocation();
   const env: EnvironmentType = location && location?.state;
 
@@ -115,7 +117,7 @@ const CreateAutomation = () => {
         setPipeline(res.data.pipelines);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
@@ -133,7 +135,7 @@ const CreateAutomation = () => {
         setCustomFields(res.data.customFields);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
@@ -163,11 +165,10 @@ const CreateAutomation = () => {
         setPipeline(null);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
-        console.log(form.values.automation.use_excel);
       });
   };
 

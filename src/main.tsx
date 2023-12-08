@@ -13,7 +13,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 const queryClient = new QueryClient();
 
-console.log(queryClient)
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>

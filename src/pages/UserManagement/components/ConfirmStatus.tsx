@@ -1,5 +1,9 @@
 import { Modal, Title, Box, Button, LoadingOverlay } from "@mantine/core";
-import { activateUser, deactivateUser, getUserList } from "../../../services/user";
+import {
+  activateUser,
+  deactivateUser,
+  getUserList,
+} from "../../../services/user";
 import { UserState, UserTypes } from "../../../types/user";
 import { toast } from "react-toastify";
 import { Fragment, useState } from "react";
@@ -9,20 +13,18 @@ type Props = {
   opened: boolean;
   close: () => void;
   user: UserTypes | null;
-  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>
+  setUsers: React.Dispatch<React.SetStateAction<UserState | null>>;
 };
 
 const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
   const [loading, setLoading] = useState(false);
 
-  const {handleError} = useNotification()
- 
+  const { handleError } = useNotification();
 
   const handleGetUsers = () => {
     setLoading(true);
     getUserList(1, 10)
       .then((res: any) => {
-        console.log(res);
         setUsers(res.data);
       })
       .catch((error) => {
@@ -39,9 +41,7 @@ const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
     if (user)
       deactivateUser(user.id)
         .then(() => {
-          toast.success(
-            `User Deactivated sucessfully`
-          );
+          toast.success(`User Deactivated sucessfully`);
           handleGetUsers();
           close();
         })
@@ -59,9 +59,7 @@ const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
     if (user)
       activateUser(user.id)
         .then(() => {
-          toast.success(
-            `User Activated sucessfully`
-          );
+          toast.success(`User Activated sucessfully`);
           handleGetUsers();
           close();
         })
@@ -99,7 +97,12 @@ const ConfirmStatus = ({ close, opened, user, setUsers }: Props) => {
             <Button variant="dark" className="bg-darkBlue" onClick={close}>
               NO
             </Button>
-            <Button variant="outline" onClick={user?.is_active ? handleDeactivateUser : handleActivateUser}>
+            <Button
+              variant="outline"
+              onClick={
+                user?.is_active ? handleDeactivateUser : handleActivateUser
+              }
+            >
               Yes
             </Button>
           </div>
