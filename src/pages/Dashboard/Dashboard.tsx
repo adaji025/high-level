@@ -50,7 +50,6 @@ const Dashboard = () => {
   };
 
   const recent = recentAutomation && recentAutomation?.items.slice(0, 4);
-  console.log("recent", recent);
 
   return (
     <div>
