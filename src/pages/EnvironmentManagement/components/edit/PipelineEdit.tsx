@@ -21,9 +21,6 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
 
   const { handleError } = useNotification();
 
-  console.log(autDetails?.pipeline)
-  console.log(pipeline)
-
   useEffect(() => {
     if (autDetails) localStorage.setItem("savedName", autDetails?.name);
   }, []);
@@ -47,7 +44,7 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
         setPipeline(res.data.pipelines);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
@@ -71,8 +68,8 @@ const PipelineEdit = ({ autDetails, env, setLoading }: Props) => {
       start_stage: autDetails?.start_stage,
       end_stage: autDetails?.end_stage,
       use_excel: false,
-    })
-   }, [autDetails])
+    });
+  }, [autDetails]);
 
   useEffect(() => {
     pipeline?.find((p: any) => {

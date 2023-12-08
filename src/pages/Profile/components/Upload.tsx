@@ -18,7 +18,6 @@ export function Upload() {
     );
   });
 
-  // console.log(previews);
 
   return (
     <div className="min-h-[150px] p-5 border shadow rounded-xl mb-10 flex flex-col justify-center text-xs">

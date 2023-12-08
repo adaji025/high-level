@@ -43,7 +43,7 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
         setCustomFields(res.data.customFields);
       })
       .catch((err) => {
-        console.log(err);
+        handleError(err);
       })
       .finally(() => {
         setLoading(false);
@@ -70,7 +70,6 @@ const DataPointsEdit = ({ autDetails, env, setLoading }: Props) => {
       id: item.id,
     }));
 
-    console.log(data);
     editDatapoints(data)
       .then(() => {
         toast.success("Datapoint updated successfully");

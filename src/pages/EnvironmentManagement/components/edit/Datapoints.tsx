@@ -63,7 +63,6 @@ const DataPoints = ({
       });
   };
 
-  console.log(autDetails?.datapoints)
 
   useEffect(() => {
     if (autDetails) {
