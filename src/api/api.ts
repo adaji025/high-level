@@ -4,6 +4,10 @@ export const APIS = {
   USER: {
     LOGIN: `${api}/user/login`,
     USER: `${api}/user/create`,
+    CREATE_USER_CREDENTIOAL: `${api}/user/credentials/create`,
+    UPDATE_USER_CREDENTIOAL: `${api}/user/credentials/edit`,
+    GET_USER_CREDENTIOAL: `${api}/user/credentials/get`,
+    USER_CREDENTIOAL_STATUS: `${api}/user/credentials/check`,
     GET_USER: `${api}/user/`,
     USER_LIST: (page: number, size: number) =>
       `${api}/user/list?page=${page}&size=${size}`,
@@ -37,7 +41,8 @@ export const APIS = {
     AUTOMATION_DETAILS: (id: number) => `${api}/automation/${id}/`,
     RUN: (id: number) => `${api}/automation/${id}/run`,
     DELETE: (id: number) => `${api}/automation/delete/${id}/`,
-    DELETE_DATAPOINT: (id: number) => `${api}/automation/datapoint/delete/${id}/`,
+    DELETE_DATAPOINT: (id: number) =>
+      `${api}/automation/datapoint/delete/${id}/`,
     UPDATE_MESSAGE: `${api}/automation/message/edit/`,
     UPDATE_DATAPOINTS: `${api}/automation/datapoint/edit/`,
     UPDATE_PIPELINE: (id: number) => `${api}/automation/edit/${id}/`,

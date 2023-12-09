@@ -5,10 +5,9 @@ const useNotification = () => {
   const navigate = useNavigate();
 
   const logoutUser = () => {
-    toast.error(`User logged out Login in to continue 😑`);
+    toast.warn(`User logged out Login in to continue 😑`);
     localStorage.clear();
     navigate("/");
-    window.location.reload();
   };
 
   const handleError = (error: any) => {
