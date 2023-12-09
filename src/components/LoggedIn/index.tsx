@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Sidebar from "./Sidebar";
 import Dashboard from "../../pages/Dashboard/Dashboard";
@@ -10,12 +10,31 @@ import EnvironmentDetails from "../../pages/EnvironmentManagement/EnvironmentDet
 import CreateAutomation from "../../pages/EnvironmentManagement/CreateAutomation";
 import Header from "./Header";
 import EditAutomation from "../../pages/EnvironmentManagement/EditAutomation";
+import { useDisclosure } from "@mantine/hooks";
+import AddCredentials from "./AddCredentials";
+import { getUserCredentialsStatus } from "../../services/user";
 
 const LoggedInContainer = () => {
   const [mobileNav, openMobileNav] = useState(false);
+  const [credentialsStatus, setCredentialsStatus] = useState(true);
+  const [_, { open, close }] = useDisclosure(true);
+
+  console.log(credentialsStatus);
+
+  useEffect(() => {
+    handleGetUserCredentials();
+    credentialsStatus && close();
+  }, []);
+
+  const handleGetUserCredentials = () => {
+    getUserCredentialsStatus().then((res: any) => {
+      setCredentialsStatus(res.data.status);
+    });
+  };
 
   return (
-    <>
+    <Fragment>
+      <AddCredentials opened={!credentialsStatus} close={open} />
       <MobileSidebar {...{ mobileNav, openMobileNav }} />
       <div className="flex overflow-x-hidden">
         <div className="fixed h-screen hidden lg:flex lg:w-[300px]  bg-darkBlue p-[22px]">
@@ -48,7 +67,7 @@ const LoggedInContainer = () => {
           </main>
         </div>
       </div>
-    </>
+    </Fragment>
   );
 };
 

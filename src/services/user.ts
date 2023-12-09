@@ -13,6 +13,53 @@ export const userlogin = (data: any) => {
   });
 };
 
+export const createUserCredentials = (data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.post(`${APIS.USER.CREATE_USER_CREDENTIOAL}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+export const updateUserCredentials = (data: any) => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.put(`${APIS.USER.UPDATE_USER_CREDENTIOAL}`, data)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getUserCredentialsStatus = () => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.USER.USER_CREDENTIOAL_STATUS}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
+export const getUserCredentials = () => {
+  return new Promise((resolve, reject) => {
+    AxoisApi.get(`${APIS.USER.GET_USER_CREDENTIOAL}`)
+      .then((res: any) => {
+        resolve(res);
+      })
+      .catch((error) => {
+        reject(error);
+      });
+  });
+};
+
 export const createUser = (data: any) => {
   return new Promise((resolve, reject) => {
     AxoisApi.post(`${APIS.USER.USER}`, data)

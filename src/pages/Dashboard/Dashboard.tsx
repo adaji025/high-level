@@ -1,4 +1,4 @@
-import { TextInput, LoadingOverlay } from "@mantine/core";
+import { TextInput, LoadingOverlay, Button, Group } from "@mantine/core";
 import AutomationCards from "./components/AutomationCards";
 import { CiSearch } from "react-icons/ci";
 import AutomationTable from "./components/AutomationTable";
@@ -53,7 +53,19 @@ const Dashboard = () => {
   return (
     <div>
       <LoadingOverlay visible={loading} />
-      <h2 className="font-bold text-3xl mb-5">Recent automations</h2>
+      <div className="flex gap-5 flex-col sm:flex-row sm:items-center justify-between mb-5">
+        <h2 className="font-bold text-lg sm:text-3xl order-2 sm:order-1">
+          Recent automations
+        </h2>
+        <Group justify="flex-end" className="order-1 sm:order-2">
+          <Button
+            size="md"
+            className="bg-highLevelRed text-sm"
+          >
+            Create User Credendentials
+          </Button>
+        </Group>
+      </div>
       {recentAutomation && recentAutomation?.items.length > 0 && (
         <div className="grid sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-5">
           {recent?.map((item) => (

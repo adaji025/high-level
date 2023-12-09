@@ -9,6 +9,8 @@ import GoHighLevel from "../../assets/svgs/high-level-dark.svg";
 import { useEffect, useState, Fragment } from "react";
 import { getUser } from "../../services/user";
 import { UserTypes } from "../../types/user";
+import { useDisclosure } from "@mantine/hooks";
+import ConfirmLogout from "./ConfirmLogout";
 
 type Props = {
   openMobileNav?: React.Dispatch<React.SetStateAction<boolean>>;
@@ -18,15 +20,16 @@ const Sidebar = ({ openMobileNav }: Props) => {
   const [users, setUsers] = useState<UserTypes | null>(null);
   const [loading, setLoading] = useState(false);
   const [routes, setRoutes] = useState<any[]>([]);
+  const [opened, { open, close }] = useDisclosure(false);
+
   const location = useLocation();
   const navigate = useNavigate();
 
-  const { logoutUser, handleError } = useNotification();
+  const { handleError } = useNotification();
 
   useEffect(() => {
     users?.is_admin ? setRoutes(adminRoutes) : setRoutes(usersRoutes);
   }, [users]);
-
 
   const usersRoutes = [
     {
@@ -89,6 +92,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
 
   return (
     <Fragment>
+      <ConfirmLogout close={close} opened={opened} />
       <LoadingOverlay visible={loading} />
       <aside className="sidebar flex w-full h-full flex-col justify-between">
         <div className="w-full">
@@ -163,7 +167,7 @@ const Sidebar = ({ openMobileNav }: Props) => {
               size={30}
               color="white"
               className="rotate-180 cursor-pointer"
-              onClick={logoutUser}
+              onClick={open}
             />
           </div>
         </div>
