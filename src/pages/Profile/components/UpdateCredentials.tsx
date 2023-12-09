@@ -1,7 +1,6 @@
 import { useState, Fragment, useEffect } from "react";
 import { useForm } from "@mantine/form";
 import {
-  createUserCredentials,
   getUserCredentials,
   updateUserCredentials,
 } from "../../../services/user";
