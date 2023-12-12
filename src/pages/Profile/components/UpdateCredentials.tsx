@@ -114,14 +114,14 @@ const UpdateCredentials = () => {
           <TextInput
             mt={8}
             required
-            label="Twilo account sid"
+            label="Twailo account sid"
             placeholder="Enter account sid"
             {...form.getInputProps("twilio_account_sid")}
           />
           <TextInput
             mt={8}
             required
-            label="Twilo auth token"
+            label="Twailo auth token"
             placeholder="Enter token"
             {...form.getInputProps("twilio_auth_token")}
           />
