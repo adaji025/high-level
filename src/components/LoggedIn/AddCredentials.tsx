@@ -5,7 +5,6 @@ import {
   Divider,
   Text,
   TextInput,
-  NumberInput,
   LoadingOverlay,
   Group,
 } from "@mantine/core";
@@ -69,6 +68,7 @@ const AddCredentials = ({ close, opened }: Props) => {
             placeholder="Enter api key"
             {...form.getInputProps("sendgrid_api_key")}
           />
+
           <TextInput
             mt={8}
             required
@@ -77,6 +77,7 @@ const AddCredentials = ({ close, opened }: Props) => {
             placeholder="Enter email"
             {...form.getInputProps("sendgrid_email")}
           />
+
           <TextInput
             mt={8}
             required
@@ -84,6 +85,7 @@ const AddCredentials = ({ close, opened }: Props) => {
             placeholder="Enter subject"
             {...form.getInputProps("sendgrid_email_subject")}
           />
+
           <TextInput
             mt={8}
             required
@@ -91,6 +93,7 @@ const AddCredentials = ({ close, opened }: Props) => {
             placeholder="Enter account sid"
             {...form.getInputProps("twilio_account_sid")}
           />
+
           <TextInput
             mt={8}
             required
@@ -98,9 +101,9 @@ const AddCredentials = ({ close, opened }: Props) => {
             placeholder="Enter token"
             {...form.getInputProps("twilio_auth_token")}
           />
-          <NumberInput
+
+          <TextInput
             mt={8}
-            hideControls
             required
             label="Twailo sms Phone number"
             placeholder="Enter phone number"

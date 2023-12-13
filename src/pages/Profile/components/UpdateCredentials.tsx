@@ -10,7 +10,6 @@ import {
   Button,
   Group,
   LoadingOverlay,
-  NumberInput,
   TextInput,
 } from "@mantine/core";
 import { UserCredentialTypes } from "../../../types/user";
@@ -125,9 +124,8 @@ const UpdateCredentials = () => {
             placeholder="Enter token"
             {...form.getInputProps("twilio_auth_token")}
           />
-          <NumberInput
+          <TextInput
             mt={8}
-            hideControls
             required
             label="Twailo sms Phone number"
             placeholder="Enter phone number"
