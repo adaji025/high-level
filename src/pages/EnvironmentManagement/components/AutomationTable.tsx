@@ -159,12 +159,12 @@ const AutomationTable = ({
                         {item.name}
                       </div>
                     </Table.Td>
-                    <Table.Td>{item.run_count}</Table.Td>
                     <Table.Td>
                       {item.last_run
                         ? moment(item.last_run).format("YY.MM.DD")
                         : "----"}
                     </Table.Td>
+                    <Table.Td>{item.run_count}</Table.Td>
                     <Table.Td>
                       <div
                         className={`text-center font-semibold text-sm w-full md:w-4/6 p-2 whitespace-nowrap rounded-full flex items-center justify-center gap-1 ${
